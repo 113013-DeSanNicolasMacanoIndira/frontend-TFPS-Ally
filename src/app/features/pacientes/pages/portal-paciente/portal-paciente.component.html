@@ -1,0 +1,98 @@
+<!-- Barra de navegación -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold text-primary" routerLink="/portal-paciente">Ally</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+
+        <!-- Servicios -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="serviciosDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Servicios
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="serviciosDropdown">
+            <li><a class="dropdown-item" href="#">Transportistas</a></li>
+            <li><a class="dropdown-item" href="#">Médicos</a></li>
+            <li><a class="dropdown-item" routerLink="/terapeuta">Terapeuta</a></li>
+            <li><a class="dropdown-item" routerLink="/psicologo">Psicólogo</a></li>
+            <li><a class="dropdown-item" routerLink="/otro">Otro</a></li>
+          </ul>
+        </li>
+
+        <!-- Información -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="informacionDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Información
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="informacionDropdown">
+            <li><a class="dropdown-item" href="#">Discapacidad auditiva</a></li>
+            <li><a class="dropdown-item" href="#">Discapacidad visual</a></li>
+            <li><a class="dropdown-item" href="#">Discapacidad motriz</a></li>
+            <li><a class="dropdown-item" href="#">Perfil psicológico</a></li>
+          </ul>
+        </li>
+
+        <!-- Pacientes -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="pacientesDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Pacientes
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="pacientesDropdown">
+            <li>
+             <a class="dropdown-item" routerLink="/portal-pacientes">Portal Pacientes</a>
+            </li>
+
+            <li><a class="dropdown-item" routerLink="/registrar">Registrar Paciente</a></li>
+            <li><a class="dropdown-item" href="#">Preguntas frecuentes</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<!-- Hero principal -->
+<section class="hero text-center">
+  <div class="container mt-5">
+    <h1 class="display-5 fw-bold text-primary">Personas que Ayudan a Personas</h1>
+    <p class="lead mt-3 text-muted">
+      Sistema de Atención y Apoyo de Discapacidad (S.A.I.D.) – promoviendo inclusión y acompañamiento.
+    </p>
+  </div>
+</section>
+
+
+
+<!-- Footer -->
+<footer class="bg-light text-center text-lg-start mt-5">
+  <div class="container p-4">
+    <div class="row">
+      <div class="col-lg-6 col-md-12 mb-4">
+        <h5 class="text-uppercase">Sobre Ally</h5>
+        <p>
+          Ally es una plataforma dedicada a facilitar la vida de personas con discapacidad,
+          ofreciendo servicios personalizados y recursos útiles.
+        </p>
+      </div>
+
+      <div class="col-lg-3 col-md-6 mb-4">
+        <h5 class="text-uppercase">Enlaces útiles</h5>
+        <ul class="list-unstyled mb-0">
+          <li><a routerLink="/portal-paciente" class="text-dark">Inicio</a></li>
+          <li><a routerLink="/portal-pacientes" class="text-dark">Portal</a></li>
+          <li><a routerLink="/registrar" class="text-dark">Registrar</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
