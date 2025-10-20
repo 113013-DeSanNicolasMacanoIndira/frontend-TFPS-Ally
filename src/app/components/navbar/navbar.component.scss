@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb;
+}
+.nav-link {
+  color: #007b83 !important;
+  font-weight: 500;
+  &:hover {
+    color: #005f66 !important;
+  }
+}
+ h1 {
+    color: #5b96d4;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+   a.btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+  }
