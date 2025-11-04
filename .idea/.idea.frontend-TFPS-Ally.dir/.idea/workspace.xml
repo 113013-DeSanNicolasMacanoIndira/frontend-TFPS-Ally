@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e8132781-00d6-4b1c-9a09-139a9a55f2fc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/com.chrome.devtools.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_common.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_common.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_common_http.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_common_http.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_core.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_core.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_forms.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_forms.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_platform-browser.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_platform-browser.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_router.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/@angular_router.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/_metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-CFGI25SO.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-CFGI25SO.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-F6OF3YBK.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-F6OF3YBK.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-LFRC6ZNX.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-LFRC6ZNX.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-WDMUDEB6.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-WDMUDEB6.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-WLU5YTCJ.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-WLU5YTCJ.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-YLHXK2KV.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/chunk-YLHXK2KV.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/zone__js.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps/zone__js.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps_ssr/_metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.angular/cache/20.3.4/pacienAlly/vite/deps_ssr/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/services/patient.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/features/pacientes/pages/registrar-paciente/registrar-paciente.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/features/pacientes/pages/registrar-paciente/registrar-paciente.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/features/pacientes/pages/registrar-paciente/registrar-paciente.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/features/pacientes/pages/registrar-paciente/registrar-paciente.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/services/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/services/auth.service.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="351yflu9Hmgo9GOX9TVV91gGUjf" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Merging develop",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\dguiz\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
+      "C:\\Users\\dguiz\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
+      "C:\\Users\\dguiz\\AppData\\Local\\Symbols\\src"
+    ]
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e8132781-00d6-4b1c-9a09-139a9a55f2fc" name="Changes" comment="" />
+      <created>1762291980471</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762291980471</updated>
+      <workItem from="1762291983647" duration="1083000" />
+      <workItem from="1762293360326" duration="709000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>
