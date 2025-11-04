@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http'; // 👈 lo usaremos después
-// import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http'; // 👈 lo usaremos después
+ import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // private API_URL = 'http://localhost:8080/api/usuarios'; // 👈 luego se usará esto
+   private API_URL = 'http://localhost:8081/api/usuarios'; // 👈 luego se usará esto
   // Ajustá al backend real
 
-  // constructor(private http: HttpClient) {}
-  constructor() {}
+  constructor(private http: HttpClient) {}
+  //constructor() {}
 
   // 🔐 LOGIN SIMULADO (sin backend)
   login(email: string, password: string) {
