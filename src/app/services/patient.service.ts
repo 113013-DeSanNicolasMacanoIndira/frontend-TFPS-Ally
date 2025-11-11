@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';  // 👈 import
 
 export interface Patient {
-    id?: number;
+  id?: number;
   nombre: string;
   apellido: string;
   fechaNacimiento: string;
@@ -11,7 +12,7 @@ export interface Patient {
   telefono?: string;
   telegram?: string | null;
   correoElectronico: string;
-  idUsuario: number;
+  idUsuario?: number;
   numeroHistoriaClinica: string;
   codigoObraSocial: string;
   nroAfiliadoObraSocial: string;
@@ -23,27 +24,28 @@ export interface Patient {
 })
 export class PatientService {
 
-   private baseUrl = 'http://localhost:8081/patients'; //  puerto correcto
+ private baseUrl = `${environment.apiUrl}/patients`;
+
 
   constructor(private http: HttpClient) {}
 
   create(patient: Patient): Observable<Patient> {
-   return this.http.post<Patient>(this.baseUrl, patient);
+    return this.http.post<Patient>(this.baseUrl, patient);
   }
 
   getAll(): Observable<Patient[]> {
     return this.http.get<Patient[]>(this.baseUrl);
   }
 
- // getById(id: number): Observable<Patient> {
-   // return this.http.get<Patient>(`${this.baseUrl}/${id}`);
- // }
+  getById(id: number): Observable<Patient> {
+    return this.http.get<Patient>(`${this.baseUrl}/${id}`);
+  }
 
- // update(id: number, patient: Patient): Observable<Patient> {
-   // return this.http.put<Patient>(`${this.baseUrl}/${id}`, patient);
- // }
+  update(id: number, patient: Patient): Observable<Patient> {
+    return this.http.put<Patient>(`${this.baseUrl}/${id}`, patient);
+  }
 
-  //delete(id: number): Observable<boolean> {
-   // return this.http.delete<boolean>(`${this.baseUrl}/${id}`);
-  //}
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

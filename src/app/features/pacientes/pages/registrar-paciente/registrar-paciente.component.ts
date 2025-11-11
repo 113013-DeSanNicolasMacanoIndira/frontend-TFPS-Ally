@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PatientService, Patient } from '../../../../services/patient.service';
+import { AuthService } from '../../../../services/auth.service'; //  Importar AuthService
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registrar-paciente',
@@ -12,84 +14,79 @@ import { PatientService, Patient } from '../../../../services/patient.service';
 })
 export class RegistrarPacienteComponent {
   pacienteForm: FormGroup;
-  mensaje = '';
-  error = '';
   loading = false;
 
   constructor(
     private fb: FormBuilder,
-    private patientService: PatientService
+    private patientService: PatientService,
+    private authService: AuthService //  Inyectar AuthService
   ) {
     this.pacienteForm = this.fb.group({
-      dni: ['', Validators.required],                     // backend NO tiene dni, lo usamos como historia clínica
+      dni: ['', Validators.required],
       nombre: ['', Validators.required],
       apellido: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       telefono_contacto: ['', Validators.required],
-      contacto_emergencia: [''],                           // backend no lo usa aún
       obra_social: ['', Validators.required],
       nro_afiliado: ['', Validators.required],
       direccion: [''],
       fecha_nacimiento: ['', Validators.required],
-      genero: ['', Validators.required],                   // backend no lo usa aún
-      discapacidad: ['']                                   // -> mapea a tipoDiscapacidad
+      discapacidad: ['']
     });
   }
 
   onSubmit() {
-     console.log(' Formulario enviado - ejecutando onSubmit()');
     if (this.pacienteForm.invalid) {
-      this.mensaje = 'Por favor, completá todos los campos requeridos.';
+      Swal.fire('Atención', 'Completá todos los campos requeridos.', 'warning');
       this.pacienteForm.markAllAsTouched();
       return;
     }
 
-    this.loading = true;
-    this.mensaje = '';
-    this.error = '';
+    // Tomamos el usuario logueado del AuthService
+    const loggedUser = this.authService.getUser();
 
+    if (!loggedUser) {
+      Swal.fire('Error', 'No hay usuario logueado. Iniciá sesión nuevamente.', 'error');
+      return;
+    }
+
+    this.loading = true;
     const formValue = this.pacienteForm.value;
 
-    // lo que enviamos al backend
+    //  Usamos el id real del usuario logueado
     const payload: Patient = {
       nombre: formValue.nombre,
       apellido: formValue.apellido,
-      fechaNacimiento: formValue.fecha_nacimiento, // formato "YYYY-MM-DD"
+      fechaNacimiento: formValue.fecha_nacimiento,
       direccion: formValue.direccion,
       telefono: formValue.telefono_contacto,
-      telegram: null as any,
+      telegram: null,
       correoElectronico: formValue.email,
-      idUsuario: 1, // valor fijo por ahora
-
-      numeroHistoriaClinica: formValue.dni, // usamos DNI como historia clínica
+      idUsuario: loggedUser.id, //  aquí está la clave del cambio
+      numeroHistoriaClinica: formValue.dni,
       codigoObraSocial: formValue.obra_social,
       nroAfiliadoObraSocial: formValue.nro_afiliado,
       tipoDiscapacidad: formValue.discapacidad || null
     };
 
-    //  Debug: mostramos qué se está enviando
-    console.log('Payload enviado al backend:', payload);
-    console.log('JSON plano que se envía:', JSON.stringify(payload));
+    console.log(' Payload enviado:', payload);
 
-    //Llamada real al backend
     this.patientService.create(payload).subscribe({
       next: (created) => {
         this.loading = false;
-        this.mensaje = ` Paciente registrado correctamente (ID: ${created.id ?? 'sin ID'})`;
+        Swal.fire('Éxito', `Paciente registrado correctamente (ID: ${created.id ?? 'sin ID'})`, 'success');
         this.pacienteForm.reset();
       },
       error: (err) => {
         this.loading = false;
-        this.error = ' No se pudo registrar el paciente en el servidor.';
         console.error('Error backend:', err);
+        Swal.fire('Error', 'No se pudo registrar el paciente en el servidor.', 'error');
       }
     });
   }
 
-  // Limpia el formulario
   onDelete() {
     this.pacienteForm.reset();
-    this.mensaje = ' Formulario limpio';
-    this.error = '';
+    Swal.fire('Formulario limpio', '', 'info');
   }
 }

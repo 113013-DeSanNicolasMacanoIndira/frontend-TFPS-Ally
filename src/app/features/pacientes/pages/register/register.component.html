@@ -26,7 +26,7 @@
       <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
       <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
 
-      <button type="submit" class="btn btn-primary w-100 mt-2">Registrarse</button>
+      <button type="submit" class="btn btn-primary w-100 mt-2" [disabled]="successMessage">Registrarse</button>
       <a routerLink="/login" class="d-block text-center mt-3 text-decoration-none">¿Ya tenés cuenta? Iniciar sesión</a>
     </form>
   </div>
