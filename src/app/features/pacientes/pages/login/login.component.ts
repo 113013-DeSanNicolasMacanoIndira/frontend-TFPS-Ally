@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   email = '';
@@ -21,20 +21,35 @@ export class LoginComponent {
 
   onLogin() {
     //this.error = '';
+    //if (!this.email || !this.password) {
+    //  Swal.fire('Atención', 'Completá todos los campos.', 'warning');
+    //  return;
+    // }
+    //this.authService.login(this.email, this.password).subscribe({
+    //  next: (response) => {
+    //   Swal.fire('Bienvenido', 'Inicio de sesión exitoso', 'success');
+    //  this.router.navigate(['/portal-paciente']);
+    //  },
+    //  error: (err) => {
+    //    console.error('Error en login:', err);
+    //    this.error = 'Credenciales incorrectas o usuario inexistente';
+    //   Swal.fire('Error', this.error, 'error');
+    //  }
+    // });
     if (!this.email || !this.password) {
       Swal.fire('Atención', 'Completá todos los campos.', 'warning');
       return;
     }
+
     this.authService.login(this.email, this.password).subscribe({
-      next: (response) => {
+      next: () => {
         Swal.fire('Bienvenido', 'Inicio de sesión exitoso', 'success');
-        this.router.navigate(['/portal-paciente']);
       },
       error: (err) => {
         console.error('Error en login:', err);
         this.error = 'Credenciales incorrectas o usuario inexistente';
         Swal.fire('Error', this.error, 'error');
-      }
+      },
     });
   }
 

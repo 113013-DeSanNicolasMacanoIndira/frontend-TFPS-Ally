@@ -1,0 +1,32 @@
+<div class="container mt-4" *ngIf="provider">
+  <div class="card p-4 shadow-sm">
+    <h3 class="mb-3">
+      Solicitar servicio a {{ provider.nombre }} {{ provider.apellido }}
+    </h3>
+
+    <p><strong>Especialidad:</strong> {{ provider.codigoEspecialidad }}</p>
+    <p><strong>Dirección:</strong> {{ provider.direccion }}</p>
+    <p><strong>Email:</strong> {{ provider.email }}</p>
+
+    <hr />
+
+    <h5>📝 Descripción de la solicitud</h5>
+    <textarea
+      [(ngModel)]="descripcion"
+      class="form-control mb-3"
+      rows="4"
+      placeholder="Describe brevemente tu necesidad o motivo de consulta..."
+    ></textarea>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-secondary me-2" routerLink="/buscar-prestadores">
+        Cancelar
+      </button>
+      <button class="btn btn-success" (click)="solicitar()">Enviar solicitud ✅</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!provider" class="alert alert-warning mt-4">
+  Cargando información del profesional...
+</div>

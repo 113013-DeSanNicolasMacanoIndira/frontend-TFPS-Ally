@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth.service';
 export class NavbarComponent {
   user: any = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.user = this.authService.getUser();
@@ -25,6 +25,6 @@ export class NavbarComponent {
 
   logout() {
     this.authService.logout();
-    window.location.href = '/login';
+    this.router.navigate(['/login']);
   }
 }

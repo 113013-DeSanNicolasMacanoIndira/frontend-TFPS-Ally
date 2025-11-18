@@ -1,16 +1,32 @@
 import { Routes } from '@angular/router';
+
+//  Páginas del módulo pacientes
 import { LoginComponent } from './features/pacientes/pages/login/login.component';
 import { PortalPacienteComponent } from './features/pacientes/pages/portal-paciente/portal-paciente.component';
 import { PortalPacientesDetalleComponent } from './features/pacientes/pages/portal-pacientes-detalle/portal-pacientes-detalle.component';
 import { RegistrarPacienteComponent } from './features/pacientes/pages/registrar-paciente/registrar-paciente.component';
-import { RegisterComponent } from './features/pacientes/pages/register/register.component'; // ✅ import nuevo
+import { RegisterComponent } from './features/pacientes/pages/register/register.component';
+
+//  Nuevos componentes de prestaciones
+import { ProviderListComponent } from './components/provider-list/provider-list.component';
+import { ServiceRequestComponent } from './components/service-request/service-request.component';
+import { MyServicesComponent } from './components/my-services/my-services.component';
+
 export const routes: Routes = [
+  // Rutas base
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'registrar', component: RegistrarPacienteComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'portal-paciente', component: PortalPacienteComponent },
   { path: 'portal-pacientes', component: PortalPacientesDetalleComponent },
-  { path: 'registrar', component: RegistrarPacienteComponent },
-    { path: 'register', component: RegisterComponent }, // ✅ nueva ruta
+
+  // Rutas nuevas de prestaciones
+  { path: 'buscar-prestadores', component: ProviderListComponent },
+  { path: 'prestadores/:id', component: ServiceRequestComponent },
+  { path: 'mis-prestaciones', component: MyServicesComponent },
+
+  // Fallback
   { path: '**', redirectTo: 'login' }
 ];
 

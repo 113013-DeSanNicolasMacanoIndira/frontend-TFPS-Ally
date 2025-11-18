@@ -1,0 +1,73 @@
+.page-wrapper {
+  min-height: 100vh;
+  background: #f7fafc;
+  padding: 2rem;
+}
+
+.table {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+
+  thead {
+    background-color: #007b83;
+    color: #fff;
+  }
+
+  tbody tr:hover {
+    background: #e8f6f7;
+  }
+}
+
+.badge {
+  padding: 0.45em 0.75em;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-pendiente {
+  background: #ffc107;
+  color: #000;
+}
+
+.badge-aceptado {
+  background: #28a745;
+}
+
+.badge-rechazado {
+  background: #dc3545;
+}
+
+.btn {
+  transition: all 0.2s ease;
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.bg-hero {
+  background-image: url('/public/icons/prtp.PNG');
+  background-size: cover;
+  background-position: center;
+  min-height: 180px;
+  border-radius: 12px;
+  position: relative;
+  margin-bottom: 2rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 123, 131, 0.45);
+    border-radius: 12px;
+  }
+
+  h2 {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    padding: 3rem 2rem 1rem;
+    font-weight: 700;
+  }
+}

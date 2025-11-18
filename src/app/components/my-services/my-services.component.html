@@ -1,0 +1,27 @@
+<div class="container mt-4">
+  <h2>Mis solicitudes de atención </h2>
+
+  <div *ngIf="solicitudes.length === 0" class="alert alert-info mt-3">
+    Aún no realizaste ninguna solicitud.
+  </div>
+
+  <div *ngFor="let s of solicitudes" class="card mt-3 p-3 shadow-sm">
+
+    <div class="d-flex justify-content-between">
+      <h5>Servicio N° {{ s.id }}</h5>
+      <span class="badge bg-primary">{{ s.estado }}</span>
+    </div>
+
+    <p><strong>Profesional ID:</strong> {{ s.prestadorId }}</p>
+    <p><small>Fecha: {{ s.fechaSolicitud | date:'short' }}</small></p>
+
+    <button class="btn btn-warning btn-sm mt-2"
+            (click)="cancelar(s.id!)"
+            *ngIf="s.estado === 'PENDIENTE'">
+      Cancelar solicitud
+    </button>
+
+  </div>
+</div>
+
+
