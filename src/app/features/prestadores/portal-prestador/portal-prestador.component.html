@@ -1,42 +1,96 @@
-<div class="container py-4">
-  <h2 class="mb-4">Solicitudes de atención recibidas 🩺</h2>
+<div class="layout">
 
-  <div *ngIf="cargando" class="alert alert-info">Cargando solicitudes...</div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h3 class="sidebar-title">Prestador</h3>
 
-  <div *ngIf="!cargando && solicitudes.length === 0" class="alert alert-warning">
-    No hay solicitudes por el momento.
-  </div>
+    <ul class="menu">
 
-  <table *ngIf="solicitudes.length > 0" class="table table-bordered table-striped">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Paciente</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let s of solicitudes">
-        <td>{{ s.id }}</td>
-        <td>#{{ s.pacienteId }}</td>
-        
-        <td>
-          <span
-            [ngClass]="{
-              'badge badge-pendiente': s.estado === 'PENDIENTE',
-              'badge badge-aceptado': s.estado === 'ACEPTADO',
-              'badge badge-rechazado': s.estado === 'RECHAZADO'
-            }"
-          >
-            {{ s.estado }}
-          </span>
-        </td>
-        <td>
-          <button class="btn btn-success btn-sm me-2" (click)="aceptar(s.id!)">Aceptar</button>
-          <button class="btn btn-danger btn-sm" (click)="rechazar(s.id!)">Rechazar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <li class="menu-item active">
+        <i class="bi bi-inbox"></i> Solicitudes recibidas
+      </li>
+
+      <li class="menu-item">
+        <i class="bi bi-calendar-check"></i> Mi disponibilidad
+      </li>
+
+      <li class="menu-item">
+        <i class="bi bi-calendar-event"></i> Mis turnos
+      </li>
+
+      <li class="menu-item">
+        <i class="bi bi-credit-card"></i> Pagos pendientes
+      </li>
+
+      <li class="menu-item">
+        <i class="bi bi-gear"></i> Configuración
+      </li>
+
+    </ul>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="content">
+
+    <div class="prestador-header shadow-sm">
+      <h2 class="titulo">Portal del Prestador</h2>
+      <p class="bienvenida">Hola, <strong>{{ username }}</strong>. Aquí está tu panel de trabajo.</p>
+    </div>
+
+    <div class="container mt-4">
+
+      <div *ngIf="cargando" class="alert alert-info text-center">
+        Cargando solicitudes...
+      </div>
+
+      <div *ngIf="!cargando && solicitudes.length === 0" class="alert alert-warning text-center">
+        No tienes solicitudes por el momento.
+      </div>
+
+      <!-- TABLA DE SOLICITUDES -->
+      <div class="table-wrapper shadow" *ngIf="solicitudes.length > 0">
+        <table class="table table-hover table-bordered tabla-solicitudes">
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Paciente</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let s of solicitudes">
+              <td>{{ s.id }}</td>
+              <td>#{{ s.pacienteId }}</td>
+
+              <td>
+                <span
+                  [ngClass]="{
+                    'badge badge-pendiente': s.estado === 'PENDIENTE',
+                    'badge badge-aceptado': s.estado === 'ACEPTADO',
+                    'badge badge-rechazado': s.estado === 'RECHAZADO'
+                  }"
+                >
+                  {{ s.estado }}
+                </span>
+              </td>
+
+              <td>
+                <button class="btn btn-success btn-sm me-2" (click)="aceptar(s.id!)">
+                  Aceptar
+                </button>
+                <button class="btn btn-danger btn-sm" (click)="rechazar(s.id!)">
+                  Rechazar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+    </div>
+  </main>
 </div>

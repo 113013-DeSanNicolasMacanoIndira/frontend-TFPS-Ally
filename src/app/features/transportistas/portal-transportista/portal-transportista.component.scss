@@ -1,0 +1,40 @@
+.titulo {
+  font-weight: bold;
+  color: #0d6efd;
+}
+
+.tabla-solicitudes {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.badge-pendiente {
+  background-color: #ffcc00;
+  color: #333;
+}
+
+.badge-aceptado {
+  background-color: #28a745;
+  color: white;
+}
+
+.badge-rechazado {
+  background-color: #dc3545;
+  color: white;
+}
+
+table th {
+  background: #f8f9fa;
+  font-weight: 600;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}

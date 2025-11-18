@@ -18,12 +18,13 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
-  // URL base del backend (usa environment y agrega /api)
   private API_URL = `${environment.apiUrl}/api`;
 
-  
   constructor(private http: HttpClient, private router: Router) {}
-  // LOGIN - envía email y password al backend
+
+  // -----------------------------
+  // LOGIN
+  // -----------------------------
   login(email: string, password: string): Observable<any> {
     const body = { email, password };
 
@@ -31,33 +32,21 @@ export class AuthService {
       tap((response: any) => {
         console.log('Login exitoso:', response);
 
-        // Guardamos lo necesario para usar en la app
-        localStorage.setItem('token', response.token);
+        // Guardar datos esenciales
+        localStorage.setItem('token', response.token ?? 'dummy-token'); 
         localStorage.setItem('role', response.role);
         localStorage.setItem('user', JSON.stringify(response.user));
-        localStorage.setItem('userId', response.user.id);
+        localStorage.setItem('userId', String(response.user.id));
 
-
-        // Redirección automática por rol
-        switch (response.role) {
-          case 'PACIENTE':
-            this.router.navigate(['/portal-paciente']);
-            break;
-          case 'PRESTADOR':
-            this.router.navigate(['/portal-prestador']);
-            break;
-          case 'TRANSPORTISTA':
-            this.router.navigate(['/portal-transportista']);
-            break;
-          case 'ADMIN':
-            this.router.navigate(['/admin']);
-            break;
-        }
+        // Redirección automática según rol
+        this.redirectByRole(response.role);
       })
     );
   }
 
-  // REGISTRO - crea un nuevo usuario en el backend
+  // -----------------------------
+  // REGISTRO
+  // -----------------------------
   register(user: {
     username: string;
     email: string;
@@ -67,23 +56,57 @@ export class AuthService {
     return this.http.post(`${this.API_URL}/users`, user);
   }
 
-  // Obtener usuario logueado desde localStorage
+  // -----------------------------
+  // OBTENER USUARIO LOGUEADO
+  // -----------------------------
   getUser(): User | null {
     const stored = localStorage.getItem('user');
     return stored ? JSON.parse(stored) : null;
   }
 
-  // Saber si hay sesión activa
-   isLoggedIn(): boolean {
+  // -----------------------------
+  // ESTADO DE SESIÓN
+  // -----------------------------
+  isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
 
-  // Cerrar sesión
+  // -----------------------------
+  // LOGOUT
+  // -----------------------------
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('role');
     localStorage.removeItem('userId');
+
     this.router.navigate(['/login']);
+  }
+
+  // -----------------------------
+  // REDIRECCIÓN POR ROL
+  // -----------------------------
+  private redirectByRole(role: string): void {
+    switch (role) {
+      case 'PACIENTE':
+        this.router.navigate(['/portal-paciente']);
+        break;
+
+      case 'PRESTADOR':
+        this.router.navigate(['/portal-prestador']);
+        break;
+
+      case 'TRANSPORTISTA':
+        this.router.navigate(['/portal-transportista']);
+        break;
+
+      case 'ADMIN':
+        this.router.navigate(['/admin']);
+        break;
+
+      default:
+        this.router.navigate(['/login']);
+        break;
+    }
   }
 }

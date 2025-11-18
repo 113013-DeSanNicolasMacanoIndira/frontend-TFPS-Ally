@@ -7,6 +7,10 @@ import { PortalPacientesDetalleComponent } from './features/pacientes/pages/port
 import { RegistrarPacienteComponent } from './features/pacientes/pages/registrar-paciente/registrar-paciente.component';
 import { RegisterComponent } from './features/pacientes/pages/register/register.component';
 
+// Portal PRESTADOR y TRANSPORTISTA 
+import { PortalPrestadorComponent } from './features/prestadores/portal-prestador/portal-prestador.component';
+import { PortalTransportistaComponent } from './features/transportistas/portal-transportista/portal-transportista.component';
+
 //  Nuevos componentes de prestaciones
 import { ProviderListComponent } from './components/provider-list/provider-list.component';
 import { ServiceRequestComponent } from './components/service-request/service-request.component';
@@ -18,10 +22,18 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registrar', component: RegistrarPacienteComponent },
   { path: 'register', component: RegisterComponent },
+
+  // PACIENTE
   { path: 'portal-paciente', component: PortalPacienteComponent },
   { path: 'portal-pacientes', component: PortalPacientesDetalleComponent },
 
-  // Rutas nuevas de prestaciones
+  // PRESTADOR 
+  { path: 'portal-prestador', component: PortalPrestadorComponent },
+
+  // TRANSPORTISTA 
+  { path: 'portal-transportista', component: PortalTransportistaComponent },
+
+  // PRESTACIONES
   { path: 'buscar-prestadores', component: ProviderListComponent },
   { path: 'prestadores/:id', component: ServiceRequestComponent },
   { path: 'mis-prestaciones', component: MyServicesComponent },
@@ -29,5 +41,3 @@ export const routes: Routes = [
   // Fallback
   { path: '**', redirectTo: 'login' }
 ];
-
-

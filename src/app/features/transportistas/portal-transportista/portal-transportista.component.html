@@ -1,1 +1,50 @@
-<p>portal-transportista works!</p>
+<div class="container py-4">
+  <h2 class="mb-4 titulo">Solicitudes de Traslado 🚑</h2>
+
+  <div *ngIf="cargando" class="alert alert-info">
+    Cargando solicitudes...
+  </div>
+
+  <div *ngIf="!cargando && solicitudes.length === 0" class="alert alert-warning">
+    No hay solicitudes asignadas por el momento.
+  </div>
+
+  <table *ngIf="solicitudes.length > 0" class="table tabla-solicitudes shadow">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Paciente</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let s of solicitudes">
+        <td>{{ s.id }}</td>
+        <td>#{{ s.pacienteId }}</td>
+
+        <td>
+          <span
+            [ngClass]="{
+              'badge badge-pendiente': s.estado === 'PENDIENTE',
+              'badge badge-aceptado': s.estado === 'ACEPTADO',
+              'badge badge-rechazado': s.estado === 'RECHAZADO'
+            }">
+            {{ s.estado }}
+          </span>
+        </td>
+
+        <td>
+          <button class="btn btn-success btn-sm me-2" (click)="aceptar(s.id!)">
+            Aceptar
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="rechazar(s.id!)">
+            Rechazar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

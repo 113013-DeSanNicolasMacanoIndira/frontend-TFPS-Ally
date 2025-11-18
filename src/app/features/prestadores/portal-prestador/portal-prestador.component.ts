@@ -16,6 +16,7 @@ export class PortalPrestadorComponent implements OnInit {
   solicitudes: ServiceRequest[] = [];
   prestadorId!: number;
   cargando = true;
+  username = '';
 
   constructor(
     private srService: ServiceRequestService,
@@ -24,11 +25,20 @@ export class PortalPrestadorComponent implements OnInit {
 
   ngOnInit(): void {
     const storedId = localStorage.getItem('userId');
+    const storedUser = localStorage.getItem('user');
+
     if (!storedId) {
       this.router.navigate(['/login']);
       return;
     }
+
     this.prestadorId = Number(storedId);
+
+    if (storedUser) {
+      const parsed = JSON.parse(storedUser);
+      this.username = parsed.username ?? 'Prestador';
+    }
+
     this.cargarSolicitudes();
   }
 
@@ -48,5 +58,3 @@ export class PortalPrestadorComponent implements OnInit {
     this.srService.rechazar(id).subscribe(() => this.cargarSolicitudes());
   }
 }
-
-
