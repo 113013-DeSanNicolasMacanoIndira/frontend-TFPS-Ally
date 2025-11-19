@@ -6,24 +6,29 @@
 
     <ul class="menu">
 
-      <li class="menu-item active">
+      <li class="menu-item active" routerLink="/portal-prestador">
         <i class="bi bi-inbox"></i> Solicitudes recibidas
       </li>
 
-      <li class="menu-item">
+      <li class="menu-item" routerLink="/prestador/disponibilidad">
         <i class="bi bi-calendar-check"></i> Mi disponibilidad
       </li>
 
-      <li class="menu-item">
+      <li class="menu-item" routerLink="/prestador/turnos">
         <i class="bi bi-calendar-event"></i> Mis turnos
       </li>
 
-      <li class="menu-item">
+      <li class="menu-item" routerLink="/prestador/pagos">
         <i class="bi bi-credit-card"></i> Pagos pendientes
       </li>
 
-      <li class="menu-item">
+      <li class="menu-item" routerLink="/prestador/configuracion">
         <i class="bi bi-gear"></i> Configuración
+      </li>
+
+      <!--  CERRAR SESIÓN -->
+      <li class="menu-item logout" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
       </li>
 
     </ul>

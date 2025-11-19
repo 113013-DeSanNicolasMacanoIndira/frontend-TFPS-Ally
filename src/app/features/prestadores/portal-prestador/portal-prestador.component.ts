@@ -3,6 +3,7 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
 import { Router } from '@angular/router';
 import { ServiceRequestService } from '../../../services/service-request.service';
 import { ServiceRequest } from '../../../models/service-request.model';
+import { AuthService } from '../../../services/auth.service'; 
 
 @Component({
   selector: 'app-portal-prestador',
@@ -20,7 +21,8 @@ export class PortalPrestadorComponent implements OnInit {
 
   constructor(
     private srService: ServiceRequestService,
-    private router: Router
+    private router: Router,
+    private auth: AuthService  // ⬅️ agregado
   ) {}
 
   ngOnInit(): void {
@@ -56,5 +58,10 @@ export class PortalPrestadorComponent implements OnInit {
 
   rechazar(id: number) {
     this.srService.rechazar(id).subscribe(() => this.cargarSolicitudes());
+  }
+
+  //  CERRAR SESIÓN
+  logout() {
+    this.auth.logout();
   }
 }

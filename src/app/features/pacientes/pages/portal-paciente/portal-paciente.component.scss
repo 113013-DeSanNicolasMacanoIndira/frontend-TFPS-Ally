@@ -123,5 +123,58 @@
   filter: brightness(0.9); /* opcional: suaviza la imagen */
 }
 
+/* BOTÓN FLOTANTE DE AYUDA */
+.help-button {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  width: 60px;
+  height: 60px;
+  background: #0d6efd;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
+}
+
+.help-button:hover {
+  transform: scale(1.1);
+}
+
+/* MODAL FAQ */
+.faq-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.faq-content {
+  background: white;
+  padding: 25px;
+  width: 500px;
+  max-width: 90%;
+  border-radius: 12px;
+}
+
+.faq-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-body h5 {
+  margin-top: 15px;
+  font-weight: bold;
+}
 
 

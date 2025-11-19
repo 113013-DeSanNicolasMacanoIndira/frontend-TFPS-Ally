@@ -1,50 +1,86 @@
-<div class="container py-4">
-  <h2 class="mb-4 titulo">Solicitudes de Traslado 🚑</h2>
+<div class="layout">
 
-  <div *ngIf="cargando" class="alert alert-info">
-    Cargando solicitudes...
-  </div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h3 class="sidebar-title">Transportista</h3>
 
-  <div *ngIf="!cargando && solicitudes.length === 0" class="alert alert-warning">
-    No hay solicitudes asignadas por el momento.
-  </div>
+    <ul class="menu">
+      <li class="menu-item active">
+        <i class="bi bi-map"></i> Zonas asignadas
+      </li>
 
-  <table *ngIf="solicitudes.length > 0" class="table tabla-solicitudes shadow">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Paciente</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
+      <li class="menu-item">
+        <i class="bi bi-truck"></i> Mis traslados
+      </li>
 
-    <tbody>
-      <tr *ngFor="let s of solicitudes">
-        <td>{{ s.id }}</td>
-        <td>#{{ s.pacienteId }}</td>
+      <li class="menu-item">
+        <i class="bi bi-cash-coin"></i> Pagos pendientes
+      </li>
+    </ul>
 
-        <td>
-          <span
-            [ngClass]="{
-              'badge badge-pendiente': s.estado === 'PENDIENTE',
-              'badge badge-aceptado': s.estado === 'ACEPTADO',
-              'badge badge-rechazado': s.estado === 'RECHAZADO'
-            }">
-            {{ s.estado }}
-          </span>
-        </td>
+    <!-- CERRAR SESIÓN -->
+    <div class="menu-item logout" (click)="logout()">
+      <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+    </div>
+  </aside>
 
-        <td>
-          <button class="btn btn-success btn-sm me-2" (click)="aceptar(s.id!)">
-            Aceptar
-          </button>
-          <button class="btn btn-danger btn-sm" (click)="rechazar(s.id!)">
-            Rechazar
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="content">
+
+    <div class="prestador-header shadow-sm">
+      <h2 class="titulo">Portal del Transportista</h2>
+      <p class="bienvenida">Estas son tus solicitudes de traslado asignadas.</p>
+    </div>
+
+    <div class="container mt-4">
+
+      <div *ngIf="cargando" class="alert alert-info">
+        Cargando solicitudes...
+      </div>
+
+      <div *ngIf="!cargando && solicitudes.length === 0" class="alert alert-warning">
+        No hay solicitudes asignadas por el momento.
+      </div>
+
+      <table *ngIf="solicitudes.length > 0" class="table tabla-solicitudes shadow">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Paciente</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let s of solicitudes">
+            <td>{{ s.id }}</td>
+            <td>#{{ s.pacienteId }}</td>
+
+            <td>
+              <span
+                [ngClass]="{
+                  'badge badge-pendiente': s.estado === 'PENDIENTE',
+                  'badge badge-aceptado': s.estado === 'ACEPTADO',
+                  'badge badge-rechazado': s.estado === 'RECHAZADO'
+                }">
+                {{ s.estado }}
+              </span>
+            </td>
+
+            <td>
+              <button class="btn btn-success btn-sm me-2" (click)="aceptar(s.id!)">
+                Aceptar
+              </button>
+              <button class="btn btn-danger btn-sm" (click)="rechazar(s.id!)">
+                Rechazar
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </main>
 </div>
-

@@ -119,3 +119,12 @@ tr:hover {
   background-color: #dc3545;
   color: white;
 }
+.menu-item.logout {
+  margin-top: 30px;
+  color: #ffdddd;
+  cursor: pointer;
+}
+
+.menu-item.logout:hover {
+  background: rgba(255, 0, 0, 0.15);
+}

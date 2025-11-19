@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PatientService, Patient } from '../../../../services/patient.service';
-import { AuthService } from '../../../../services/auth.service'; //  Importar AuthService
+import { AuthService } from '../../../../services/auth.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registrar-paciente',
@@ -19,7 +20,8 @@ export class RegistrarPacienteComponent {
   constructor(
     private fb: FormBuilder,
     private patientService: PatientService,
-    private authService: AuthService //  Inyectar AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.pacienteForm = this.fb.group({
       dni: ['', Validators.required],
@@ -42,9 +44,7 @@ export class RegistrarPacienteComponent {
       return;
     }
 
-    // Tomamos el usuario logueado del AuthService
     const loggedUser = this.authService.getUser();
-
     if (!loggedUser) {
       Swal.fire('Error', 'No hay usuario logueado. Iniciá sesión nuevamente.', 'error');
       return;
@@ -53,7 +53,6 @@ export class RegistrarPacienteComponent {
     this.loading = true;
     const formValue = this.pacienteForm.value;
 
-    //  Usamos el id real del usuario logueado
     const payload: Patient = {
       nombre: formValue.nombre,
       apellido: formValue.apellido,
@@ -62,25 +61,29 @@ export class RegistrarPacienteComponent {
       telefono: formValue.telefono_contacto,
       telegram: null,
       correoElectronico: formValue.email,
-      idUsuario: loggedUser.id, //  aquí está la clave del cambio
+      idUsuario: loggedUser.id,
       numeroHistoriaClinica: formValue.dni,
       codigoObraSocial: formValue.obra_social,
       nroAfiliadoObraSocial: formValue.nro_afiliado,
       tipoDiscapacidad: formValue.discapacidad || null
     };
 
-    console.log(' Payload enviado:', payload);
-
     this.patientService.create(payload).subscribe({
       next: (created) => {
         this.loading = false;
-        Swal.fire('Éxito', `Paciente registrado correctamente (ID: ${created.id ?? 'sin ID'})`, 'success');
-        this.pacienteForm.reset();
+
+        Swal.fire({
+          title: 'Éxito',
+          text: 'Paciente registrado correctamente.',
+          icon: 'success',
+          confirmButtonText: 'Continuar'
+        }).then(() => {
+          this.router.navigate(['/solicitudes']);
+        });
       },
-      error: (err) => {
+      error: () => {
         this.loading = false;
-        console.error('Error backend:', err);
-        Swal.fire('Error', 'No se pudo registrar el paciente en el servidor.', 'error');
+        Swal.fire('Error', 'No se pudo registrar el paciente.', 'error');
       }
     });
   }
