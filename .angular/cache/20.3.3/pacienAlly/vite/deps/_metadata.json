@@ -1,61 +1,61 @@
 {
-  "hash": "2453de12",
-  "configHash": "f5aaeb1a",
-  "lockfileHash": "690a1f9f",
-  "browserHash": "55a63772",
+  "hash": "353f0042",
+  "configHash": "7b7777e0",
+  "lockfileHash": "a34d26bb",
+  "browserHash": "03cd2d25",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "92469504",
+      "fileHash": "6767f9c1",
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "2209d341",
+      "fileHash": "7b9f4191",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "386357ca",
+      "fileHash": "44174286",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "cf3743b7",
+      "fileHash": "19400ece",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "d96b9702",
+      "fileHash": "4505b60e",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "5aa7efc4",
+      "fileHash": "d6e5be40",
       "needsInterop": false
     },
     "rxjs": {
       "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
       "file": "rxjs.js",
-      "fileHash": "8b56bc8a",
+      "fileHash": "4f046e38",
       "needsInterop": false
     },
     "sweetalert2": {
       "src": "../../../../../../node_modules/sweetalert2/dist/sweetalert2.esm.all.js",
       "file": "sweetalert2.js",
-      "fileHash": "9d6fc19e",
+      "fileHash": "78b2f9d5",
       "needsInterop": false
     },
     "zone.js": {
       "src": "../../../../../../node_modules/zone.js/fesm2015/zone.js",
       "file": "zone__js.js",
-      "fileHash": "9dd0d7f8",
+      "fileHash": "8e0120a0",
       "needsInterop": true
     }
   },

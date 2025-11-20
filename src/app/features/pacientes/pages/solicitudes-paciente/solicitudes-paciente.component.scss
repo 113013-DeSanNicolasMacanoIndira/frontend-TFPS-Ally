@@ -1,0 +1,162 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6f9;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  background: #1e3a8a;
+  color: white;
+  padding: 20px;
+  height: 100vh;
+}
+
+.sidebar-title {
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+
+  .menu-item {
+    padding: 12px 10px;
+    cursor: pointer;
+    display: flex;
+    gap: 8px;
+    border-radius: 6px;
+
+    &:hover,
+    &.active {
+      background: #3b5bdb;
+    }
+  }
+
+  .logout {
+    margin-top: 20px;
+    color: #ffb3b3;
+  }
+}
+
+/* CONTENIDO */
+.content {
+  flex: 1;
+  padding: 30px;
+}
+
+.header {
+  margin-bottom: 25px;
+
+  h2 {
+    font-size: 28px;
+    margin-bottom: 5px;
+  }
+}
+
+.panel {
+  max-width: 900px;
+  margin: auto;
+}
+
+/* CARD */
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+
+  h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+}
+
+/* FORM */
+.form-group {
+  margin-bottom: 15px;
+
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  textarea,
+  select {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 8px;
+  }
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:hover {
+    background: #1d4ed8;
+  }
+}
+
+/* TABLE */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+/* BADGES */
+.badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #fff;
+
+  &.pendiente { background: #f59e0b; }
+  &.aceptado { background: #10b981; }
+  &.rechazado { background: #ef4444; }
+}
+
+/* PROFESIONALES */
+.search {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.pro-item {
+  padding: 12px 10px;
+  border-bottom: 1px solid #eee;
+
+  strong {
+    display: block;
+  }
+}
+
+/* ALERTA */
+.alert.empty {
+  background: #fff3cd;
+  padding: 12px;
+  border-radius: 8px;
+}

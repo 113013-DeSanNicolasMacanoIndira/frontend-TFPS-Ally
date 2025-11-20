@@ -1,16 +1,12 @@
 <div class="registro-container">
-  <h2 class="titulo">Registrar paciente</h2>
+  <h2 class="titulo">Datos del Paciente</h2>
 
   <form [formGroup]="pacienteForm" (ngSubmit)="onSubmit()" class="formulario">
+
     <!-- DNI -->
     <div class="form-group">
       <label for="dni">DNI:</label>
-      <input
-        id="dni"
-        type="text"
-        formControlName="dni"
-        placeholder="Ej: 45789123"
-      />
+      <input id="dni" type="text" formControlName="dni" placeholder="Ej: 45789123" />
     </div>
 
     <!-- Nombre -->
@@ -19,17 +15,13 @@
       <input id="nombre" type="text" formControlName="nombre" placeholder="Ej: Juan Pérez" />
 
       <label for="nombre">Nombre:</label>
-      <input
-        id="nombre"
-        type="text"
-        formControlName="nombre"
-        placeholder="Ej: Juan"
-      />
+      <input id="nombre" type="text" formControlName="nombre" placeholder="Ej: Juan" />
     </div>
 
     <!-- Apellido -->
     <div class="form-group">
       <label for="apellido">Apellido:</label>
+
       <input
         id="apellido"
         type="text"
@@ -37,18 +29,16 @@
         placeholder="Ej: Pérez"
       />
 
+
+      <input id="apellido" type="text" formControlName="apellido" placeholder="Ej: Pérez" />
+
     </div>
 
     <!-- Email -->
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input
-        id="email"
-        type="email"
-        formControlName="email"
-        placeholder="Ej: juan@mail.com"
-      />
-    </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input id="email" type="email" formControlName="email" placeholder="Ej: juan@mail.com" />
+      </div>
 
 
 
@@ -56,55 +46,31 @@
 
     <div class="form-group">
       <label for="telefono_contacto">Teléfono de contacto:</label>
-      <input
-        id="telefono_contacto"
-        type="text"
-        formControlName="telefono_contacto"
-        placeholder="Ej: 351-5551234"
-      />
+      <input id="telefono_contacto" type="text" formControlName="telefono_contacto" placeholder="Ej: 351-5551234" />
     </div>
 
     <!-- Obra social -->
     <div class="form-group">
       <label for="obra_social">Obra social:</label>
-      <input
-        id="obra_social"
-        type="text"
-        formControlName="obra_social"
-        placeholder="Ej: OSDE"
-      />
+      <input id="obra_social" type="text" formControlName="obra_social" placeholder="Ej: OSDE" />
     </div>
 
-    <!-- N° de afiliado -->
+    <!-- N° Afiliado -->
     <div class="form-group">
       <label for="nro_afiliado">N° de afiliado:</label>
-      <input
-        id="nro_afiliado"
-        type="text"
-        formControlName="nro_afiliado"
-        placeholder="Ej: 123456789"
-      />
+      <input id="nro_afiliado" type="text" formControlName="nro_afiliado" placeholder="Ej: 123456789" />
     </div>
 
     <!-- Dirección -->
     <div class="form-group">
       <label for="direccion">Dirección:</label>
-      <input
-        id="direccion"
-        type="text"
-        formControlName="direccion"
-        placeholder="Ej: Av. Colón 1234"
-      />
+      <input id="direccion" type="text" formControlName="direccion" placeholder="Ej: Av. Colón 1234" />
     </div>
 
-    <!-- Fecha de nacimiento -->
+    <!-- Fecha nacimiento -->
     <div class="form-group">
       <label for="fecha_nacimiento">Fecha de nacimiento:</label>
-      <input
-        id="fecha_nacimiento"
-        type="date"
-        formControlName="fecha_nacimiento"
-      />
+      <input id="fecha_nacimiento" type="date" formControlName="fecha_nacimiento" />
     </div>
 
     <!-- Discapacidad -->
@@ -121,21 +87,14 @@
 
     <!-- Botones -->
     <div class="botones">
-      <button
-        type="submit"
-        class="btn-guardar"
-        [disabled]="loading"
-      >
-        {{ loading ? 'Guardando...' : 'Guardar' }}
+      <button type="submit" class="btn-guardar" [disabled]="loading">
+        {{ loading ? 'Procesando...' : 'Registrar' }}
       </button>
-      <button
-        type="button"
-        (click)="onDelete()"
-        class="btn-borrar"
-        [disabled]="loading"
-      >
-        Borrar
+
+      <button type="button" (click)="onDelete()" class="btn-borrar" [disabled]="loading">
+        Limpiar
       </button>
     </div>
+
   </form>
 </div>
