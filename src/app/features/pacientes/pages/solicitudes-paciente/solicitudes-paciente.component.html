@@ -1,0 +1,70 @@
+<div class="contenedor">
+
+  <!-- Enviar Solicitud -->
+  <section class="seccion">
+    <h2>Enviar solicitud</h2>
+
+    <form [formGroup]="solicitudForm" (ngSubmit)="enviarSolicitud()">
+
+      <div class="grupo">
+        <label>Tipo de solicitud:</label>
+
+        <div class="opciones">
+          <label><input type="radio" value="PRESTADOR" formControlName="tipo" /> Prestador</label>
+          <label><input type="radio" value="TRANSPORTISTA" formControlName="tipo" /> Transportista</label>
+        </div>
+      </div>
+
+      <div class="grupo">
+        <label>Profesional / Empresa:</label>
+        <select formControlName="idProfesional">
+          <option disabled selected>Seleccione uno</option>
+          <option *ngFor="let p of profesionales" [value]="p.id">
+            {{ p.nombre }} - {{ p.especialidad }}
+          </option>
+        </select>
+      </div>
+
+      <div class="grupo">
+        <label>Comentario (opcional)</label>
+        <textarea formControlName="comentario" rows="3"></textarea>
+      </div>
+
+      <button class="btn-principal" type="submit">Enviar solicitud</button>
+    </form>
+  </section>
+
+
+  <!-- Solicitudes enviadas -->
+  <section class="seccion">
+    <h2>Mis solicitudes</h2>
+
+    <div *ngFor="let s of solicitudes" class="card">
+      <div class="fila">
+        <span class="estado" [ngClass]="s.estado.toLowerCase()">{{ s.estado }}</span>
+        <span class="fecha">{{ s.fecha | date }}</span>
+      </div>
+
+      <div class="prof">
+        {{ s.prestador?.nombre ?? s.transportista?.nombre ?? 'Profesional asignado' }}
+      </div>
+
+      <div class="acciones">
+        <button class="btn-cancelar" (click)="cancelarSolicitud(s)">Cancelar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Profesionales disponibles -->
+  <section class="seccion">
+    <h2>Profesionales disponibles</h2>
+
+    <input type="text" placeholder="Buscar..." [(ngModel)]="filtro" class="input-buscar" />
+
+    <div *ngFor="let p of profesionalesFiltrados()" class="card-pro">
+      <strong>{{ p.nombre }}</strong>
+      <span>{{ p.especialidad }}</span>
+    </div>
+  </section>
+
+</div>

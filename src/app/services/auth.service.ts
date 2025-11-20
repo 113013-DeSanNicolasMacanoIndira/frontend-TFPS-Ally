@@ -35,8 +35,8 @@ export class AuthService {
         // Guardar datos esenciales
         localStorage.setItem('token', response.token ?? 'dummy-token'); 
         localStorage.setItem('role', response.role);
-        localStorage.setItem('user', JSON.stringify(response.user));
-        localStorage.setItem('userId', String(response.user.id));
+        localStorage.setItem('user', JSON.stringify(response.usuario));
+        localStorage.setItem('userId', String(response.usuario.id));
 
         // Redirección automática según rol
         this.redirectByRole(response.role);

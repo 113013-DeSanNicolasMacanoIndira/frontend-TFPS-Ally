@@ -78,7 +78,7 @@ export class RegistrarPacienteComponent {
           icon: 'success',
           confirmButtonText: 'Continuar'
         }).then(() => {
-          this.router.navigate(['/solicitudes']);
+          this.router.navigate(['/solicitudes-paciente']);
         });
       },
       error: () => {
