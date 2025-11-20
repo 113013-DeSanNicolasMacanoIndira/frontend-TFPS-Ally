@@ -1,70 +1,66 @@
-<div class="contenedor">
+<div class="layout">
 
-  <!-- Enviar Solicitud -->
-  <section class="seccion">
-    <h2>Enviar solicitud</h2>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h3 class="sidebar-title">Paciente</h3>
 
-    <form [formGroup]="solicitudForm" (ngSubmit)="enviarSolicitud()">
+    <ul class="menu">
+      <li class="menu-item active" routerLink="/solicitudes-paciente">
+        <i class="bi bi-send"></i> Solicitudes
+      </li>
 
-      <div class="grupo">
-        <label>Tipo de solicitud:</label>
+      <li class="menu-item" routerLink="/portal-paciente">
+        <i class="bi bi-house"></i> Inicio
+      </li>
 
-        <div class="opciones">
-          <label><input type="radio" value="PRESTADOR" formControlName="tipo" /> Prestador</label>
-          <label><input type="radio" value="TRANSPORTISTA" formControlName="tipo" /> Transportista</label>
-        </div>
-      </div>
+      <li class="menu-item logout" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+      </li>
+    </ul>
+  </aside>
 
-      <div class="grupo">
-        <label>Profesional / Empresa:</label>
-        <select formControlName="idProfesional">
-          <option disabled selected>Seleccione uno</option>
-          <option *ngFor="let p of profesionales" [value]="p.id">
-            {{ p.nombre }} - {{ p.especialidad }}
-          </option>
-        </select>
-      </div>
+  <!-- CONTENIDO -->
+  <main class="content">
 
-      <div class="grupo">
-        <label>Comentario (opcional)</label>
-        <textarea formControlName="comentario" rows="3"></textarea>
-      </div>
+    <header class="header">
+      <h2>Mis Solicitudes</h2>
+      <p>Hola <strong>{{ username }}</strong>, aquí podés gestionar tus solicitudes.</p>
+    </header>
 
-      <button class="btn-principal" type="submit">Enviar solicitud</button>
-    </form>
-  </section>
+    <div class="panel">
 
+      <!-- ENVIAR SOLICITUD -->
+      <section class="card">
+        <h3>Enviar solicitud</h3>
 
-  <!-- Solicitudes enviadas -->
-  <section class="seccion">
-    <h2>Mis solicitudes</h2>
+        <form [formGroup]="solicitudForm" (ngSubmit)="enviarSolicitud()">
 
-    <div *ngFor="let s of solicitudes" class="card">
-      <div class="fila">
-        <span class="estado" [ngClass]="s.estado.toLowerCase()">{{ s.estado }}</span>
-        <span class="fecha">{{ s.fecha | date }}</span>
-      </div>
+          <div class="form-group">
+            <label>Tipo de solicitud</label>
+            <div class="radio-group">
+              <label><input type="radio" value="PRESTADOR" formControlName="tipo"> Prestador</label>
+              <label><input type="radio" value="TRANSPORTISTA" formControlName="tipo"> Transportista</label>
+            </div>
+          </div>
 
-      <div class="prof">
-        {{ s.prestador?.nombre ?? s.transportista?.nombre ?? 'Profesional asignado' }}
-      </div>
+          <div class="form-group">
+            <label>Profesional / Empresa</label>
+            <select formControlName="idProfesional" class="form-select">
+              <option value="" disabled selected>Seleccione uno</option>
+              <option *ngFor="let p of profesionales" [value]="p.id">
+                {{ p.nombre }} - {{ p.especialidad }}
+              </option>
+            </select>
+          </div>
 
-      <div class="acciones">
-        <button class="btn-cancelar" (click)="cancelarSolicitud(s)">Cancelar</button>
-      </div>
-    </div>
-  </section>
+          <div class="form-group">
+            <label>Comentario</label>
+            <textarea formControlName="comentario" rows="3"></textarea>
+          </div>
 
-  <!-- Profesionales disponibles -->
-  <section class="seccion">
-    <h2>Profesionales disponibles</h2>
+          <button class="btn-primary">Enviar solicitud</button>
 
-    <input type="text" placeholder="Buscar..." [(ngModel)]="filtro" class="input-buscar" />
+        </form>
+      </section>
 
-    <div *ngFor="let p of profesionalesFiltrados()" class="card-pro">
-      <strong>{{ p.nombre }}</strong>
-      <span>{{ p.especialidad }}</span>
-    </div>
-  </section>
-
-</div>
+      

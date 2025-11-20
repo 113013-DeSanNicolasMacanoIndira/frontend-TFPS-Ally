@@ -19,6 +19,7 @@ export class SolicitudesPacienteComponent implements OnInit {
   profesionales: any[] = [];
   solicitudes: any[] = [];
   filtro: string = '';
+  username: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -97,5 +98,8 @@ export class SolicitudesPacienteComponent implements OnInit {
       Swal.fire('Solicitud cancelada', '', 'success');
       this.cargarSolicitudes();
     });
+  }
+  logout() {
+    this.authService.logout();
   }
 }
