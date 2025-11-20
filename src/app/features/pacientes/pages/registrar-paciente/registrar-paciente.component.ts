@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-
 import { PatientService, Patient } from '../../../../services/patient.service';
 import { AuthService } from '../../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-registrar-paciente',
@@ -18,15 +15,6 @@ import { Router } from '@angular/router';
 })
 export class RegistrarPacienteComponent {
   pacienteForm: FormGroup;
-
-
-    this.pacienteForm = this.fb.group({
-      nombre: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      telefono_contacto: ['', Validators.required],
-      direccion: [''],
-      fecha_nacimiento: ['', Validators.required],
-
   loading = false;
 
   constructor(
@@ -46,15 +34,10 @@ export class RegistrarPacienteComponent {
       direccion: [''],
       fecha_nacimiento: ['', Validators.required],
       discapacidad: ['']
-
     });
   }
 
   onSubmit() {
-
-      this.pacienteForm.reset();
-    }
-
     if (this.pacienteForm.invalid) {
       Swal.fire('Atención', 'Completá todos los campos requeridos.', 'warning');
       this.pacienteForm.markAllAsTouched();
@@ -103,15 +86,10 @@ export class RegistrarPacienteComponent {
         Swal.fire('Error', 'No se pudo registrar el paciente.', 'error');
       }
     });
-
   }
 
   onDelete() {
     this.pacienteForm.reset();
-
-    this.mensaje = 'Formulario limpio';
-
     Swal.fire('Formulario limpio', '', 'info');
-
   }
 }
