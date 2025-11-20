@@ -22,11 +22,23 @@ export const routes: Routes = [
   { path: 'registrar', component: RegistrarPacienteComponent },
   { path: 'register', component: RegisterComponent },
 
-  // PACIENTE
+  // ================================
+  //        PACIENTE
+  // ================================
   { path: 'portal-paciente', component: PortalPacienteComponent },
   { path: 'portal-pacientes', component: PortalPacientesDetalleComponent },
 
-  // PRESTADOR
+  // ➕ NUEVO: SOLICITUDES PACIENTE
+  {
+    path: 'solicitudes-paciente',
+    loadComponent: () =>
+      import('./features/pacientes/pages/solicitudes-paciente/solicitudes-paciente.component')
+        .then(c => c.SolicitudesPacienteComponent)
+  },
+
+  // ================================
+  //           PRESTADOR
+  // ================================
   { path: 'portal-prestador', component: PortalPrestadorComponent },
 
   // ➕ RUTAS INTERNAS PRESTADOR
@@ -35,10 +47,14 @@ export const routes: Routes = [
   { path: 'prestador/pagos', loadComponent: () => import('./features/prestadores/pages/pagos-prestador/pagos-prestador.component').then(c => c.PagosPrestadorComponent) },
   { path: 'prestador/configuracion', loadComponent: () => import('./features/prestadores/pages/configuracion-prestador/configuracion-prestador.component').then(c => c.ConfiguracionPrestadorComponent) },
 
-  // TRANSPORTISTA
+  // ================================
+  //         TRANSPORTISTA
+  // ================================
   { path: 'portal-transportista', component: PortalTransportistaComponent },
 
-  // PRESTACIONES
+  // ================================
+  //         PRESTACIONES
+  // ================================
   { path: 'buscar-prestadores', component: ProviderListComponent },
   { path: 'prestadores/:id', component: ServiceRequestComponent },
   { path: 'mis-prestaciones', component: MyServicesComponent },

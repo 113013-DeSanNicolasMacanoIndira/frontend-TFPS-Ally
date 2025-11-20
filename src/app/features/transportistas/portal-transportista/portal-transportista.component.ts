@@ -4,56 +4,67 @@ import { ServiceRequestService } from '../../../services/service-request.service
 import { Router } from '@angular/router';
 import { ServiceRequest } from '../../../models/service-request.model';
 import { AuthService } from '../../../services/auth.service';
+import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-portal-transportista',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass],
+  imports: [CommonModule, NgIf, NgFor, NgClass],
   templateUrl: './portal-transportista.component.html',
-  styleUrls: ['./portal-transportista.component.scss'],
+  styleUrls: ['./portal-transportista.component.scss']
 })
 export class PortalTransportistaComponent implements OnInit {
 
-  solicitudes: ServiceRequest[] = [];
+  solicitudes: any[] = [];
   transportistaId!: number;
   cargando = true;
+  username: string = '';
 
   constructor(
     private srService: ServiceRequestService,
-    private router: Router,
-    private auth: AuthService   // ⬅ agregado
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    const storedId = localStorage.getItem('userId');
 
-    if (!storedId) {
-      this.router.navigate(['/login']);
+    const user = this.authService.getUser();
+
+    if (!user || !user.id) {
+      console.error("⚠ No hay usuario logueado o falta ID");
       return;
     }
 
-    this.transportistaId = Number(storedId);
+    this.transportistaId = user.id;
+    this.username = user.username ?? '';
+
     this.cargarSolicitudes();
   }
 
   cargarSolicitudes() {
     this.cargando = true;
-    this.srService.getByPrestador(this.transportistaId).subscribe(res => {
+
+    this.srService.getSolicitudesPrestador(this.transportistaId).subscribe(res => {
       this.solicitudes = res;
       this.cargando = false;
     });
   }
 
   aceptar(id: number) {
-    this.srService.aceptar(id).subscribe(() => this.cargarSolicitudes());
+    this.srService.aceptar(id).subscribe(() => {
+      Swal.fire("Solicitud aceptada", "", "success");
+      this.cargarSolicitudes();
+    });
   }
 
   rechazar(id: number) {
-    this.srService.rechazar(id).subscribe(() => this.cargarSolicitudes());
+    this.srService.rechazar(id).subscribe(() => {
+      Swal.fire("Solicitud rechazada", "", "success");
+      this.cargarSolicitudes();
+    });
   }
 
-  //  CERRAR SESIÓN
   logout() {
-    this.auth.logout();
+    this.authService.logout();
   }
 }

@@ -40,7 +40,7 @@ export class ServiceRequestComponent implements OnInit {
       descripcion: this.descripcion
     };
 
-    this.serviceRequestService.create(request).subscribe(() => {
+    this.serviceRequestService.crearSolicitud(request).subscribe(() => {
       alert(' Solicitud enviada correctamente');
       this.router.navigate(['/mis-prestaciones']);
     });

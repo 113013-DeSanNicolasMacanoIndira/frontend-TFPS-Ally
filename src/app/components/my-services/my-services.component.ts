@@ -17,12 +17,12 @@ export class MyServicesComponent implements OnInit {
   ngOnInit(): void {
     const pacienteId = Number(localStorage.getItem('userId'));
     this.serviceRequestService
-      .getByPaciente(pacienteId)
+      .getSolicitudesPaciente(pacienteId)
       .subscribe((data) => (this.solicitudes = data));
   }
 
   cancelar(id: number) {
-    this.serviceRequestService.cancelar(id).subscribe(() => {
+    this.serviceRequestService.cancelarSolicitud(id).subscribe(() => {
       this.solicitudes = this.solicitudes.filter(s => s.id !== id);
     });
   }
