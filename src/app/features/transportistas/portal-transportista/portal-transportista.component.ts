@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 import { ServiceRequestService } from '../../../services/service-request.service';
 import { Router } from '@angular/router';
-import { ServiceRequest } from '../../../models/service-request.model';
+
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
