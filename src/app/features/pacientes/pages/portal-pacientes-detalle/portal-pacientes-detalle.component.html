@@ -1,17 +1,51 @@
 <div class="container text-center mt-5">
   <h1 class="display-4 text-primary mb-4">Portal Pacientes</h1>
-  
 
   <div class="d-grid gap-3 col-6 mx-auto mt-5">
-    <button class="btn btn-primary btn-lg" routerLink="/registrar">Ingresar</button>
 
+    <!-- BOTÓN SI NO ESTÁ REGISTRADO -->
+    <button *ngIf="!pacienteRegistrado"
+            class="btn btn-primary btn-lg"
+            (click)="irARegistrar()">
+      Ingresar
+    </button>
 
-    <button class="btn btn-outline-secondary btn-lg">Descargar instructivos</button>
-    <button class="btn btn-outline-info btn-lg">Ver video ejemplo</button>
+    <!-- TEXTO DESHABILITADO SI YA ESTÁ REGISTRADO -->
+    <button *ngIf="pacienteRegistrado"
+            class="btn btn-light btn-lg"
+            disabled>
+      Paciente registrado
+    </button>
+
+    <!-- BOTÓN MODIFICAR DATOS SI YA ESTÁ REGISTRADO -->
+    <button *ngIf="pacienteRegistrado"
+            class="btn btn-outline-info btn-lg"
+            (click)="irAModificar()">
+      Modificar datos paciente
+    </button>
+
+    <!-- OPCIONAL: IR A SOLICITUDES -->
+    <button *ngIf="pacienteRegistrado"
+            class="btn btn-outline-primary btn-lg"
+            (click)="irASolicitudes()">
+      Ir a mis solicitudes
+    </button>
+
+    <!-- DESCARGAR INSTRUCTIVOS (solo si NO está registrado) -->
+    <button *ngIf="!pacienteRegistrado"
+            class="btn btn-outline-secondary btn-lg">
+      Descargar instructivos
+    </button>
+
+    <!-- VIDEO EJEMPLO (solo si NO está registrado) -->
+    <button *ngIf="!pacienteRegistrado"
+            class="btn btn-outline-info btn-lg">
+      Ver video ejemplo
+    </button>
+
   </div>
 
   <div class="alert alert-info mt-5" role="alert">
-    Recordá tener a mano documento antes de ingresar y Tene en cuenta la contraseña anteriormente establecida.
+    Recordá tener a mano documento antes de ingresar y tener en cuenta la contraseña anteriormente establecida.
   </div>
 </div>
-

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';  // 👈 import
+import { environment } from '../../environments/environment'; //  import
 
 export interface Patient {
   id?: number;
@@ -20,12 +20,10 @@ export interface Patient {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PatientService {
-
- private baseUrl = `${environment.apiUrl}/patients`;
-
+  private baseUrl = `${environment.apiUrl}/patients`;
 
   constructor(private http: HttpClient) {}
 
@@ -39,6 +37,10 @@ export class PatientService {
 
   getById(id: number): Observable<Patient> {
     return this.http.get<Patient>(`${this.baseUrl}/${id}`);
+  }
+  //  NUEVO MÉTODO
+  getByUserId(idUsuario: number): Observable<Patient> {
+    return this.http.get<Patient>(`${this.baseUrl}/usuario/${idUsuario}`);
   }
 
   update(id: number, patient: Patient): Observable<Patient> {
