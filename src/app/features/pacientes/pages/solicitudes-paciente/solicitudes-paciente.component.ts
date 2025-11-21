@@ -33,6 +33,11 @@ export class SolicitudesPacienteComponent implements OnInit {
 
   filtroProfesional: string = '';
   cargandoSolicitudes = false;
+  //  ESTA PROPIEDAD FALTABA
+  tieneSolicitudAceptada: boolean = false;
+  tieneSolicitudesAceptadas: boolean = false;
+
+  pacienteId!: number;
 
   constructor(
     private fb: FormBuilder,
@@ -50,21 +55,33 @@ export class SolicitudesPacienteComponent implements OnInit {
     this.username = user.username ?? '';
     this.userId = user.id;
 
+    // 🔥 IMPORTANTE: acá seteamos pacienteId
+    this.pacienteId = user.id;
+
     this.solicitudForm = this.fb.group({
-      tipo: ['PRESTADOR', Validators.required], // PRESTADOR | TRANSPORTISTA
-      idProfesional: [''], // sólo si tipo = PRESTADOR
+      tipo: ['PRESTADOR', Validators.required],
+      idProfesional: [''],
       comentario: [''],
     });
 
-    // Cuando cambia el tipo (Prestador / Transportista) recargamos opciones
     this.solicitudForm.get('tipo')!.valueChanges.subscribe(() => {
       this.cargarProfesionales();
     });
 
-    this.cargarProfesionales(); // arranca en PRESTADOR
+    this.cargarProfesionales();
     this.cargarSolicitudes();
-  }
 
+    // 🔥 Activamos el verificador
+    this.verificarSolicitudes();
+    setInterval(() => this.verificarSolicitudes(), 4000);
+  }
+  verificarSolicitudes() {
+    this.serviceRequest.getSolicitudesPaciente(this.pacienteId).subscribe({
+      next: (sols) => {
+        this.tieneSolicitudesAceptadas = sols.some((s) => s.estado === 'ACEPTADO');
+      },
+    });
+  }
   // ==========================
   // PROFESIONALES
   // ==========================
@@ -105,9 +122,14 @@ export class SolicitudesPacienteComponent implements OnInit {
   // ==========================
   cargarSolicitudes(): void {
     this.cargandoSolicitudes = true;
+
     this.serviceRequest.getSolicitudesPaciente(this.userId).subscribe({
       next: (data) => {
         this.solicitudes = data;
+
+        // 🔥 Detecta si hay alguna solicitud aceptada
+        this.tieneSolicitudAceptada = this.solicitudes.some((s) => s.estado === 'ACEPTADO');
+
         this.cargandoSolicitudes = false;
       },
       error: () => {

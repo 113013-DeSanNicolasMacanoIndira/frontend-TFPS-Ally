@@ -1,86 +1,103 @@
 <div class="layout">
 
-  <!-- SIDEBAR -->
+  <!-- ============ SIDEBAR ============ -->
   <aside class="sidebar">
     <h3 class="sidebar-title">Transportista</h3>
 
     <ul class="menu">
       <li class="menu-item active">
-        <i class="bi bi-map"></i> Zonas asignadas
+        <i class="bi bi-send"></i>
+        Solicitudes recibidas
       </li>
 
       <li class="menu-item">
-        <i class="bi bi-truck"></i> Mis traslados
+        <i class="bi bi-map"></i>
+        Zonas asignadas
       </li>
 
       <li class="menu-item">
-        <i class="bi bi-cash-coin"></i> Pagos pendientes
+        <i class="bi bi-cash-coin"></i>
+        Pagos pendientes
+      </li>
+
+      <li class="menu-item logout" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i>
+        Cerrar sesión
       </li>
     </ul>
-
-    <!-- CERRAR SESIÓN -->
-    <div class="menu-item logout" (click)="logout()">
-      <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-    </div>
   </aside>
 
-
-  <!-- CONTENIDO PRINCIPAL -->
+  <!-- ============ CONTENIDO ============ -->
   <main class="content">
-
-    <div class="prestador-header shadow-sm">
-      <h2 class="titulo">Portal del Transportista</h2>
-      <p class="bienvenida">Estas son tus solicitudes de traslado asignadas.</p>
-    </div>
-
-    <div class="container mt-4">
-
-      <div *ngIf="cargando" class="alert alert-info">
-        Cargando solicitudes...
+    <header class="header">
+      <div>
+        <h2>Portal del Transportista</h2>
+        <p>Hola, <strong>{{ username }}</strong>. Aquí están tus solicitudes de traslado.</p>
       </div>
+    </header>
 
-      <div *ngIf="!cargando && solicitudes.length === 0" class="alert alert-warning">
-        No hay solicitudes asignadas por el momento.
-      </div>
+    <section class="grid">
 
-      <table *ngIf="solicitudes.length > 0" class="table tabla-solicitudes shadow">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Paciente</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
+      <!-- ============ LISTA ============ -->
+      <article class="card card-list">
+        <h3>Solicitudes asignadas</h3>
 
-        <tbody>
-          <tr *ngFor="let s of solicitudes">
-            <td>{{ s.id }}</td>
-            <td>#{{ s.pacienteId }}</td>
+        <div *ngIf="cargando" class="alert alert-info">
+          Cargando solicitudes...
+        </div>
 
-            <td>
-              <span
-                [ngClass]="{
-                  'badge badge-pendiente': s.estado === 'PENDIENTE',
-                  'badge badge-aceptado': s.estado === 'ACEPTADO',
-                  'badge badge-rechazado': s.estado === 'RECHAZADO'
-                }">
-                {{ s.estado }}
-              </span>
-            </td>
+        <div *ngIf="!cargando && solicitudes.length === 0" class="alert alert-empty">
+          No hay solicitudes asignadas por el momento.
+        </div>
 
-            <td>
-              <button class="btn btn-success btn-sm me-2" (click)="aceptar(s.id!)">
-                Aceptar
-              </button>
-              <button class="btn btn-danger btn-sm" (click)="rechazar(s.id!)">
-                Rechazar
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        <div *ngIf="solicitudes.length > 0" class="table-wrapper">
+          <table class="table">
+            <thead>
+              <tr>
+                
+                
+                <th>Paciente</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
 
-    </div>
+            <tbody>
+
+              <tr *ngFor="let s of solicitudes">
+                
+                
+                <td>{{ s.pacienteId }}</td>
+
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'badge-pendiente': s.estado === 'PENDIENTE',
+                      'badge-aceptado': s.estado === 'ACEPTADO',
+                      'badge-rechazado': s.estado === 'RECHAZADO'
+                    }"
+                  >
+                    {{ s.estado }}
+                  </span>
+                </td>
+
+                <td class="actions">
+                  <button class="btn-outline btn-sm success" (click)="aceptar(s.id!)">
+                    Aceptar
+                  </button>
+
+                  <button class="btn-outline btn-sm danger" (click)="rechazar(s.id!)">
+                    Rechazar
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+        </div>
+      </article>
+    </section>
+
   </main>
 </div>

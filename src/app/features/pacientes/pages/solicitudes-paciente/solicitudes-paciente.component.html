@@ -19,10 +19,20 @@
         Solicitudes enviadas
       </li>
 
-      <li class="menu-item disabled">
+      <li class="menu-item" *ngIf="tieneSolicitudAceptada" routerLink="/mis-solicitudes-atencion">
         <i class="bi bi-clipboard-check"></i>
         Mis solicitudes atención
       </li>
+      <li class="menu-item" *ngIf="tieneSolicitudesAceptadas" routerLink="/pago-servicio">
+       <i class="bi bi-cash-coin"></i>
+        Pago de servicio
+       </li>
+
+
+
+
+
+
 
       <li class="menu-item disabled">
         <i class="bi bi-gear"></i>
@@ -123,7 +133,7 @@
           <table class="table">
             <thead>
               <tr>
-                <th>ID</th>
+                
                 <th>Especialidad</th>
                 <th>Estado</th>
                 <th>Fecha</th>
@@ -133,7 +143,7 @@
 
             <tbody>
               <tr *ngFor="let s of solicitudes">
-                <td>#{{ s.id }}</td>
+                
                 <td>{{ s.especialidad }}</td>
 
                 <td>

@@ -74,6 +74,9 @@ export class ServiceRequestService {
   getTransportistasActivos(): Observable<TransporterDTO[]> {
     return this.http.get<TransporterDTO[]>(`${this.transportistasApi}/activos`);
   }
+  getSolicitudesTransportista(): Observable<ServiceDTO[]> {
+    return this.http.get<ServiceDTO[]>(`${this.prestacionesApi}/transportista`);
+  }
 
   // =============================
   // PACIENTE
