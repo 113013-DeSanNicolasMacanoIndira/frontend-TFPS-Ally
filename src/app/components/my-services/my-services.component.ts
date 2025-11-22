@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ServiceRequestService } from '../../services/service-request.service';
-import { ServiceRequest } from '../../models/service-request.model';
+
+import { ServiceDTO } from '../../services/service-request.service';
 
 @Component({
   selector: 'app-my-services',
@@ -10,7 +11,7 @@ import { ServiceRequest } from '../../models/service-request.model';
   templateUrl: './my-services.component.html'
 })
 export class MyServicesComponent implements OnInit {
-  solicitudes: ServiceRequest[] = [];
+  solicitudes: ServiceDTO[] = [];
 
   constructor(private serviceRequestService: ServiceRequestService) {}
 

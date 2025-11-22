@@ -6,7 +6,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { PatientService } from '../../../../services/patient.service';
 
 @Component({
-  selector: 'app-portal-pacientes-detalle',
+  selector: 'portal-pacientes',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './portal-pacientes-detalle.component.html',
@@ -23,14 +23,18 @@ export class PortalPacientesDetalleComponent implements OnInit {
 
   ngOnInit(): void {
     const user = this.authService.getUser();
-    if (!user || !user.id) return; // <-- AQUI VALIDAMOS QUE TENGA ID
+    if (!user || !user.id) return;
 
     this.patientService.getByUserId(user.id).subscribe({
-      next: () => {
+      next: (patient) => {
         this.pacienteRegistrado = true;
+
+        //  GUARDA PACIENTE PARA USAR EN "MODIFICAR"
+        localStorage.setItem('paciente', JSON.stringify(patient));
       },
       error: () => {
         this.pacienteRegistrado = false;
+        localStorage.removeItem('paciente');
       },
     });
   }

@@ -5,47 +5,47 @@
 
     <!-- DNI -->
     <div class="form-group">
-      <label for="dni">DNI:</label>
+      <label for="dni">DNI: <span class="required">*</span></label>
       <input id="dni" type="text" formControlName="dni" placeholder="Ej: 45789123" />
     </div>
 
     <!-- Nombre -->
     <div class="form-group">
-      <label for="nombre">Nombre:</label>
+      <label for="nombre">Nombre: <span class="required">*</span></label>
       <input id="nombre" type="text" formControlName="nombre" placeholder="Ej: Juan" />
     </div>
 
     <!-- Apellido -->
     <div class="form-group">
-      <label for="apellido">Apellido:</label>
+      <label for="apellido">Apellido: <span class="required">*</span></label>
       <input id="apellido" type="text" formControlName="apellido" placeholder="Ej: Pérez" />
     </div>
 
     <!-- Email -->
     <div class="form-group">
-      <label for="email">Email:</label>
+      <label for="email">Email: <span class="required">*</span></label>
       <input id="email" type="email" formControlName="email" placeholder="Ej: juan@mail.com" />
     </div>
 
     <!-- Teléfono -->
     <div class="form-group">
-      <label for="telefono_contacto">Teléfono de contacto:</label>
+      <label for="telefono_contacto">Teléfono de contacto: <span class="required">*</span></label>
       <input id="telefono_contacto" type="text" formControlName="telefono_contacto" placeholder="Ej: 351-5551234" />
     </div>
 
     <!-- Obra social -->
     <div class="form-group">
-      <label for="obra_social">Obra social:</label>
+      <label for="obra_social">Obra social: <span class="required">*</span></label>
       <input id="obra_social" type="text" formControlName="obra_social" placeholder="Ej: OSDE" />
     </div>
 
     <!-- N° Afiliado -->
     <div class="form-group">
-      <label for="nro_afiliado">N° de afiliado:</label>
+      <label for="nro_afiliado">N° de afiliado: <span class="required">*</span></label>
       <input id="nro_afiliado" type="text" formControlName="nro_afiliado" placeholder="Ej: 123456789" />
     </div>
 
-    <!-- Dirección -->
+    <!-- Dirección (opcional) -->
     <div class="form-group">
       <label for="direccion">Dirección:</label>
       <input id="direccion" type="text" formControlName="direccion" placeholder="Ej: Av. Colón 1234" />
@@ -53,11 +53,11 @@
 
     <!-- Fecha nacimiento -->
     <div class="form-group">
-      <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+      <label for="fecha_nacimiento">Fecha de nacimiento: <span class="required">*</span></label>
       <input id="fecha_nacimiento" type="date" formControlName="fecha_nacimiento" />
     </div>
 
-    <!-- Discapacidad -->
+    <!-- Discapacidad (opcional) -->
     <div class="form-group">
       <label for="discapacidad">Tipo de discapacidad:</label>
       <select id="discapacidad" formControlName="discapacidad">

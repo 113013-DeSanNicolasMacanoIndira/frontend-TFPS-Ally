@@ -23,7 +23,7 @@ export interface Patient {
   providedIn: 'root',
 })
 export class PatientService {
-  private baseUrl = `${environment.apiUrl}/patients`;
+  private baseUrl = `${environment.apiUrl}/api/patients`;
 
   constructor(private http: HttpClient) {}
 
@@ -42,6 +42,10 @@ export class PatientService {
   getByUserId(idUsuario: number): Observable<Patient> {
     return this.http.get<Patient>(`${this.baseUrl}/usuario/${idUsuario}`);
   }
+  updatePartial(data: any): Observable<any> {
+  return this.http.patch(`${this.baseUrl}`, data);
+  }
+
 
   update(id: number, patient: Patient): Observable<Patient> {
     return this.http.put<Patient>(`${this.baseUrl}/${id}`, patient);

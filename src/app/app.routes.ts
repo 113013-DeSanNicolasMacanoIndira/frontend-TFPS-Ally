@@ -26,7 +26,8 @@ export const routes: Routes = [
   //        PACIENTE
   // ================================
   { path: 'portal-paciente', component: PortalPacienteComponent },
-  { path: 'portal-pacientes', component: PortalPacientesDetalleComponent },
+  { path: 'portal-pacientes', component: PortalPacientesDetalleComponent },//aqui
+
 
   // ➕ NUEVO: SOLICITUDES PACIENTE
   {
@@ -34,6 +35,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/pacientes/pages/solicitudes-paciente/solicitudes-paciente.component')
         .then(c => c.SolicitudesPacienteComponent)
+  },
+  // ➕ NUEVO: MODIFICAR PACIENTE
+  {
+  path: 'modificar-paciente',
+  loadComponent: () =>
+    import('./features/pacientes/pages/modificar-paciente/modificar-paciente.component')
+      .then(c => c.ModificarPacienteComponent)
   },
 
   // ================================
