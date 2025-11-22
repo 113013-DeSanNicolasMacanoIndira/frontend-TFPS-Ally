@@ -5,8 +5,10 @@ export interface Provider {
   email: string;
   telefono: string;
   direccion: string;
-  codigoEspecialidad: string;
+  codigoEspecialidad?: string;           // Para el combo box
   activo?: boolean;
-  usuarioId?: number;
-  nombreUsuario?: string;
+  fechaRegistro?: Date;
+  idUsuario?: number;
+
+
 }

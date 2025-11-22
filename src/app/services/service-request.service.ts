@@ -41,6 +41,10 @@ export class ServiceRequestService {
     return this.http.get<any[]>(`${this.api}/prestador/${idPrestador}`);
   }
 
+  getSolicitudesConfirmadasPrestador(idPrestador: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.api}/prestador/${idPrestador}/confirmadas`);
+  }
+
   aceptar(id: number): Observable<any> {
     return this.http.put(`${this.api}/${id}/aceptar`, {});
   }
@@ -48,5 +52,26 @@ export class ServiceRequestService {
   rechazar(id: number): Observable<any> {
     return this.http.put(`${this.api}/${id}/rechazar`, {});
   }
-}
 
+  // =============================
+  // PAGOS
+  // =============================
+  getEstadoPago(idSolicitud: number): Observable<any> {
+    return this.http.get<any>(`${this.api}/${idSolicitud}/pago`);
+  }
+
+  actualizarEstadoPago(idSolicitud: number, estadoPago: string): Observable<any> {
+    return this.http.put(`${this.api}/${idSolicitud}/pago`, { estado: estadoPago });
+  }
+
+  // =============================
+  // INFORMACIÓN ADICIONAL
+  // =============================
+  getDetalleSolicitud(id: number): Observable<any> {
+    return this.http.get<any>(`${this.api}/${id}/detalle`);
+  }
+
+  getHistorialSolicitudesPrestador(idPrestador: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.api}/prestador/${idPrestador}/historial`);
+  }
+}

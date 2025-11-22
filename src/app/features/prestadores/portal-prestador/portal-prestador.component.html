@@ -2,35 +2,33 @@
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <h3 class="sidebar-title">Prestador</h3>
+    <h3 class="sidebar-title">Portal Prestador</h3>
 
     <ul class="menu">
-
-      <li class="menu-item active" routerLink="/portal-prestador">
-        <i class="bi bi-inbox"></i> Solicitudes recibidas
+      <!-- Sección 1: Perfil del Prestador -->
+      <li class="menu-item" [class.active]="seccionActiva === 'perfil'" (click)="cambiarSeccion('perfil')">
+        <i class="bi bi-person-gear"></i> Mi Perfil
       </li>
 
-      <li class="menu-item" routerLink="/prestador/disponibilidad">
-        <i class="bi bi-calendar-check"></i> Mi disponibilidad
+      <!-- Sección 2: Solicitudes Recibidas -->
+      <li class="menu-item" [class.active]="seccionActiva === 'solicitudes'" (click)="cargarSolicitudesRecibidas(); cambiarSeccion('solicitudes')">
+        <i class="bi bi-inbox"></i> Solicitudes Recibidas
       </li>
 
-      <li class="menu-item" routerLink="/prestador/turnos">
-        <i class="bi bi-calendar-event"></i> Mis turnos
+      <!-- Sección 3: Solicitudes Confirmadas -->
+      <li class="menu-item" [class.active]="seccionActiva === 'confirmadas'" (click)="cargarSolicitudesConfirmadas(); cambiarSeccion('confirmadas')">
+        <i class="bi bi-check-circle"></i> Solicitudes Confirmadas
       </li>
 
-      <li class="menu-item" routerLink="/prestador/pagos">
-        <i class="bi bi-credit-card"></i> Pagos pendientes
+      <!-- Enlace a Preguntas Frecuentes -->
+      <li class="menu-item" (click)="irAPreguntasFrecuentes()">
+        <i class="bi bi-question-circle"></i> Preguntas Frecuentes
       </li>
 
-      <li class="menu-item" routerLink="/prestador/configuracion">
-        <i class="bi bi-gear"></i> Configuración
-      </li>
-
-      <!--  CERRAR SESIÓN -->
+      <!-- CERRAR SESIÓN -->
       <li class="menu-item logout" (click)="logout()">
         <i class="bi bi-box-arrow-right"></i> Cerrar sesión
       </li>
-
     </ul>
   </aside>
 
@@ -39,61 +37,377 @@
 
     <div class="prestador-header shadow-sm">
       <h2 class="titulo">Portal del Prestador</h2>
-      <p class="bienvenida">Hola, <strong>{{ username }}</strong>. Aquí está tu panel de trabajo.</p>
+      <p class="bienvenida">Hola, <strong>{{ username }}</strong>. Bienvenido a tu portal.</p>
     </div>
 
     <div class="container mt-4">
 
-      <div *ngIf="cargando" class="alert alert-info text-center">
-        Cargando solicitudes...
+      <!-- SECCIÓN 1: PERFIL DEL PRESTADOR -->
+      <div *ngIf="seccionActiva === 'perfil'" class="seccion-perfil">
+
+        <!-- Mensaje de carga -->
+        <div *ngIf="loading" class="alert alert-info text-center">
+          Cargando información del prestador...
+        </div>
+
+        <!-- Prestador no registrado -->
+        <div *ngIf="!loading && esNuevoPrestador" class="card shadow">
+          <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-person-plus"></i> Registro de Prestador</h4>
+          </div>
+          <div class="card-body">
+            <p class="text-muted mb-4">Complete sus datos para registrarse como prestador de servicios.</p>
+
+            <!-- FORMULARIO DE REGISTRO - REACTIVE FORM -->
+            <form [formGroup]="prestadorForm" (ngSubmit)="registrarPrestador()">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Nombre *</label>
+                  <input type="text" class="form-control" formControlName="nombre"
+                         [class.is-invalid]="prestadorForm.get('nombre')?.invalid && prestadorForm.get('nombre')?.touched">
+                  <div *ngIf="prestadorForm.get('nombre')?.invalid && prestadorForm.get('nombre')?.touched"
+                       class="invalid-feedback">
+                    El nombre es requerido
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Apellido *</label>
+                  <input type="text" class="form-control" formControlName="apellido"
+                         [class.is-invalid]="prestadorForm.get('apellido')?.invalid && prestadorForm.get('apellido')?.touched">
+                  <div *ngIf="prestadorForm.get('apellido')?.invalid && prestadorForm.get('apellido')?.touched"
+                       class="invalid-feedback">
+                    El apellido es requerido
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Email *</label>
+                  <input type="email" class="form-control" formControlName="email"
+                         [class.is-invalid]="prestadorForm.get('email')?.invalid && prestadorForm.get('email')?.touched">
+                  <div *ngIf="prestadorForm.get('email')?.invalid && prestadorForm.get('email')?.touched"
+                       class="invalid-feedback">
+                    <span *ngIf="prestadorForm.get('email')?.errors?.['required']">El email es requerido</span>
+                    <span *ngIf="prestadorForm.get('email')?.errors?.['email']">Formato de email inválido</span>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Teléfono *</label>
+                  <input type="tel" class="form-control" formControlName="telefono"
+                         [class.is-invalid]="prestadorForm.get('telefono')?.invalid && prestadorForm.get('telefono')?.touched">
+                  <div *ngIf="prestadorForm.get('telefono')?.invalid && prestadorForm.get('telefono')?.touched"
+                       class="invalid-feedback">
+                    El teléfono es requerido
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Dirección *</label>
+                <input type="text" class="form-control" formControlName="direccion"
+                       [class.is-invalid]="prestadorForm.get('direccion')?.invalid && prestadorForm.get('direccion')?.touched">
+                <div *ngIf="prestadorForm.get('direccion')?.invalid && prestadorForm.get('direccion')?.touched"
+                     class="invalid-feedback">
+                  La dirección es requerida
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Especialidad *</label>
+                <select class="form-select" formControlName="especialidadId"
+                        (change)="onEspecialidadChange()"
+                        [class.is-invalid]="prestadorForm.get('especialidadId')?.invalid && prestadorForm.get('especialidadId')?.touched">
+                  <option value="">Seleccione una especialidad</option>
+                  <option *ngFor="let esp of especialidades" [value]="esp.id">
+                    {{ esp.nombre }}
+                  </option>
+                </select>
+                <div *ngIf="prestadorForm.get('especialidadId')?.invalid && prestadorForm.get('especialidadId')?.touched"
+                     class="invalid-feedback">
+                  La especialidad es requerida
+                </div>
+                <div *ngIf="loadingEspecialidades" class="form-text text-info">
+                  <i class="bi bi-arrow-repeat spinner"></i> Cargando especialidades...
+                </div>
+              </div>
+
+              <!-- Campos adicionales (opcionales) -->
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Matrícula</label>
+                  <input type="text" class="form-control" formControlName="matricula"
+                         placeholder="Opcional">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" formControlName="coberturaObraSocial">
+                    <label class="form-check-label">
+                      Acepta cobertura de obra social
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary"
+                        [disabled]="prestadorForm.invalid || loading || loadingEspecialidades">
+                  <i class="bi bi-person-plus"></i>
+                  {{ loading ? 'Registrando...' : 'Registrar como Prestador' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Prestador registrado -->
+        <div *ngIf="!loading && !esNuevoPrestador && prestador" class="card shadow">
+          <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-person-check"></i> Mi Perfil de Prestador</h4>
+          </div>
+          <div class="card-body">
+
+            <!-- Modo visualización -->
+            <div *ngIf="!modoEdicion" class="perfil-info">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><strong>Nombre:</strong> {{ prestador.nombre }}</p>
+                  <p><strong>Apellido:</strong> {{ prestador.apellido }}</p>
+                  <p><strong>Email:</strong> {{ prestador.email }}</p>
+
+                </div>
+                <div class="col-md-6">
+                  <p><strong>Teléfono:</strong> {{ prestador.telefono }}</p>
+                  <p><strong>Dirección:</strong> {{ prestador.direccion }}</p>
+                  <p><strong>Especialidad:</strong> {{ especialidadNombreMostrar || 'No especificada' }}</p>
+
+                </div>
+              </div>
+              <div class="mt-4">
+                <button class="btn btn-warning me-2" (click)="habilitarEdicion()">
+                  <i class="bi bi-pencil"></i> Modificar Datos
+                </button>
+                <button class="btn btn-outline-danger" (click)="darDeBajaPrestador()">
+                  <i class="bi bi-person-x"></i> Darse de Baja
+                </button>
+              </div>
+            </div>
+
+            <!-- Modo edición - REACTIVE FORM -->
+            <div *ngIf="modoEdicion" class="perfil-edicion">
+              <form [formGroup]="prestadorForm" (ngSubmit)="actualizarPrestador()">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-control" formControlName="nombre"
+                           [class.is-invalid]="prestadorForm.get('nombre')?.invalid && prestadorForm.get('nombre')?.touched">
+                    <div *ngIf="prestadorForm.get('nombre')?.invalid && prestadorForm.get('nombre')?.touched"
+                         class="invalid-feedback">
+                      El nombre es requerido
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Apellido</label>
+                    <input type="text" class="form-control" formControlName="apellido"
+                           [class.is-invalid]="prestadorForm.get('apellido')?.invalid && prestadorForm.get('apellido')?.touched">
+                    <div *ngIf="prestadorForm.get('apellido')?.invalid && prestadorForm.get('apellido')?.touched"
+                         class="invalid-feedback">
+                      El apellido es requerido
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" formControlName="email"
+                           [class.is-invalid]="prestadorForm.get('email')?.invalid && prestadorForm.get('email')?.touched">
+                    <div *ngIf="prestadorForm.get('email')?.invalid && prestadorForm.get('email')?.touched"
+                         class="invalid-feedback">
+                      <span *ngIf="prestadorForm.get('email')?.errors?.['required']">El email es requerido</span>
+                      <span *ngIf="prestadorForm.get('email')?.errors?.['email']">Formato de email inválido</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Teléfono</label>
+                    <input type="tel" class="form-control" formControlName="telefono"
+                           [class.is-invalid]="prestadorForm.get('telefono')?.invalid && prestadorForm.get('telefono')?.touched">
+                    <div *ngIf="prestadorForm.get('telefono')?.invalid && prestadorForm.get('telefono')?.touched"
+                         class="invalid-feedback">
+                      El teléfono es requerido
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Dirección</label>
+                  <input type="text" class="form-control" formControlName="direccion"
+                         [class.is-invalid]="prestadorForm.get('direccion')?.invalid && prestadorForm.get('direccion')?.touched">
+                  <div *ngIf="prestadorForm.get('direccion')?.invalid && prestadorForm.get('direccion')?.touched"
+                       class="invalid-feedback">
+                    La dirección es requerida
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Especialidad</label>
+                  <select class="form-select" formControlName="especialidadId"
+                          (change)="onEspecialidadChange()"
+                          [class.is-invalid]="prestadorForm.get('especialidadId')?.invalid && prestadorForm.get('especialidadId')?.touched">
+                    <option value="">Seleccione una especialidad</option>
+                    <option *ngFor="let esp of especialidades" [value]="esp.id">
+                      {{ esp.nombre }}
+                    </option>
+                  </select>
+                  <div *ngIf="prestadorForm.get('especialidadId')?.invalid && prestadorForm.get('especialidadId')?.touched"
+                       class="invalid-feedback">
+                    La especialidad es requerida
+                  </div>
+                  <div *ngIf="loadingEspecialidades" class="form-text text-info">
+                    <i class="bi bi-arrow-repeat spinner"></i> Cargando especialidades...
+                  </div>
+                </div>
+
+                <!-- Campos adicionales en edición -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Matrícula</label>
+                    <input type="text" class="form-control" formControlName="matricula"
+                           placeholder="Opcional">
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <div class="form-check mt-4">
+                      <input class="form-check-input" type="checkbox" formControlName="coberturaObraSocial">
+                      <label class="form-check-label">
+                        Acepta cobertura de obra social
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                  <button type="submit" class="btn btn-success"
+                          [disabled]="prestadorForm.invalid || loading || loadingEspecialidades">
+                    <i class="bi bi-check-lg"></i> {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
+                  </button>
+                  <button type="button" class="btn btn-secondary" (click)="cancelarEdicion()">
+                    <i class="bi bi-x-lg"></i> Cancelar
+                  </button>
+                </div>
+              </form>
+            </div>
+
+          </div>
+        </div>
+
       </div>
 
-      <div *ngIf="!cargando && solicitudes.length === 0" class="alert alert-warning text-center">
-        No tienes solicitudes por el momento.
-      </div>
+      <!-- SECCIÓN 2: SOLICITUDES RECIBIDAS -->
+      <div *ngIf="seccionActiva === 'solicitudes'" class="seccion-solicitudes">
 
-      <!-- TABLA DE SOLICITUDES -->
-      <div class="table-wrapper shadow" *ngIf="solicitudes.length > 0">
-        <table class="table table-hover table-bordered tabla-solicitudes">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4><i class="bi bi-inbox"></i> Solicitudes Recibidas</h4>
+          <span class="badge bg-primary">{{ solicitudesRecibidas.length }} solicitudes</span>
+        </div>
 
-          <thead>
+        <div *ngIf="loading" class="alert alert-info text-center">
+          Cargando solicitudes...
+        </div>
+
+        <div *ngIf="!loading && solicitudesRecibidas.length === 0" class="alert alert-warning text-center">
+          No tienes solicitudes pendientes por el momento.
+        </div>
+
+        <!-- TABLA DE SOLICITUDES RECIBIDAS -->
+        <div class="table-wrapper shadow" *ngIf="solicitudesRecibidas.length > 0">
+          <table class="table table-hover table-bordered tabla-solicitudes">
+            <thead>
             <tr>
-              <th>ID</th>
               <th>Paciente</th>
+              <th>Servicio Solicitado</th>
+              <th>Fecha</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
-          </thead>
-
-          <tbody>
-            <tr *ngFor="let s of solicitudes">
-              <td>{{ s.id }}</td>
-              <td>#{{ s.pacienteId }}</td>
-
+            </thead>
+            <tbody>
+            <tr *ngFor="let s of solicitudesRecibidas">
+              <td>{{ s.pacienteNombre || 'Paciente #' + s.pacienteId }}</td>
+              <td>{{ s.tipoServicio || 'Servicio médico' }}</td>
+              <td>{{ s.fechaSolicitud | date:'dd/MM/yyyy' }}</td>
               <td>
-                <span
-                  [ngClass]="{
-                    'badge badge-pendiente': s.estado === 'PENDIENTE',
-                    'badge badge-aceptado': s.estado === 'ACEPTADO',
-                    'badge badge-rechazado': s.estado === 'RECHAZADO'
-                  }"
-                >
-                  {{ s.estado }}
-                </span>
+                  <span class="badge badge-pendiente">
+                    {{ s.estado }}
+                  </span>
               </td>
-
               <td>
-                <button class="btn btn-success btn-sm me-2" (click)="aceptar(s.id!)">
-                  Aceptar
+                <button class="btn btn-success btn-sm me-2" (click)="aceptarSolicitud(s.id!)">
+                  <i class="bi bi-check-lg"></i> Aceptar
                 </button>
-                <button class="btn btn-danger btn-sm" (click)="rechazar(s.id!)">
-                  Rechazar
+                <button class="btn btn-danger btn-sm" (click)="rechazarSolicitud(s.id!)">
+                  <i class="bi bi-x-lg"></i> Rechazar
                 </button>
               </td>
             </tr>
-          </tbody>
+            </tbody>
+          </table>
+        </div>
 
-        </table>
+      </div>
+
+      <!-- SECCIÓN 3: SOLICITUDES CONFIRMADAS -->
+      <div *ngIf="seccionActiva === 'confirmadas'" class="seccion-confirmadas">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4><i class="bi bi-check-circle"></i> Solicitudes Confirmadas</h4>
+          <span class="badge bg-success">{{ solicitudesConfirmadas.length }} confirmadas</span>
+        </div>
+
+        <div *ngIf="loading" class="alert alert-info text-center">
+          Cargando solicitudes confirmadas...
+        </div>
+
+        <div *ngIf="!loading && solicitudesConfirmadas.length === 0" class="alert alert-warning text-center">
+          No tienes solicitudes confirmadas por el momento.
+        </div>
+
+        <!-- TABLA DE SOLICITUDES CONFIRMADAS -->
+        <div class="table-wrapper shadow" *ngIf="solicitudesConfirmadas.length > 0">
+          <table class="table table-hover table-bordered tabla-solicitudes">
+            <thead>
+            <tr>
+              <th>Paciente</th>
+              <th>Servicio</th>
+              <th>Fecha Confirmación</th>
+              <th>Estado Pago</th>
+              <th>Forma de Pago</th>
+              <th>Monto</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let s of solicitudesConfirmadas">
+              <td>{{ s.pacienteNombre || 'Paciente #' + s.pacienteId }}</td>
+              <td>{{ s.tipoServicio || 'Servicio médico' }}</td>
+              <td>{{ s.fechaConfirmacion | date:'dd/MM/yyyy' }}</td>
+              <td>
+                  <span [ngClass]="{
+                    'badge badge-pendiente': s.estadoPago === 'PENDIENTE',
+                    'badge badge-aceptado': s.estadoPago === 'PAGADO'
+                  }">
+                    {{ s.estadoPago || 'PENDIENTE' }}
+                  </span>
+              </td>
+              <td>
+                <span class="text-muted">{{ s.formaPago || 'No especificado' }}</span>
+              </td>
+              <td>
+                <strong>{{ s.monto || '0' | currency }}</strong>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
 
     </div>

@@ -36,7 +36,7 @@ export class ServiceRequestComponent implements OnInit {
     const request: ServiceRequest = {
       pacienteId,
       prestadorId: this.provider.id!,
-      especialidad: this.provider.codigoEspecialidad,
+      especialidad: this.provider.codigoEspecialidad!.toString(),
       descripcion: this.descripcion
     };
 
