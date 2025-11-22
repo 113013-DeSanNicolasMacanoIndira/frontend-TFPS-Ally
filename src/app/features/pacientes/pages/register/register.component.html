@@ -3,62 +3,118 @@
     <h3 class="text-center mb-4">Formulario de Registro</h3>
 
     <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+
+      <!-- EMAIL -->
       <div class="mb-3">
-        <label class="form-label">Correo Electrónico</label>
-        <input type="email" class="form-control" [(ngModel)]="email" name="email" required />
+        <label class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
+        <input 
+          type="email" 
+          class="form-control" 
+          [(ngModel)]="email" 
+          name="email" 
+          required 
+          email
+          #emailModel="ngModel" 
+        />
+
+        <small class="text-danger" *ngIf="emailModel.invalid && emailModel.touched">
+          Ingresá un correo válido.
+        </small>
       </div>
 
+      <!-- REPETIR EMAIL -->
       <div class="mb-3">
-        <label class="form-label">Repetir Correo Electrónico</label>
+        <label class="form-label">Repetir Correo Electrónico <span class="text-danger">*</span></label>
         <input
           type="email"
           class="form-control"
           [(ngModel)]="repeatEmail"
           name="repeatEmail"
           required
+          email
+          #repeatEmailModel="ngModel"
         />
+
+        <small class="text-danger" *ngIf="repeatEmailModel.invalid && repeatEmailModel.touched">
+          Repetí el correo correctamente.
+        </small>
+
+        <small class="text-danger" *ngIf="repeatEmail && repeatEmail !== email">
+          Los correos no coinciden.
+        </small>
       </div>
 
+      <!-- PASSWORD -->
       <div class="mb-3">
-        <label class="form-label">Contraseña</label>
+        <label class="form-label">Contraseña <span class="text-danger">*</span></label>
         <input
           type="password"
           class="form-control"
           [(ngModel)]="password"
           name="password"
           required
+          minlength="4"
+          #passwordModel="ngModel"
         />
+
+        <small class="text-danger" *ngIf="passwordModel.invalid && passwordModel.touched">
+          La contraseña debe tener al menos 4 caracteres.
+        </small>
       </div>
 
+      <!-- REPETIR PASSWORD -->
       <div class="mb-3">
-        <label class="form-label">Repetir Contraseña</label>
+        <label class="form-label">Repetir Contraseña <span class="text-danger">*</span></label>
         <input
           type="password"
           class="form-control"
           [(ngModel)]="repeatPassword"
           name="repeatPassword"
           required
+          minlength="4"
+          #repeatPasswordModel="ngModel"
         />
+
+        <small class="text-danger" *ngIf="repeatPasswordModel.invalid && repeatPasswordModel.touched">
+          Repetí la contraseña correctamente.
+        </small>
+
+        <small class="text-danger" *ngIf="repeatPassword && repeatPassword !== password">
+          Las contraseñas no coinciden.
+        </small>
       </div>
+
+      <!-- ROLE -->
       <div class="mb-3">
-        <label class="form-label">Tipo de usuario</label>
-        <select class="form-control" [(ngModel)]="role" name="role" required>
+        <label class="form-label">Tipo de usuario <span class="text-danger">*</span></label>
+        <select 
+          class="form-control" 
+          [(ngModel)]="role" 
+          name="role" 
+          required
+          #roleModel="ngModel"
+        >
+          <option value="" disabled selected>Seleccione una opción</option>
           <option value="PACIENTE">Paciente</option>
           <option value="PRESTADOR">Prestador</option>
           <option value="TRANSPORTISTA">Transportista</option>
           <option value="ADMIN">Administrador</option>
         </select>
+
+        <small class="text-danger" *ngIf="roleModel.invalid && roleModel.touched">
+          Seleccioná un tipo de usuario.
+        </small>
       </div>
 
-      <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-      <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
-
-      <button type="submit" class="btn btn-primary w-100 mt-2" [disabled]="successMessage">
+      <button type="submit" class="btn btn-primary w-100 mt-2" 
+        [disabled]="registerForm.invalid">
         Registrarse
       </button>
-      <a routerLink="/login" class="d-block text-center mt-3 text-decoration-none"
-        >¿Ya tenés cuenta? Iniciar sesión</a
-      >
+
+      <a routerLink="/login" class="d-block text-center mt-3 text-decoration-none">
+        ¿Ya tenés cuenta? Iniciar sesión
+      </a>
+
     </form>
   </div>
 </div>
