@@ -100,45 +100,11 @@ export class ServiceRequestService {
     return this.http.get<ServiceDTO[]>(`${this.prestacionesApi}/prestador/${idPrestador}`);
   }
 
-
-  getSolicitudesConfirmadasPrestador(idPrestador: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.api}/prestador/${idPrestador}/confirmadas`);
-  }
-
-  aceptar(id: number): Observable<any> {
-    return this.http.put(`${this.api}/${id}/aceptar`, {});
-
   aceptar(id: number): Observable<ServiceDTO> {
     return this.http.put<ServiceDTO>(`${this.prestacionesApi}/${id}/aceptar`, {});
-
   }
 
   rechazar(id: number): Observable<ServiceDTO> {
     return this.http.put<ServiceDTO>(`${this.prestacionesApi}/${id}/rechazar`, {});
   }
-
-
-  // =============================
-  // PAGOS
-  // =============================
-  getEstadoPago(idSolicitud: number): Observable<any> {
-    return this.http.get<any>(`${this.api}/${idSolicitud}/pago`);
-  }
-
-  actualizarEstadoPago(idSolicitud: number, estadoPago: string): Observable<any> {
-    return this.http.put(`${this.api}/${idSolicitud}/pago`, { estado: estadoPago });
-  }
-
-  // =============================
-  // INFORMACIÓN ADICIONAL
-  // =============================
-  getDetalleSolicitud(id: number): Observable<any> {
-    return this.http.get<any>(`${this.api}/${id}/detalle`);
-  }
-
-  getHistorialSolicitudesPrestador(idPrestador: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.api}/prestador/${idPrestador}/historial`);
-  }
-
-
 }
