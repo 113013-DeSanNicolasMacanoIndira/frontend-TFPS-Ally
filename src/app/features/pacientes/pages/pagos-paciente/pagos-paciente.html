@@ -1,0 +1,292 @@
+<div class="layout">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <h3 class="sidebar-title">Paciente</h3>
+
+    <ul class="menu">
+      <li class="menu-item" routerLink="/mis-solicitudes">
+        <i class="bi bi-send"></i>
+        Mis Solicitudes
+      </li>
+
+      <li class="menu-item" routerLink="/portal-paciente">
+        <i class="bi bi-house"></i>
+        Inicio
+      </li>
+
+      <li class="menu-item active">
+        <i class="bi bi-cash-coin"></i>
+        Pagos de Servicios
+      </li>
+
+      <li class="menu-item logout" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i>
+        Cerrar sesión
+      </li>
+    </ul>
+  </aside>
+
+  <!-- ============ CONTENIDO ============ -->
+  <main class="content">
+    <header class="header">
+      <div>
+        <h2>Pagos de Servicios</h2>
+        <p>
+          Hola, <strong>{{ username }}</strong>. Aquí podés gestionar los pagos de tus servicios aceptados.
+        </p>
+      </div>
+    </header>
+
+    <section class="pagos-container">
+
+      <!-- ============ LISTA DE SOLICITUDES ACEPTADAS ============ -->
+      <article class="card solicitudes-card" *ngIf="!solicitudSeleccionada">
+        <div class="card-header">
+          <h3>Servicios Aceptados Pendientes de Pago</h3>
+          <span class="badge badge-primary">{{ solicitudesAceptadas.length }} servicios</span>
+        </div>
+
+        <div *ngIf="cargando" class="alert alert-info text-center">
+          <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+          Cargando servicios aceptados...
+        </div>
+
+        <div *ngIf="!cargando && solicitudesAceptadas.length === 0" class="alert alert-empty">
+          <i class="bi bi-check-circle-fill text-success mb-3" style="font-size: 3rem;"></i>
+          <h4>¡No tenés pagos pendientes!</h4>
+          <p>Todos tus servicios aceptados ya han sido pagados.</p>
+          <button class="btn btn-outline-primary" routerLink="/mis-solicitudes">
+            Ver mis solicitudes
+          </button>
+        </div>
+
+        <div *ngIf="solicitudesAceptadas.length > 0" class="solicitudes-list">
+          <div *ngFor="let solicitud of solicitudesAceptadas"
+               class="solicitud-item"
+               [class.selected]="solicitudSeleccionada?.id === solicitud.id">
+
+            <div class="solicitud-info">
+              <div class="solicitud-header">
+                <h4>{{ solicitud.especialidad || 'Servicio de Salud' }}</h4>
+                <span class="badge" [ngClass]="getBadgeClass(solicitud.estado)">
+                  {{ solicitud.estado }}
+                </span>
+              </div>
+
+              <p class="solicitud-descripcion">{{ solicitud.descripcion || 'Sin descripción adicional' }}</p>
+
+              <div class="solicitud-details">
+                <span class="prestador">
+                  <i class="bi bi-person-badge"></i>
+                  {{ solicitud.prestadorNombre || 'Prestador asignado' }}
+                </span>
+                <span class="fecha">
+                  <i class="bi bi-calendar-event"></i>
+                  {{ solicitud.fechaSolicitud | date:'dd/MM/yyyy' }}
+                </span>
+                <span class="monto">
+                  <i class="bi bi-currency-dollar"></i>
+                  ${{ solicitud.monto || calcularMontoDefault() }}
+                </span>
+              </div>
+            </div>
+
+            <div class="solicitud-actions">
+              <button class="btn btn-primary" (click)="seleccionarSolicitud(solicitud)">
+                <i class="bi bi-credit-card me-1"></i>
+                Pagar Servicio
+              </button>
+              <small class="text-muted d-block mt-1">Servicio aceptado</small>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- ============ FORMULARIO DE PAGO ============ -->
+      <article class="card pago-card" *ngIf="solicitudSeleccionada">
+        <div class="pago-header">
+          <h3>Procesar Pago</h3>
+          <button class="btn btn-outline-secondary btn-sm" (click)="solicitudSeleccionada = null">
+            <i class="bi bi-arrow-left me-1"></i> Volver a la lista
+          </button>
+        </div>
+
+        <!-- Resumen de la solicitud -->
+        <div class="solicitud-resumen">
+          <h4>
+            <i class="bi bi-clipboard-check me-2"></i>
+            Resumen del Servicio a Pagar
+          </h4>
+          <div class="resumen-details">
+            <div class="detail-row">
+              <span class="detail-label">Especialidad:</span>
+              <span class="detail-value">{{ solicitudSeleccionada.especialidad }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Prestador:</span>
+              <span class="detail-value">{{ solicitudSeleccionada.prestadorNombre }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Descripción:</span>
+              <span class="detail-value">{{ solicitudSeleccionada.descripcion }}</span>
+            </div>
+            <div class="detail-row highlight">
+              <span class="detail-label">Monto a Pagar:</span>
+              <span class="detail-value precio">${{ solicitudSeleccionada.monto || calcularMontoDefault() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <form [formGroup]="pagoForm" (ngSubmit)="procesarPago()">
+
+          <!-- Método de Pago -->
+          <div class="form-section">
+            <h4>
+              <i class="bi bi-credit-card me-2"></i>
+              Seleccionar Método de Pago
+            </h4>
+            <p class="text-muted">Elegí cómo deseas realizar el pago del servicio</p>
+
+            <div class="metodos-pago">
+              <div *ngFor="let metodo of metodosPago"
+                   class="metodo-pago-option"
+                   [class.selected]="metodoPagoSeleccionado === metodo.value"
+                   (click)="onMetodoPagoChange(metodo.value)">
+                <div class="metodo-icon">
+                  <i class="bi {{ metodo.icon }}"></i>
+                </div>
+                <div class="metodo-info">
+                  <h5>{{ metodo.label }}</h5>
+                  <p>{{ metodo.descripcion }}</p>
+                </div>
+                <div class="metodo-check">
+                  <i class="bi bi-check-circle-fill"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Datos para Transferencia -->
+          <div class="form-section" *ngIf="mostrarDatosTransferencia">
+            <h4>
+              <i class="bi bi-bank me-2"></i>
+              Datos para Transferencia Bancaria
+            </h4>
+            <div formGroupName="datosTransferencia">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label">Número de Cuenta</label>
+                    <input type="text" formControlName="numeroCuenta" class="form-control"
+                           placeholder="Ej: 123-456789/1">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label">Nombre del Titular</label>
+                    <input type="text" formControlName="nombreTitular" class="form-control"
+                           placeholder="Nombre como aparece en la cuenta">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">CBU/CVU</label>
+                <input type="text" formControlName="cbu" class="form-control"
+                       placeholder="22 dígitos del CBU o CVU">
+                <small class="form-text text-muted">
+                  Una vez realizada la transferencia, enviá el comprobante a través de la plataforma.
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Datos para Obra Social -->
+          <div class="form-section" *ngIf="mostrarDatosObraSocial">
+            <h4>
+              <i class="bi bi-heart-pulse me-2"></i>
+              Datos de Obra Social
+            </h4>
+            <div formGroupName="datosObraSocial">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label">Número de Afiliado *</label>
+                    <input type="text" formControlName="numeroAfiliado" class="form-control"
+                           [class.is-invalid]="pagoForm.get('datosObraSocial.numeroAfiliado')?.invalid && pagoForm.get('datosObraSocial.numeroAfiliado')?.touched">
+                    <div *ngIf="pagoForm.get('datosObraSocial.numeroAfiliado')?.invalid && pagoForm.get('datosObraSocial.numeroAfiliado')?.touched"
+                         class="invalid-feedback">
+                      El número de afiliado es requerido
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label">Plan *</label>
+                    <input type="text" formControlName="plan" class="form-control"
+                           [class.is-invalid]="pagoForm.get('datosObraSocial.plan')?.invalid && pagoForm.get('datosObraSocial.plan')?.touched">
+                    <div *ngIf="pagoForm.get('datosObraSocial.plan')?.invalid && pagoForm.get('datosObraSocial.plan')?.touched"
+                         class="invalid-feedback">
+                      El plan es requerido
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Teléfono de Contacto *</label>
+                <input type="tel" formControlName="telefono" class="form-control"
+                       [class.is-invalid]="pagoForm.get('datosObraSocial.telefono')?.invalid && pagoForm.get('datosObraSocial.telefono')?.touched">
+                <div *ngIf="pagoForm.get('datosObraSocial.telefono')?.invalid && pagoForm.get('datosObraSocial.telefono')?.touched"
+                     class="invalid-feedback">
+                  El teléfono es requerido
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Información de Pago en Efectivo -->
+          <div class="form-section" *ngIf="metodoPagoSeleccionado === 'EFECTIVO'">
+            <div class="alert alert-info">
+              <h5><i class="bi bi-info-circle me-2"></i>Pago en Efectivo</h5>
+              <p class="mb-0">El pago se realizará al momento de recibir el servicio. El prestador te proporcionará un comprobante de pago.</p>
+            </div>
+          </div>
+
+          <!-- Confirmación -->
+          <div class="form-section">
+            <div class="form-check confirmation-check">
+              <input type="checkbox" formControlName="confirmacion" class="form-check-input" id="confirmacion"
+                     [class.is-invalid]="pagoForm.get('confirmacion')?.invalid && pagoForm.get('confirmacion')?.touched">
+              <label class="form-check-label" for="confirmacion">
+                Confirmo que los datos ingresados son correctos y autorizo el procesamiento del pago por el monto de
+                <strong>${{ solicitudSeleccionada.monto || calcularMontoDefault() }}</strong>.
+              </label>
+              <div *ngIf="pagoForm.get('confirmacion')?.invalid && pagoForm.get('confirmacion')?.touched"
+                   class="invalid-feedback">
+                Debes confirmar para proceder con el pago
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de acción -->
+          <div class="form-actions">
+            <button type="submit"
+                    class="btn btn-success btn-lg"
+                    [disabled]="pagoForm.invalid || procesandoPago">
+              <span *ngIf="procesandoPago" class="spinner-border spinner-border-sm me-2"></span>
+              <i class="bi bi-check-circle me-2" *ngIf="!procesandoPago"></i>
+              {{ procesandoPago ? 'Procesando Pago...' : 'Confirmar y Procesar Pago' }}
+            </button>
+
+            <button type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="solicitudSeleccionada = null">
+              <i class="bi bi-x-circle me-1"></i>
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </article>
+
+    </section>
+  </main>
+</div>

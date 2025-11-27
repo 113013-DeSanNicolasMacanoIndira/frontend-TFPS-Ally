@@ -23,9 +23,9 @@
         <i class="bi bi-clipboard-check"></i>
         Mis solicitudes atención
       </li>
-      <li class="menu-item" *ngIf="tieneSolicitudesAceptadas" routerLink="/pago-servicio">
+      <li class="menu-item" *ngIf="tieneSolicitudesAceptadas" routerLink="/pagos-paciente">
        <i class="bi bi-cash-coin"></i>
-        Pago de servicio
+        Pagos de servicios
        </li>
 
 
@@ -133,7 +133,7 @@
           <table class="table">
             <thead>
               <tr>
-                
+
                 <th>Especialidad</th>
                 <th>Estado</th>
                 <th>Fecha</th>
@@ -143,7 +143,7 @@
 
             <tbody>
               <tr *ngFor="let s of solicitudes">
-                
+
                 <td>{{ s.especialidad }}</td>
 
                 <td>
