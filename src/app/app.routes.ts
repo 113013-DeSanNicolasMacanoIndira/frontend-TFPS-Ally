@@ -6,7 +6,7 @@ import { PortalPacienteComponent } from './features/pacientes/pages/portal-pacie
 import { PortalPacientesDetalleComponent } from './features/pacientes/pages/portal-pacientes-detalle/portal-pacientes-detalle.component';
 import { RegistrarPacienteComponent } from './features/pacientes/pages/registrar-paciente/registrar-paciente.component';
 import { RegisterComponent } from './features/pacientes/pages/register/register.component';
-import { PagosPacienteComponent} from './features/pacientes/pages/pagos-paciente/pagos-paciente';
+import { PagosPacienteComponent } from './features/pacientes/pages/pagos-paciente/pagos-paciente.component';
 // PRESTADOR + TRANSPORTISTA
 import { PortalPrestadorComponent } from './features/prestadores/portal-prestador/portal-prestador.component';
 import { PortalTransportistaComponent } from './features/transportistas/portal-transportista/portal-transportista.component';

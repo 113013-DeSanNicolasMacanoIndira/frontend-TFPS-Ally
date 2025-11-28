@@ -1,0 +1,277 @@
+/* Estilos básicos para el componente de pagos */
+.layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 250px;
+  background: #0d6efd;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+  color: white;
+  text-decoration: none;
+}
+
+.menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.menu-item.active {
+  background-color: rgba(255, 255, 255, 0.35);
+  font-weight: 600;
+}
+
+.menu-item.logout {
+  margin-top: 30px;
+  color: #ffdddd;
+}
+
+.menu-item.logout:hover {
+  background: rgba(255, 0, 0, 0.15);
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 25px;
+  background: #f5f7fa;
+}
+
+.header {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 6px solid #0d6efd;
+  margin-bottom: 2rem;
+}
+
+.header h2 {
+  font-size: 1.7rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Cards */
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.solicitudes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.solicitud-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  background: #fafbfc;
+}
+
+.solicitud-item:hover {
+  border-color: #0d6efd;
+  background: white;
+}
+
+.solicitud-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.solicitud-header h4 {
+  margin: 0;
+  color: #2c3e50;
+}
+
+.solicitud-details {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.solicitud-details span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Badges */
+.badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.badge-aceptado {
+  background-color: #198754;
+  color: white;
+}
+
+.badge-pendiente {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.badge-rechazado {
+  background-color: #dc3545;
+  color: white;
+}
+
+.badge-completado {
+  background-color: #6c757d;
+  color: white;
+}
+
+/* Métodos de pago */
+.metodos-pago {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.metodo-pago-option {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: white;
+  gap: 1rem;
+}
+
+.metodo-pago-option:hover {
+  border-color: #0d6efd;
+}
+
+.metodo-pago-option.selected {
+  border-color: #0d6efd;
+  background: #e7f1ff;
+}
+
+.metodo-icon {
+  font-size: 2rem;
+  color: #0d6efd;
+  min-width: 50px;
+  text-align: center;
+}
+
+.metodo-info {
+  flex: 1;
+}
+
+.metodo-info h5 {
+  margin: 0 0 0.25rem 0;
+  color: #2c3e50;
+}
+
+.metodo-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Formularios */
+.form-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.form-section h4 {
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+/* Estados */
+.alert {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.alert-info {
+  background-color: #d1edff;
+  color: #0c5460;
+  border: 1px solid #b8daff;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .solicitud-item {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .metodos-pago {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+}

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router'; // ← AGREGAR ESTA IMPORTACIÓN
 import Swal from 'sweetalert2';
 
 import { ServiceRequestService } from '../../../../services/service-request.service';
@@ -18,7 +19,7 @@ interface ProfesionalOpcion {
 @Component({
   selector: 'app-solicitudes-paciente',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule], // ← AGREGAR RouterModule
   templateUrl: './solicitudes-paciente.component.html',
   styleUrls: ['./solicitudes-paciente.component.scss'],
 })
@@ -33,7 +34,6 @@ export class SolicitudesPacienteComponent implements OnInit {
 
   filtroProfesional: string = '';
   cargandoSolicitudes = false;
-  //  ESTA PROPIEDAD FALTABA
   tieneSolicitudAceptada: boolean = false;
   tieneSolicitudesAceptadas: boolean = false;
 
@@ -75,6 +75,7 @@ export class SolicitudesPacienteComponent implements OnInit {
     this.verificarSolicitudes();
     setInterval(() => this.verificarSolicitudes(), 4000);
   }
+
   verificarSolicitudes() {
     this.serviceRequest.getSolicitudesPaciente(this.pacienteId).subscribe({
       next: (sols) => {
@@ -82,6 +83,7 @@ export class SolicitudesPacienteComponent implements OnInit {
       },
     });
   }
+
   // ==========================
   // PROFESIONALES
   // ==========================
@@ -137,6 +139,11 @@ export class SolicitudesPacienteComponent implements OnInit {
         Swal.fire('Error', 'No se pudieron cargar tus solicitudes.', 'error');
       },
     });
+  }
+
+  // 🔥 AGREGAR ESTE MÉTODO NUEVO
+  contarSolicitudesAceptadas(): number {
+    return this.solicitudes.filter(s => s.estado === 'ACEPTADO').length;
   }
 
   enviarSolicitud(): void {

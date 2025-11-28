@@ -255,3 +255,54 @@ textarea.form-control {
 .w-100 {
   width: 100%;
 }
+/* Estilos para la sección de pagos */
+.pagos-banner .alert {
+  border-left: 4px solid #198754;
+  margin-top: 1rem;
+}
+
+.pagos-section {
+  border-left: 4px solid #198754;
+}
+
+/* Spinner para carga */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Mejoras para la tabla */
+.table-wrapper {
+  position: relative;
+}
+
+.card-header {
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Estados de las solicitudes */
+.badge-aceptado {
+  background-color: #198754;
+  color: white;
+}
+
+.badge-pendiente {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.badge-rechazado {
+  background-color: #dc3545;
+  color: white;
+}
+
+.badge-cancelado {
+  background-color: #6c757d;
+  color: white;
+}

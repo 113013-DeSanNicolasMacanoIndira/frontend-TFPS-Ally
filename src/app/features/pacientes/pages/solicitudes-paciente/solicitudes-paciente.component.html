@@ -19,20 +19,17 @@
         Solicitudes enviadas
       </li>
 
-      <li class="menu-item" *ngIf="tieneSolicitudAceptada" routerLink="/mis-solicitudes-atencion">
+      <!-- CORREGIDO: Cambiar tieneSolicitudAceptada por tieneSolicitudesAceptadas -->
+      <li class="menu-item" *ngIf="tieneSolicitudesAceptadas" routerLink="/mis-solicitudes-atencion">
         <i class="bi bi-clipboard-check"></i>
         Mis solicitudes atención
       </li>
+
+      <!-- BOTÓN PAGOS EN SIDEBAR -->
       <li class="menu-item" *ngIf="tieneSolicitudesAceptadas" routerLink="/pagos-paciente">
-       <i class="bi bi-cash-coin"></i>
+        <i class="bi bi-cash-coin"></i>
         Pagos de servicios
-       </li>
-
-
-
-
-
-
+      </li>
 
       <li class="menu-item disabled">
         <i class="bi bi-gear"></i>
@@ -53,8 +50,22 @@
         <h2>Mis Solicitudes</h2>
         <p>
           Hola, <strong>{{ username }}</strong
-          >. Aquí podés gestionar tus solicitudes.
+        >. Aquí podés gestionar tus solicitudes.
         </p>
+
+        <!-- BOTÓN PAGOS EN HEADER - SOLO SI HAY SOLICITUDES ACEPTADAS -->
+        <div *ngIf="tieneSolicitudesAceptadas" class="pagos-banner">
+          <div class="alert alert-success d-flex justify-content-between align-items-center">
+            <div>
+              <i class="bi bi-credit-card me-2"></i>
+              <strong>Tienes solicitudes aceptadas pendientes de pago</strong>
+            </div>
+            <button class="btn btn-success" routerLink="/pagos-paciente">
+              <i class="bi bi-cash-coin me-1"></i>
+              Ir a Pagos
+            </button>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -80,7 +91,7 @@
           </div>
 
           <!-- Buscador + select solo si PRESTADOR -->
-          <ng-container *ngIf="solicitudForm.value.tipo === 'PRESTADOR'">
+          <ng-container *ngIf="solicitudForm.get('tipo')?.value === 'PRESTADOR'">
             <div class="form-group">
               <label>Buscar profesional</label>
               <input
@@ -88,7 +99,7 @@
                 class="form-control"
                 placeholder="Filtrar por nombre o especialidad"
                 [(ngModel)]="filtroProfesional"
-                name="filtroProfesional"
+                [ngModelOptions]="{standalone: true}"
               />
             </div>
 
@@ -111,8 +122,7 @@
               rows="3"
               formControlName="comentario"
               placeholder="Ej: necesito sesiones de kinesiología dos veces por semana"
-            >
-            </textarea>
+            ></textarea>
           </div>
 
           <button type="submit" class="btn-primary w-100">Enviar solicitud</button>
@@ -121,32 +131,44 @@
 
       <!-- ============ LISTA DE SOLICITUDES ============ -->
       <article class="card card-list">
-        <h3>Solicitudes enviadas</h3>
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h3 class="mb-0">Solicitudes enviadas</h3>
 
-        <div *ngIf="cargandoSolicitudes" class="alert alert-info">Cargando solicitudes...</div>
+          <!-- BOTÓN PAGOS EN CABECERA DE TABLA -->
+          <button *ngIf="tieneSolicitudesAceptadas"
+                  class="btn btn-outline-success btn-sm"
+                  routerLink="/pagos-paciente">
+            <i class="bi bi-credit-card me-1"></i>
+            Ver pagos pendientes
+          </button>
+        </div>
+
+        <div *ngIf="cargandoSolicitudes" class="alert alert-info">
+          <i class="bi bi-arrow-repeat spinner me-2"></i>
+          Cargando solicitudes...
+        </div>
 
         <div *ngIf="!cargandoSolicitudes && solicitudes.length === 0" class="alert alert-empty">
+          <i class="bi bi-inbox fs-4 d-block mb-2"></i>
           Aún no enviaste ninguna solicitud.
         </div>
 
         <div *ngIf="solicitudes.length > 0" class="table-wrapper">
           <table class="table">
             <thead>
-              <tr>
-
-                <th>Especialidad</th>
-                <th>Estado</th>
-                <th>Fecha</th>
-                <th>Acciones</th>
-              </tr>
+            <tr>
+              <th>Especialidad</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th>Acciones</th>
+            </tr>
             </thead>
 
             <tbody>
-              <tr *ngFor="let s of solicitudes">
+            <tr *ngFor="let s of solicitudes">
+              <td>{{ s.especialidad }}</td>
 
-                <td>{{ s.especialidad }}</td>
-
-                <td>
+              <td>
                   <span
                     class="badge"
                     [ngClass]="{
@@ -158,22 +180,57 @@
                   >
                     {{ s.estado }}
                   </span>
-                </td>
 
-                <td>{{ s.fechaSolicitud | date : 'short' }}</td>
+                <!-- INDICADOR DE PAGO PENDIENTE -->
+                <span *ngIf="s.estado === 'ACEPTADO'" class="ms-1 text-warning" title="Pago pendiente">
+                    <i class="bi bi-credit-card"></i>
+                  </span>
+              </td>
 
-                <td>
-                  <button
-                    class="btn-outline btn-sm"
-                    *ngIf="s.estado === 'PENDIENTE'"
-                    (click)="cancelarSolicitud(s)"
-                  >
-                    Cancelar
-                  </button>
-                </td>
-              </tr>
+              <td>{{ s.fechaSolicitud | date : 'short' }}</td>
+
+              <td>
+                <button
+                  class="btn-outline btn-sm"
+                  *ngIf="s.estado === 'PENDIENTE'"
+                  (click)="cancelarSolicitud(s)"
+                >
+                  Cancelar
+                </button>
+
+                <!-- BOTÓN PAGAR EN FILA -->
+                <button
+                  *ngIf="s.estado === 'ACEPTADO'"
+                  class="btn btn-success btn-sm ms-1"
+                  routerLink="/pagos-paciente"
+                  [queryParams]="{solicitudId: s.id}"
+                >
+                  <i class="bi bi-credit-card me-1"></i>
+                  Pagar
+                </button>
+              </td>
+            </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- SECCIÓN DE PAGOS AL FINAL -->
+        <div *ngIf="tieneSolicitudesAceptadas" class="pagos-section mt-4 p-3 bg-light rounded">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5 class="mb-1">
+                <i class="bi bi-credit-card text-success me-2"></i>
+                Solicitudes listas para pago
+              </h5>
+              <p class="mb-0 text-muted">
+                Tienes {{ contarSolicitudesAceptadas() }} solicitud(es) aceptadas pendientes de pago
+              </p>
+            </div>
+            <button class="btn btn-success" routerLink="/pagos-paciente">
+              <i class="bi bi-cash-coin me-1"></i>
+              Gestionar Pagos
+            </button>
+          </div>
         </div>
       </article>
     </section>
