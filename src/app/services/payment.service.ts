@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
+import {Pago} from '../models/pago.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PaymentService {
-  private API_URL = `${environment.apiUrl}/api/prestaciones`;
+  private API_URL = `${environment.apiUrl}/api`;
 
   constructor(
     private http: HttpClient,
@@ -28,16 +29,16 @@ export class PaymentService {
       return of(this.getDatosPrueba());
     }
 
-    return this.http.get<any[]>(`${this.API_URL}/paciente-aceptadas/${pacienteId}`);
+    return this.http.get<any[]>(`${this.API_URL}/prestaciones/paciente-aceptadas/${pacienteId}`);
   }
 
   /**
    * Crea un nuevo pago
    * (Ajusta el endpoint según tu backend)
    */
-  createPayment(paymentData: any): Observable<any> {
+  createPayment(paymentData: any): Observable<Pago> {
     // Endpoint temporal - ajusta según tu backend
-    return this.http.post<any>(`${this.API_URL}/pagos/procesar`, paymentData);
+    return this.http.post<Pago>(`${this.API_URL}/pagos/procesar`, paymentData);
 
     // O si prefieres simulación:
     // return of(this.simularPagoExitoso(paymentData));
