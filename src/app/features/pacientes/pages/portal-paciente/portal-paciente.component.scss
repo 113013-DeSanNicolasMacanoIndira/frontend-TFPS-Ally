@@ -19,7 +19,7 @@
 }
 
 .footer-custom::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.4); /* oscurece un poco la imagen para mejor lectura */
@@ -35,8 +35,6 @@
 .footer-custom a {
   color: #fff !important;
 }
-
-
 
 .hero {
   position: relative;
@@ -130,7 +128,7 @@
   bottom: 25px;
   width: 60px;
   height: 60px;
-  background: #0d6efd;
+  background:  #007bff;
   color: white;
   border-radius: 50%;
   display: flex;
@@ -139,7 +137,7 @@
   font-size: 28px;
   cursor: pointer;
   z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s;
 }
 
@@ -159,34 +157,54 @@
   z-index: 2000;
 }
 
+/* Caja del contenido */
+.faq-box {
+  width: 550px;
+  max-width: 95%;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 30px;
+  position: relative;
+  animation: fadeIn .25s ease-in-out;
+}
+
+/* Botón cerrar */
+.close-faq {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
 /* Scroll interno */
 .scrollable {
   max-height: 300px;
   overflow-y: auto;
 }
 
-.faq-content {
-  background: white;
-  padding: 25px;
-  width: 500px;
-  max-width: 90%;
-  border-radius: 12px;
-}
-
-.faq-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.faq-body h5 {
-  margin-top: 15px;
+/* Títulos preguntas */
+.faq-content h6 {
+  margin-top: 18px;
   font-weight: bold;
+  color: #007bff;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+/* Unificación de color */
+.text-primary,
+.nav-link,
+.hero-left h1 {
+  color: #007bff !important; /* azul más oscuro */
+}
+
+.nav-link:hover {
+  color: #003f82 !important; /* un poco más oscuro al pasar */
+}
 .hero {
   width: 100%;
-  padding: 80px 0;
+  padding: 100px 0;
   background: #f6fbff;
 
   .hero-left {
@@ -199,17 +217,24 @@
   }
 
   .hero-main-img {
-    width: 500px;
+    width: 800px; /* ⬆ aumentamos tamaño */
     max-width: 100%;
     height: auto;
-    opacity: .95;
+    opacity: 1;
+    border-radius: 18px; /* borde redondeado */
+    border: 3px solid rgba(0, 86, 179, 0.25); /* borde azul clarito */
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15); /* sombra suave */
   }
 }
 
 /* Responsive */
 @media (max-width: 992px) {
+  .hero-main-img {
+    width: 350px;
+  }
   .hero {
     text-align: center;
+    padding: 50px 0;
   }
 
   .hero-left {
@@ -220,4 +245,3 @@
     display: none; /* Oculta imagen en móviles */
   }
 }
-
