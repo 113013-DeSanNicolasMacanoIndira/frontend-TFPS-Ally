@@ -99,3 +99,40 @@
     </div>
   </main>
 </div>
+<!-- ====================================================================================== -->
+<!--  BOTÓN FLOTANTE DE AYUDA -->
+<div class="help-button" (click)="abrirFaq()">
+  <i class="bi bi-question-circle"></i>
+</div>
+
+<!-- MODAL FAQ MEJORADO -->
+<div class="faq-modal" *ngIf="mostrarFaq">
+  <div class="faq-box shadow-lg">
+    <button class="btn-close close-faq" (click)="cerrarFaq()"></button>
+
+    <h4 class="text-center mb-3 fw-bold text-primary">Preguntas Frecuentes</h4>
+
+    <div class="faq-content scrollable">
+      <h6><strong>¿Cómo recibo nuevas solicitudes?</strong></h6>
+      <p>En la sección “Solicitudes”, donde podrás aceptar o rechazar pacientes.</p>
+
+      <h6><strong>¿Puedo actualizar mis horarios?</strong></h6>
+      <p>Sí, desde tu perfil profesional en “Disponibilidad”.</p>
+
+      <h6><strong>¿Cómo gestiono turnos activos?</strong></h6>
+      <p>Desde “Mis Servicios”, donde verás la agenda de pacientes asignados.</p>
+
+      <h6><strong>¿Quién puede ver mis datos?</strong></h6>
+      <p>Solo pacientes asignados y el equipo administrativo de la plataforma.</p>
+
+      <h6><strong>¿Dónde veo mis pagos?</strong></h6>
+      <p>En la sección “Liquidaciones”, con historial y estado de cobros.</p>
+      <hr />
+      <p class="text-center fw-bold">¿Alguna otra consulta? ¡Estamos para ayudarte!</p>
+    </div>
+
+    <div class="text-center mt-3">
+      <button class="btn btn-primary px-4" (click)="cerrarFaq()">Entendido</button>
+    </div>
+  </div>
+</div>

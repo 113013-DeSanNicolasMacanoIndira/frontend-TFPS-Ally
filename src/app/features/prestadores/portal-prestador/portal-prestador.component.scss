@@ -128,3 +128,74 @@ tr:hover {
 .menu-item.logout:hover {
   background: rgba(255, 0, 0, 0.15);
 }
+/* BOTÓN FLOTANTE DE AYUDA */
+.help-button {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  width: 60px;
+  height: 60px;
+  background:  #007bff;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s;
+}
+
+.help-button:hover {
+  transform: scale(1.1);
+}
+
+/* MODAL FAQ */
+/* Fondo del modal */
+.faq-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* Caja del contenido */
+.faq-box {
+  width: 550px;
+  max-width: 95%;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 30px;
+  position: relative;
+  animation: fadeIn .25s ease-in-out;
+}
+
+/* Botón cerrar */
+.close-faq {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+/* Scroll interno */
+.scrollable {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Títulos preguntas */
+.faq-content h6 {
+  margin-top: 18px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(.95); }
+  to { opacity: 1; transform: scale(1); }
+}

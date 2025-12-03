@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./portal-prestador.component.scss']
 })
 export class PortalPrestadorComponent implements OnInit {
-
+  mostrarFaq = false;
   solicitudes: any[] = [];
   cargando = true;
   username: string = '';
@@ -73,5 +73,12 @@ export class PortalPrestadorComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+   abrirFaq() {
+    this.mostrarFaq = true;
+  }
+
+  cerrarFaq() {
+    this.mostrarFaq = false;
   }
 }
