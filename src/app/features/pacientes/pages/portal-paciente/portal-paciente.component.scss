@@ -148,14 +148,21 @@
 }
 
 /* MODAL FAQ */
+/* Fondo del modal */
 .faq-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2000;
+}
+
+/* Scroll interno */
+.scrollable {
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .faq-content {
@@ -177,4 +184,40 @@
   font-weight: bold;
 }
 
+.hero {
+  width: 100%;
+  padding: 80px 0;
+  background: #f6fbff;
+
+  .hero-left {
+    max-width: 450px;
+  }
+
+  .hero-logo {
+    width: 200px;
+    height: auto;
+  }
+
+  .hero-main-img {
+    width: 500px;
+    max-width: 100%;
+    height: auto;
+    opacity: .95;
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .hero {
+    text-align: center;
+  }
+
+  .hero-left {
+    margin-bottom: 25px;
+  }
+
+  .hero-right {
+    display: none; /* Oculta imagen en móviles */
+  }
+}
 

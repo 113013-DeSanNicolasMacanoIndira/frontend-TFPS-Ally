@@ -1,0 +1,166 @@
+<div class="login-container">
+  <!-- FORMULARIO CENTRADO -->
+  <div class="form-side">
+    <div class="card p-4 shadow" style="width: 400px">
+      <h3 class="text-center mb-4">Formulario de Registro</h3>
+
+      <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+        <!-- EMAIL -->
+        <div class="mb-3">
+          <label class="form-label">Correo Electrónico <span class="text-danger">*</span></label>
+          <input
+            type="email"
+            class="form-control"
+            [(ngModel)]="email"
+            name="email"
+            required
+            email
+            #emailModel="ngModel"
+          />
+          <small class="text-danger" *ngIf="emailModel.invalid && emailModel.touched">
+            Ingresá un correo válido.
+          </small>
+        </div>
+
+        <!-- REPETIR EMAIL -->
+        <div class="mb-3">
+          <label class="form-label"
+            >Repetir Correo Electrónico <span class="text-danger">*</span></label
+          >
+          <input
+            type="email"
+            class="form-control"
+            [(ngModel)]="repeatEmail"
+            name="repeatEmail"
+            required
+            email
+            #repeatEmailModel="ngModel"
+          />
+          <small class="text-danger" *ngIf="repeatEmailModel.invalid && repeatEmailModel.touched">
+            Repetí el correo correctamente.
+          </small>
+          <small class="text-danger" *ngIf="repeatEmail && repeatEmail !== email">
+            Los correos no coinciden.
+          </small>
+        </div>
+
+        <!-- PASSWORD -->
+        <div class="mb-3">
+          <label class="form-label">Contraseña <span class="text-danger">*</span></label>
+          <input
+            type="password"
+            class="form-control"
+            [(ngModel)]="password"
+            name="password"
+            required
+            minlength="4"
+            #passwordModel="ngModel"
+          />
+          <small class="text-danger" *ngIf="passwordModel.invalid && passwordModel.touched">
+            La contraseña debe tener al menos 4 caracteres.
+          </small>
+        </div>
+
+        <!-- REPETIR PASSWORD -->
+        <div class="mb-3">
+          <label class="form-label">Repetir Contraseña <span class="text-danger">*</span></label>
+          <input
+            type="password"
+            class="form-control"
+            [(ngModel)]="repeatPassword"
+            name="repeatPassword"
+            required
+            minlength="4"
+            #repeatPasswordModel="ngModel"
+          />
+          <small class="text-danger" *ngIf="repeatPassword && repeatPassword !== password">
+            Las contraseñas no coinciden.
+          </small>
+        </div>
+
+        <!-- ROLE -->
+        <div class="mb-3">
+          <label class="form-label">Tipo de usuario <span class="text-danger">*</span></label>
+          <select class="form-control" [(ngModel)]="role" name="role" required #roleModel="ngModel">
+            <option value="" disabled selected>Seleccione una opción</option>
+            <option value="PACIENTE">Paciente</option>
+            <option value="PRESTADOR">Prestador</option>
+            <option value="TRANSPORTISTA">Transportista</option>
+          </select>
+          <small class="text-danger" *ngIf="roleModel.invalid && roleModel.touched">
+            Seleccioná un tipo de usuario.
+          </small>
+        </div>
+
+        <!-- Checkbox Términos -->
+        <div class="form-check text-center mb-2">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="aceptaTerminos"
+            [(ngModel)]="aceptaTerminos"
+            name="aceptaTerminos"
+            required
+          />
+          <label class="form-check-label">
+            Acepto los
+            <a class="link-ally" (click)="openModalTyC()">Términos y Condiciones</a>
+            y la
+            <a class="link-ally" (click)="openModalTyC()">Política de Privacidad</a>
+          </label>
+        </div>
+
+        <!-- BOTÓN -->
+        <button type="submit" class="btn btn-primary w-100 mt-2" [disabled]="registerForm.invalid">
+          Registrarse
+        </button>
+
+        <a routerLink="/login" class="d-block text-center mt-3 link-ally">
+          ¿Ya tenés cuenta? Iniciar sesión
+        </a>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Términos (versión reducida solo para Registro) -->
+  <div class="modal fade" id="modalTyC" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content p-3">
+        <h4 class="text-center mb-3">Términos y Condiciones</h4>
+
+        <div style="max-height: 400px; overflow-y: auto">
+          <h5><strong>Términos y Condiciones de ALly</strong></h5>
+          <p>
+            El presente acuerdo regula el acceso y uso de <strong>ALLY</strong>, una plataforma
+            destinada a conectar pacientes con prestadores y transportistas de servicios de salud.
+          </p>
+
+          <h6><strong>1) Aceptación</strong></h6>
+          <p>
+            Al registrarse y utilizar Ally, usted declara haber leído, entendido y aceptado estos
+            Términos y el consentimiento para tratamiento de datos de salud.
+          </p>
+
+          <h6><strong>2) Datos de Salud</strong></h6>
+          <p>
+            Ally trata datos sensibles como diagnóstico, discapacidad y cobertura médica, con
+            consentimiento expreso del usuario, conforme Ley 25.326 y 26.529.
+          </p>
+
+          <h6><strong>3) Finalidad</strong></h6>
+          <p>
+            Los datos se usarán exclusivamente para coordinar servicios de salud y transporte
+            asistencial.
+          </p>
+
+          <hr />
+          <p class="text-center fw-bold">Al continuar, usted acepta estos términos.</p>
+        </div>
+
+        <div class="text-center mt-3">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,146 @@
+.container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+h3 {
+  font-weight: 600;
+}
+button {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.card {
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+button {
+  font-weight: bold;
+}
+
+a {
+  color: #007bff;
+  transition: 0.2s;
+}
+
+a:hover {
+  color: #0056b3;
+}
+.login-page {
+  position: relative;
+  width: 60%;
+  height: 60vh; /* pantalla completa */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.login-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  //object-fit: cover; /* mantiene proporción */
+  object-fit: contain; 
+  object-position: left center; /* foco en lado izquierdo */
+  opacity: 0.25; /* transparencia */
+  z-index: -1; /* detrás del contenido */
+  background-size: contain; /* 🔹 evita la deformación */
+  pointer-events: none; /* evita bloquear clics */
+  filter: brightness(0.9);
+  opacity: 0.95; /* opcional, mejora contraste */
+}
+
+.form-container {
+  position: relative;
+  z-index: 1; /* encima del fondo */
+  background: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.link-ally {
+  font-size: 15px;
+  font-weight: 500;
+  color: #0056b3;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link-ally:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+/* Centrado perfecto del formulario */
+.login-wrapper {
+  min-height: 100vh; /* Alto total visible */
+  display: flex;
+  justify-content: center; /* Centra horizontal */
+  align-items: center; /* Centra vertical */
+  padding: 20px; /* Margen para que respire en mobile */
+}
+
+/* Ajustes responsive */
+@media (max-width: 768px) {
+  .login-background {
+    object-fit: cover;
+    opacity: 1;
+  }
+}
+.login-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Fondo izquierdo */
+.background-side {
+  flex: 1;
+  background-image: url('/icons/imagally.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #e6f2ff;
+}
+
+/* Formulario en derecha */
+.form-side {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+}
+
+/* Card Login */
+/* --- Ajustes visuales del formulario --- */
+.card {
+  width: 420px !important; /* más ancho */
+  padding: 32px;
+  border-radius: 20px !important; /* borde más redondeado */
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.18) !important; /* sombra más marcada */
+}
+/* Botones unificados */
+.btn-primary,
+.btn-info {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.btn-primary:hover,
+.btn-info:hover {
+  background-color: #0069d9 !important;
+  border-color: #0062cc !important;
+}
+
+/* Ajuste de separación */
+button {
+  margin-top: 8px;
+}

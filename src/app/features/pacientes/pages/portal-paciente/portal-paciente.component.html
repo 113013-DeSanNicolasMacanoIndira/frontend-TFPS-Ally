@@ -1,9 +1,6 @@
-
-
 <!-- Barra de navegación -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
   <div class="container-fluid">
-
     <a class="navbar-brand fw-bold text-primary" routerLink="/portal-paciente">Ally</a>
 
     <button
@@ -19,13 +16,17 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-
       <ul class="navbar-nav ms-auto align-items-center">
-
         <!-- Servicios -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="serviciosDropdown" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="serviciosDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
             Servicios
           </a>
           <ul class="dropdown-menu" aria-labelledby="serviciosDropdown">
@@ -39,8 +40,14 @@
 
         <!-- Información -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="informacionDropdown" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="informacionDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
             Información
           </a>
           <ul class="dropdown-menu" aria-labelledby="informacionDropdown">
@@ -54,8 +61,14 @@
 
         <!-- Pacientes -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="pacientesDropdown" role="button"
-             data-bs-toggle="dropdown" aria-expanded="false">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="pacientesDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
             Pacientes
           </a>
           <ul class="dropdown-menu" aria-labelledby="pacientesDropdown">
@@ -65,31 +78,36 @@
 
         <!--  Cerrar sesión (FUERA DEL MENÚ) -->
         <li class="nav-item ms-2">
-          <a class="nav-link text-danger fw-bold" style="cursor:pointer;" (click)="logout()">
+          <a class="nav-link text-danger fw-bold" style="cursor: pointer" (click)="logout()">
             Cerrar sesión
           </a>
         </li>
-
       </ul>
-
     </div>
   </div>
 </nav>
 
-
 <!-- HERO SECTION -->
-<section class="hero text-center position-relative">
-  <div class="container mt-5 position-relative" style="z-index: 2">
-    <h1 class="display-5 fw-bold text-primary">Personas que Ayudan a Personas</h1>
-    <p class="lead mt-3 text-muted">
-      Sistema de Atención y Apoyo de Discapacidad (S.A.I.D.) – promoviendo inclusión y acompañamiento.
-    </p>
+<section class="hero d-flex align-items-center">
+  <div class="container d-flex justify-content-between align-items-center">
+    <!-- IZQUIERDA — Logo + Título -->
+    <div class="hero-left text-start">
+      <img src="/icons/logolargo.png" alt="ALLY Logo" class="hero-logo mb-3" />
+
+      <h1 class="fw-bold text-primary">Personas que Ayudan a Personas</h1>
+
+      <p class="lead text-muted mt-2">
+        Sistema de Atención y Apoyo de Discapacidad (S.A.I.D.) – promoviendo inclusión y
+        acompañamiento.
+      </p>
+    </div>
+
+    <!-- DERECHA — Imagen principal -->
+    <div class="hero-right">
+      <img src="/icons/prtp.PNG" class="hero-main-img" alt="Salud y apoyo" />
+    </div>
   </div>
-
-  <!-- Imagen de fondo centrada -->
-  <img src="/icons/prtp.PNG" alt="Imagen médica" class="hero-image" />
 </section>
-
 
 <!-- FOOTER -->
 <footer class="bg-light text-center text-lg-start mt-5">
@@ -115,33 +133,41 @@
   </div>
 </footer>
 
-
 <!-- ====================================================================================== -->
 <!--  BOTÓN FLOTANTE DE AYUDA -->
 <div class="help-button" (click)="abrirFaq()">
   <i class="bi bi-question-circle"></i>
 </div>
 
-
-<!-- MODAL DE FAQ -->
+<!-- MODAL FAQ MEJORADO -->
 <div class="faq-modal" *ngIf="mostrarFaq">
-  <div class="faq-content shadow">
+  <div class="faq-box shadow-lg">
+    <button class="btn-close close-faq" (click)="cerrarFaq()"></button>
 
-    <div class="faq-header">
-      <h3>Preguntas Frecuentes</h3>
-      <button class="btn-close" (click)="cerrarFaq()"></button>
+    <h4 class="text-center mb-3 fw-bold text-primary">Preguntas Frecuentes</h4>
+
+    <div class="faq-content scrollable">
+      <h6><strong>¿Cómo solicito un prestador?</strong></h6>
+      <p>Ingresá a “Buscar Prestadores”, elegí una opción y enviá la solicitud.</p>
+
+      <h6><strong>¿Cómo veo mis prestaciones?</strong></h6>
+      <p>Entrando a “Mis Prestaciones” podrás ver su estado y detalles.</p>
+
+      <h6><strong>¿Puedo editar mis datos personales?</strong></h6>
+      <p>Sí, desde la Configuración del Paciente.</p>
+
+      <h6><strong>¿Qué hago si me rechazan una prestación?</strong></h6>
+      <p>Podés revisar el motivo en la solicitud y reenviar la petición.</p>
+
+      <h6><strong>¿Dónde veo mis transportistas asignados?</strong></h6>
+      <p>En la sección “Transportes”, con detalles de horarios y recorridos.</p>
+
+      <hr />
+      <p class="text-center fw-bold">¿Tenés más dudas? Estamos para ayudarte</p>
     </div>
 
-    <div class="faq-body">
-      <h5>¿Cómo solicito un prestador?</h5>
-      <p>Ingresá a “Buscar Prestadores”, elegí uno y enviá tu solicitud.</p>
-
-      <h5>¿Cómo veo mis prestaciones?</h5>
-      <p>Desde la sección “Mis Prestaciones” podés ver el estado y detalles.</p>
-
-      <h5>¿Puedo editar mis datos personales?</h5>
-      <p>Sí, desde configuración del paciente.</p>
+    <div class="text-center mt-3">
+      <button class="btn btn-primary px-4" (click)="cerrarFaq()">Entendido</button>
     </div>
-
   </div>
 </div>
