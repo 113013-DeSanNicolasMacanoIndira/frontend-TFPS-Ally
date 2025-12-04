@@ -86,7 +86,7 @@ export const routes: Routes = [
   { path: 'mis-prestaciones', component: MyServicesComponent },
 
   // ADMIN
-  { path: 'admin', component: AdminDashboardComponent },
+  { path: 'admin-dashboard', component: AdminDashboardComponent },
 
   // Fallback
   { path: '**', redirectTo: 'login' }

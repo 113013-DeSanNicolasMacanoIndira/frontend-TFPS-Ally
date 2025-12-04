@@ -47,7 +47,7 @@ export class PortalPrestadorComponent implements OnInit {
   mostrarFaq = false;
   solicitudes: any[] = [];
   cargando = true;
-  username: string = '';
+  
 
 
   constructor(
