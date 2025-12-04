@@ -1,0 +1,76 @@
+<nav class="admin-nav shadow-sm">
+  <div class="d-flex align-items-center justify-content-between container-fluid">
+
+    <h3 class="fw-bold text-primary m-0">Panel de Control</h3>
+
+    <div class="admin-profile d-flex align-items-center gap-2">
+      <span class="fw-semibold">Admin</span>
+      <img src="/icons/user-admin.png" class="profile-img" alt="Admin">
+    </div>
+
+  </div>
+</nav>
+
+<div class="container mt-4">
+
+  <!-- 📊 MÉTRICAS -->
+  <div class="stats-grid">
+    <div *ngFor="let card of metricCards"
+        class="stat-card shadow"
+        [ngStyle]="{'background': card.gradient}">
+
+      <div class="icon-box">
+        <i [class]="card.icon"></i>
+      </div>
+
+      <div>
+        <h3>{{ card.value }}</h3>
+        <p>{{ card.label }}</p>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <!-- 📋 TABLA DE USUARIOS -->
+  <div class="card shadow p-3">
+    <h5 class="fw-bold mb-3">Usuarios del Sistema</h5>
+
+    <table class="table table-hover align-middle text-center">
+      <thead class="table-primary">
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of usuarios">
+          <td>{{ u.id }}</td>
+          <td>{{ u.nombre }}</td>
+          <td>{{ u.rol }}</td>
+
+          <td>
+            <span class="badge"
+                  [ngClass]="u.activo ? 'bg-success' : 'bg-danger'">
+              {{ u.activo ? 'Activo' : 'Bloqueado' }}
+            </span>
+          </td>
+
+          <td>
+            <button class="btn btn-sm"
+                    [ngClass]="u.activo ? 'btn-danger' : 'btn-success'"
+                    (click)="toggleEstado(u)">
+              {{ u.activo ? 'Bloquear' : 'Activar' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+

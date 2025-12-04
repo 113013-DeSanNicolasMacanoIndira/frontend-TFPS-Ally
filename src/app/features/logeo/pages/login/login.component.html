@@ -1,0 +1,163 @@
+<div class="login-container">
+
+  <!-- FONDO ILUSTRADO AL LADO -->
+  <div class="background-side"></div>
+
+  <!-- FORMULARIO CENTRADO -->
+  <div class="form-side">
+    <div class="card p-4">
+      <h2 class="text-center mb-4">Iniciar Sesión</h2>
+
+
+    <form (ngSubmit)="onLogin()" #loginForm="ngForm">
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <input
+          id="email"
+          [(ngModel)]="email"
+          name="email"
+          type="email"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          type="password"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <!-- Checkbox Términos -->
+      <!--  CAMBIO AQUÍ: Checkbox + enlaces de términos -->
+      <div class="form-check mb-2 text-center">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="aceptaTerminos"
+          [(ngModel)]="aceptaTerminos"
+          name="aceptaTerminos"
+          required
+        />
+        <label class="form-check-label">
+          Acepto los
+          <a href="javascript:void(0)" class="link-ally" (click)="openModalTyC()"
+            >Términos y Condiciones</a
+          >
+          y la
+          <a href="javascript:void(0)" class="link-ally" (click)="openModalTyC()"
+            >Política de Privacidad</a
+          >
+        </label>
+      </div>
+
+      <!--  CAMBIO AQUÍ: Enlace a página completa -->
+      <div class="text-center mb-3">
+        <a routerLink="/terms" class="link-ally">Leer versión completa aquí</a>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+      <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+
+      <!--  CAMBIO AQUÍ: link Olvidó su contraseña -->
+      <div class="text-center mb-3">
+        <a href="javascript:void(0)" (click)="onForgotPassword()" class="link-ally">
+          ¿Olvidó su Contraseña?
+        </a>
+      </div>
+
+      <button type="button" class="btn btn-info w-100" (click)="goToRegister()">Registrarse</button>
+    </form>
+
+    <!-- Modal TYC -->
+    <div class="modal fade" id="modalTyC" tabindex="-1">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content p-3">
+          <h4 class="text-center mb-3">Términos y Condiciones</h4>
+
+          <div style="max-height: 400px; overflow-y: auto">
+            <h5><strong>Términos y Condiciones de ALly</strong></h5>
+            <p>
+              El presente acuerdo regula el acceso y uso de <strong>ALLY</strong>, una plataforma
+              destinada a conectar pacientes con prestadores y transportistas de servicios de salud.
+            </p>
+
+            <h6><strong>1) Aceptación</strong></h6>
+            <p>
+              Al registrarse y utilizar Ally, usted declara haber leído, entendido y aceptado estos
+              Términos, la Política de Privacidad y el consentimiento para tratamiento de datos de
+              salud.
+            </p>
+
+            <h6><strong>2) Tratamiento de Datos Personales y de Salud</strong></h6>
+            <p>
+              Ally recolecta y procesa datos personales y
+              <strong>datos de salud sensibles</strong> tal como: diagnóstico, discapacidad,
+              cobertura médica, historial de servicios y contactos. El usuario otorga
+              <strong>consentimiento expreso</strong> para su tratamiento conforme Ley 25.326 y
+              26.529 de la República Argentina.
+            </p>
+
+            <h6><strong>3) Finalidad del Uso de Datos</strong></h6>
+            <p>Los datos serán utilizados exclusivamente para:</p>
+            <ul>
+              <li>Asignación y gestión de prestaciones de salud</li>
+              <li>Recordatorios, coordinación logística y seguimiento</li>
+              <li>Identificación segura del usuario</li>
+            </ul>
+
+            <h6><strong>4) Cesión de Datos</strong></h6>
+            <p>
+              Los datos podrán ser compartidos únicamente con
+              <strong>prestadores y transportistas habilitados</strong>
+              involucrados en la atención del usuario, y solo para fines asistenciales autorizados.
+            </p>
+
+            <h6><strong>5) Seguridad y Confidencialidad</strong></h6>
+            <p>
+              Los datos se encuentran protegidos mediante medidas técnicas y organizativas para
+              garantizar su confidencialidad e integridad.
+            </p>
+
+            <h6><strong>6) Derechos del Usuario</strong></h6>
+            <p>El usuario podrá solicitar en cualquier momento:</p>
+            <ul>
+              <li>Acceso a sus datos</li>
+              <li>Rectificación o actualización</li>
+              <li>Supresión cuando corresponda</li>
+              <li>Revocar su consentimiento</li>
+            </ul>
+
+            <h6><strong>7) Responsabilidades</strong></h6>
+            <p>
+              Ally no sustituye el criterio de un profesional. Cada prestador es el responsable de
+              sus actos asistenciales y de la información clínica que gestione.
+            </p>
+
+            <h6><strong>8) Jurisdicción</strong></h6>
+            <p>
+              Las relaciones se rigen por las leyes de la República Argentina. Jurisdicción:
+              Tribunales de Córdoba.
+            </p>
+
+            <hr />
+            <p class="text-center">
+              <strong>Al continuar, usted acepta todos los términos anteriores.</strong>
+            </p>
+          </div>
+
+          <div class="text-center mt-3">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -21,6 +21,7 @@ import Swal from 'sweetalert2';
 })
 export class PortalPrestadorComponent implements OnInit {
 
+
   // Variables generales
   username = '';
   seccionActiva = 'perfil';
@@ -42,6 +43,12 @@ export class PortalPrestadorComponent implements OnInit {
 
   // Formulario Reactivo
   prestadorForm: FormGroup;
+
+  mostrarFaq = false;
+  solicitudes: any[] = [];
+  cargando = true;
+  username: string = '';
+
 
   constructor(
     private fb: FormBuilder,
@@ -434,5 +441,12 @@ export class PortalPrestadorComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+   abrirFaq() {
+    this.mostrarFaq = true;
+  }
+
+  cerrarFaq() {
+    this.mostrarFaq = false;
   }
 }
