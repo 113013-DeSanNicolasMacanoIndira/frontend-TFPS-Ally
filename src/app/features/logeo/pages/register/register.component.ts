@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, CommonModule, TermsComponent, RouterLink],
+  imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
