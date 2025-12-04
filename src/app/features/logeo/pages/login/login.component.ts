@@ -10,7 +10,7 @@ declare const bootstrap: any;
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule,RouterLink],
+  imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -29,33 +29,24 @@ export class LoginComponent {
     }
 
     if (!this.aceptaTerminos) {
-      Swal.fire('Aviso', 'Debés aceptar los Términos y Condiciones para continuar.', 'warning');
+      Swal.fire('Aviso', 'Debés aceptar los Términos y Condiciones.', 'warning');
       return;
     }
 
     this.authService.login(this.email, this.password).subscribe({
-      next: () => {
-        localStorage.setItem('consent', new Date().toISOString()); // Guardar consentimiento
+      next: (response) => {
+        const role = response.role ?? response.usuario?.role;
 
-        Swal.fire('Bienvenido', 'Inicio de sesión exitoso', 'success');
-
-        const rol = localStorage.getItem('role');
-        switch (rol) {
-          case 'PACIENTE':
-            this.router.navigate(['/portal-paciente']);
-            break;
-          case 'PRESTADOR':
-            this.router.navigate(['/portal-prestador']);
-            break;
-          case 'TRANSPORTISTA':
-            this.router.navigate(['/portal-transportista']);
-            break;
-          case 'ADMIN':
-            this.router.navigate(['/admin']);
-            break;
-          default:
-            this.router.navigate(['/login']);
-            break;
+        if (role === 'ADMIN') {
+          this.router.navigate(['/admin-dashboard']);
+        } else if (role === 'PACIENTE') {
+          this.router.navigate(['/portal-paciente']);
+        } else if (role === 'PRESTADOR') {
+          this.router.navigate(['/portal-prestador']);
+        } else if (role === 'TRANSPORTISTA') {
+          this.router.navigate(['/portal-transportista']);
+        } else {
+          Swal.fire('Error', 'Rol desconocido', 'error');
         }
       },
       error: () => {
@@ -72,23 +63,18 @@ export class LoginComponent {
   onForgotPassword() {
     Swal.fire(' Recuperar contraseña', 'Esta función estará disponible próximamente.', 'info');
   }
- openModalTyC() {
-  const modal: any = document.getElementById('modalTyC');
-  const modalBootstrap = new (window as any).bootstrap.Modal(modal);
-  modalBootstrap.show();
+  openModalTyC() {
+    const modal: any = document.getElementById('modalTyC');
+    const modalBootstrap = new (window as any).bootstrap.Modal(modal);
+    modalBootstrap.show();
 
-  // Cuando cierre el modal → auto-check
-  modal.addEventListener('hidden.bs.modal', () => {
-    this.aceptaTerminos = true;
-  }, { once: true });
- }
-
+    // Cuando cierre el modal → auto-check
+    modal.addEventListener(
+      'hidden.bs.modal',
+      () => {
+        this.aceptaTerminos = true;
+      },
+      { once: true }
+    );
+  }
 }
-
-
-
-
-
-
-
-

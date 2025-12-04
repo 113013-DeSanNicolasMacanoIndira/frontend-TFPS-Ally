@@ -17,6 +17,8 @@ import { PortalTransportistaComponent } from './features/transportistas/portal-t
 import { ProviderListComponent } from './components/provider-list/provider-list.component';
 import { ServiceRequestComponent } from './components/service-request/service-request.component';
 import { MyServicesComponent } from './components/my-services/my-services.component';
+// ADMIN
+import { AdminDashboardComponent } from './features/admin/admin-dashboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -101,4 +103,14 @@ export const routes: Routes = [
   { path: 'mis-prestaciones', component: MyServicesComponent },
 
   { path: '**', redirectTo: 'login' },
+
+  
+  // ================================
+  //        ADMIN
+  // ================================
+   { path: 'admin', component: AdminDashboardComponent },
+
+
+
+
 ];

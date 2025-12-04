@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -16,24 +15,17 @@ export interface User {
   locked?: boolean;
 }
 
-
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-
-
   // Ajustá al backend real
 
-
   // URL base del backend (usa environment y agrega /api)
-
 
   private API_URL = `${environment.apiUrl}/api`;
 
   constructor(private http: HttpClient, private router: Router) {}
-
-
 
   // LOGIN - envía email y password al backend
 
@@ -117,7 +109,7 @@ export class AuthService {
         break;
 
       case 'ADMIN':
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/admin-dashboard']);
         break;
 
       default:
