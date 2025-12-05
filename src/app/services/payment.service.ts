@@ -38,7 +38,7 @@ export class PaymentService {
    */
   createPayment(paymentData: any): Observable<Pago> {
     // Endpoint temporal - ajusta según tu backend
-    return this.http.post<Pago>(`${this.API_URL}/pagos/procesar`, paymentData);
+    return this.http.post<Pago>(`${this.API_URL}/v1/payments/process`, paymentData);
 
     // O si prefieres simulación:
     // return of(this.simularPagoExitoso(paymentData));

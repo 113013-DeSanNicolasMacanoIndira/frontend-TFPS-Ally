@@ -15,7 +15,7 @@ import { ServiceRequestService } from '../../../../services/service-request.serv
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './pagos-paciente.component.html',
-  styleUrls: ['./pagos-paciente.component.scss']
+  styleUrls: ['./pagos-paciente.component.scss'],
 })
 export class PagosPacienteComponent implements OnInit {
   pagoForm: FormGroup;
@@ -29,23 +29,23 @@ export class PagosPacienteComponent implements OnInit {
   // AGREGAR DESCRIPCIÓN A LOS MÉTODOS DE PAGO
   metodosPago = [
     {
-      value: 'EFECTIVO',
+      value: 'CONTADO',
       label: 'Efectivo',
       icon: 'bi-cash',
-      descripcion: 'Pago en efectivo al momento del servicio'
+      descripcion: 'Pago en efectivo al momento del servicio',
     },
     {
-      value: 'TRANSFERENCIA',
+      value: 'TRANSFERENCIA_BANCARIA',
       label: 'Transferencia Bancaria',
       icon: 'bi-bank',
-      descripcion: 'Transferencia a nuestra cuenta bancaria'
+      descripcion: 'Transferencia a nuestra cuenta bancaria',
     },
     {
       value: 'OBRA_SOCIAL',
       label: 'Obra Social',
       icon: 'bi-heart-pulse',
-      descripcion: 'Cobertura a través de tu obra social'
-    }
+      descripcion: 'Cobertura a través de tu obra social',
+    },
   ];
 
   constructor(
@@ -65,19 +65,18 @@ export class PagosPacienteComponent implements OnInit {
 
   private createPagoForm(): FormGroup {
     return this.fb.group({
-      solicitudId: ['', Validators.required],
       metodoPago: ['', Validators.required],
       datosTransferencia: this.fb.group({
         numeroCuenta: [''],
         nombreTitular: [''],
-        cbu: ['']
+        cbu: [''],
       }),
       datosObraSocial: this.fb.group({
         numeroAfiliado: [''],
         plan: [''],
-        telefono: ['']
+        telefono: [''],
       }),
-      confirmacion: [false, Validators.requiredTrue]
+      confirmacion: [false, Validators.requiredTrue],
     });
   }
 
@@ -97,18 +96,23 @@ export class PagosPacienteComponent implements OnInit {
         console.error('Error cargando solicitudes:', error);
         this.cargando = false;
         this.solicitudesAceptadas = this.getDatosPrueba();
-      }
+      },
     });
   }
 
   // AGREGAR MÉTODO PARA BADGES
   getBadgeClass(estado: string): string {
     switch (estado) {
-      case 'ACEPTADO': return 'badge-aceptado';
-      case 'PENDIENTE': return 'badge-pendiente';
-      case 'RECHAZADO': return 'badge-rechazado';
-      case 'COMPLETADO': return 'badge-completado';
-      default: return 'badge-secondary';
+      case 'ACEPTADO':
+        return 'badge-aceptado';
+      case 'PENDIENTE':
+        return 'badge-pendiente';
+      case 'RECHAZADO':
+        return 'badge-rechazado';
+      case 'COMPLETADO':
+        return 'badge-completado';
+      default:
+        return 'badge-secondary';
     }
   }
 
@@ -126,7 +130,7 @@ export class PagosPacienteComponent implements OnInit {
         prestadorNombre: 'Dr. Juan Pérez',
         monto: 4500,
         fechaSolicitud: new Date(),
-        estado: 'ACEPTADO'
+        estado: 'ACEPTADO',
       },
       {
         id: 2,
@@ -135,15 +139,15 @@ export class PagosPacienteComponent implements OnInit {
         prestadorNombre: 'Lic. María García',
         monto: 3500,
         fechaSolicitud: new Date(),
-        estado: 'ACEPTADO'
-      }
+        estado: 'ACEPTADO',
+      },
     ];
   }
 
   seleccionarSolicitud(solicitud: any): void {
     this.solicitudSeleccionada = solicitud;
     this.pagoForm.patchValue({
-      solicitudId: solicitud.id
+      servicioId: solicitud.id,
     });
   }
 
@@ -158,9 +162,10 @@ export class PagosPacienteComponent implements OnInit {
 
       const user = this.authService.getUser();
       const pagoData = {
-        ...this.pagoForm.value,
-        pacienteId: user?.id || 1,
-        monto: this.solicitudSeleccionada.monto || this.calcularMontoDefault()
+        servicioId: this.solicitudSeleccionada.id,
+        metodoPago: this.metodoPagoSeleccionado,
+        monto: this.solicitudSeleccionada.monto || this.calcularMontoDefault(),
+        emailPagador: this.username,
       };
 
       this.paymentService.createPayment(pagoData).subscribe({
@@ -168,7 +173,7 @@ export class PagosPacienteComponent implements OnInit {
           this.procesandoPago = false;
           alert('¡Pago procesado exitosamente!');
           this.solicitudesAceptadas = this.solicitudesAceptadas.filter(
-            s => s.id !== this.solicitudSeleccionada.id
+            (s) => s.id !== this.solicitudSeleccionada.id
           );
           this.solicitudSeleccionada = null;
           this.pagoForm.reset();
@@ -177,7 +182,7 @@ export class PagosPacienteComponent implements OnInit {
           this.procesandoPago = false;
           console.error('Error procesando pago:', error);
           alert('Error al procesar el pago');
-        }
+        },
       });
     }
   }
