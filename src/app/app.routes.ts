@@ -17,8 +17,7 @@ import { PortalTransportistaComponent } from './features/transportistas/portal-t
 
 // ADMIN
 
-import { AdminDashboardComponent } from './features/admin/admin-dashboard.component';
-
+//import { AdminDashboardComponent } from './features/admin/admin-dashboard.component';
 
 // PRESTACIONES
 import { ProviderListComponent } from './components/provider-list/provider-list.component';
@@ -36,9 +35,8 @@ export const routes: Routes = [
   { path: 'portal-paciente', component: PortalPacienteComponent },
   { path: 'portal-pacientes', component: PortalPacientesDetalleComponent }, //aqui
   { path: 'pagos-paciente', component: PagosPacienteComponent },
-  
+
   // opcional: alias viejo, por si en algún lado sigue /portal-pacientes
- 
 
   {
     path: 'solicitudes-paciente',

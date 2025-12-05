@@ -7,7 +7,7 @@ export interface AdminMetrics {
 
 export interface AdminUser {
   id: number;
-  usuario: string;
+  nombre: string; // ✔ CAMBIO AQUÍ
   rol: string;
   activo: boolean;
 }

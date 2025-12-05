@@ -3,8 +3,9 @@
     <h3 class="fw-bold text-primary m-0">Panel de Control</h3>
 
     <div class="admin-profile d-flex align-items-center gap-2">
-      <span class="fw-semibold">Admin</span>
-      <img src="/public/icons/user-admin.png" class="profile-img" alt="Admin" />
+      <span class="fw-semibold"></span>
+      <img src="/icons/user-admin.png" class="profile-img" alt="Admin" />
+
     </div>
   </div>
 </nav>
@@ -37,7 +38,7 @@
     <table class="table table-hover align-middle text-center">
       <thead class="table-primary">
         <tr>
-          
+          <th>ID</th>
           <th>Nombre</th>
           <th>Rol</th>
           <th>Estado</th>
@@ -47,8 +48,7 @@
       <tbody>
         <tr *ngFor="let u of usuarios">
           <td>{{ u.id }}</td>
-          <td>{{ u.usuario }}</td>
-
+          <td>{{ u.nombre }}</td>  <!-- ✔ antes decía u.usuario -->
           <td>{{ u.rol }}</td>
 
           <td>
