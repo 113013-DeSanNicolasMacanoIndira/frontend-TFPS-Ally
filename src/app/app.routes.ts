@@ -19,7 +19,7 @@ import { ServiceRequestComponent } from './components/service-request/service-re
 import { MyServicesComponent } from './components/my-services/my-services.component';
 
 // ADMIN
-import { AdminDashboardComponent } from './features/admin/admin-dashboard.component';
+//import { AdminDashboardComponent } from './features/admin/admin-dashboard.component';
 
 export const routes: Routes = [
   // ================================
@@ -121,7 +121,11 @@ export const routes: Routes = [
   // ================================
   //        ADMIN
   // ================================
-  { path: 'admin', component: AdminDashboardComponent },
+  {
+    path: 'admin-dashboard',
+    loadComponent: () =>
+      import('./features/admin/admin-dashboard.component').then((c) => c.AdminDashboardComponent),
+  },
 
   // ================================
   //        RUTA DE FALLBACK

@@ -32,6 +32,24 @@ export class LoginComponent {
       Swal.fire('Aviso', 'Debés aceptar los Términos y Condiciones.', 'warning');
       return;
     }
+     //  LOGIN DE EMERGENCIA PARA ADMIN 
+    // Si el backend falla, esto permite entrar al panel admin
+    if (this.email === 'admin@ally.com' && this.password === '1234A') {
+      localStorage.setItem('role', 'ADMIN');
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          id: 0,
+          username: 'Administrador',
+          email: this.email,
+          role: 'ADMIN',
+        })
+      );
+
+      Swal.fire('Bienvenido', 'Acceso administrador', 'success');
+      this.router.navigate(['/admin-dashboard']);
+      return;
+    }
 
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {

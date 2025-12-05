@@ -1,24 +1,23 @@
 <nav class="admin-nav shadow-sm">
   <div class="d-flex align-items-center justify-content-between container-fluid">
-
     <h3 class="fw-bold text-primary m-0">Panel de Control</h3>
 
     <div class="admin-profile d-flex align-items-center gap-2">
-      <span class="fw-semibold">Admin</span>
-      <img src="/icons/user-admin.png" class="profile-img" alt="Admin">
-    </div>
+      <span class="fw-semibold"></span>
+      <img src="/icons/user-admin.png" class="profile-img" alt="Admin" />
 
+    </div>
   </div>
 </nav>
 
 <div class="container mt-4">
-
-  <!-- 📊 MÉTRICAS -->
+  <!--  MÉTRICAS -->
   <div class="stats-grid">
-    <div *ngFor="let card of metricCards"
-        class="stat-card shadow"
-        [ngStyle]="{'background': card.gradient}">
-
+    <div
+      *ngFor="let card of metricCards"
+      class="stat-card shadow"
+      [ngStyle]="{ background: card.gradient }"
+    >
       <div class="icon-box">
         <i [class]="card.icon"></i>
       </div>
@@ -27,13 +26,12 @@
         <h3>{{ card.value }}</h3>
         <p>{{ card.label }}</p>
       </div>
-
     </div>
   </div>
 
-  <hr class="my-4">
+  <hr class="my-4" />
 
-  <!-- 📋 TABLA DE USUARIOS -->
+  <!--  TABLA DE USUARIOS -->
   <div class="card shadow p-3">
     <h5 class="fw-bold mb-3">Usuarios del Sistema</h5>
 
@@ -50,20 +48,26 @@
       <tbody>
         <tr *ngFor="let u of usuarios">
           <td>{{ u.id }}</td>
-          <td>{{ u.nombre }}</td>
+          <td>{{ u.nombre }}</td>  <!-- ✔ antes decía u.usuario -->
           <td>{{ u.rol }}</td>
 
           <td>
-            <span class="badge"
-                  [ngClass]="u.activo ? 'bg-success' : 'bg-danger'">
+            <span
+              class="badge status-pill"
+              [ngClass]="u.activo ? 'active-status' : 'blocked-status'"
+            >
+              <i class="bi" [ngClass]="u.activo ? 'bi-check-circle' : 'bi-x-circle'"></i>
               {{ u.activo ? 'Activo' : 'Bloqueado' }}
             </span>
           </td>
 
           <td>
-            <button class="btn btn-sm"
-                    [ngClass]="u.activo ? 'btn-danger' : 'btn-success'"
-                    (click)="toggleEstado(u)">
+            <button
+              class="btn action-btn btn-sm"
+              [ngClass]="u.activo ? 'btn-block' : 'btn-activate'"
+              (click)="toggleEstado(u)"
+            >
+              <i class="bi" [ngClass]="u.activo ? 'bi-lock' : 'bi-unlock'"></i>
               {{ u.activo ? 'Bloquear' : 'Activar' }}
             </button>
           </td>
@@ -71,6 +75,4 @@
       </tbody>
     </table>
   </div>
-
 </div>
-

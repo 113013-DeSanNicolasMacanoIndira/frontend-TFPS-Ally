@@ -1,51 +1,106 @@
+/* Navbar */
 .admin-nav {
   background: #ffffff;
-  padding: 12px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  padding: 10px 20px;
+  border-bottom: 2px solid #e0e0e0;
 }
 
-.profile-img {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 2px solid #0d6efd;
-}
-
+/* Métricas */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-  margin-top: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
 }
 
 .stat-card {
-  border-radius: 14px;
   padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
+  border-radius: 12px;
   color: #fff;
-  cursor: pointer;
-  transition: transform .2s ease;
+  text-align: center;
+  transition: transform .2s ease-in-out;
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
-}
-
-.stat-card h3 {
-  font-size: 32px;
-  margin: 0;
+  transform: scale(1.05);
 }
 
 .icon-box {
-  background: rgba(255, 255, 255, 0.2);
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+/* Tabla */
+.table-primary th {
+  background-color: #e7f1ff !important;
+  font-weight: bold;
+}
+
+.status-pill {
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+.active-status {
+  background: #d1f5d3;
+  color: #198754;
+}
+
+.blocked-status {
+  background: #ffd2d2;
+  color: #dc3545;
+}
+
+.btn-block {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-activate {
+  background: #198754;
+  color: white;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.stat-card {
+  color: white;
+  padding: 20px;
   border-radius: 12px;
-  padding: 12px;
 }
 
 .icon-box i {
-  font-size: 28px;
+  font-size: 2rem;
+}
+.admin-profile img {
+  width: 95px;     /* Aumentamos ancho dentro del mismo contenedor */
+  height: 46px;    /* Más alto sin deformarse */
+  object-fit: cover;  /* Aprovecha el espacio sin dejar bordes */
+  background: white;
+  border-radius: 6px;
+  border: 2px solid #007bff;
+  padding: 1px;    /* Reducimos padding para que crezca más la imagen */
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease-in-out;
+}
+
+.admin-profile img:hover {
+  transform: scale(1.08); /* Animación más vistosa */
+}
+
+.admin-profile span {
+  font-size: 14px;
+  color: #212529;
+}
+
+.admin-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 12px 25px;
+  border-bottom: 2px solid #e1e1e1;
 }
