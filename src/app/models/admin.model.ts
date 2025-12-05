@@ -3,6 +3,8 @@ export interface AdminMetrics {
   prestadores: number;
   transportistas: number;
   admins: number;
+  solicitudesPendientes: number;
+  serviciosAceptados: number;
 }
 
 export interface AdminUser {

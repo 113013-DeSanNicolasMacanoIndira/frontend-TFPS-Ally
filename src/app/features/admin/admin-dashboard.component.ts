@@ -52,6 +52,19 @@ export class AdminDashboardComponent implements OnInit {
           icon: 'bi bi-shield-lock',
           gradient: 'linear-gradient(135deg,#fd7e14,#dc3545)',
         },
+        //  NUEVAS TARJETAS
+        {
+          label: 'Solicitudes Pendientes',
+          value: data.solicitudesPendientes,
+          icon: 'bi bi-hourglass-split',
+          gradient: 'linear-gradient(135deg,#ffc107,#ff9800)',
+        },
+        {
+          label: 'Servicios Aceptados',
+          value: data.serviciosAceptados,
+          icon: 'bi bi-check2-circle',
+          gradient: 'linear-gradient(135deg,#28a745,#009688)',
+        },
       ];
     });
   }
