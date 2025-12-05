@@ -1,11 +1,15 @@
 <nav class="admin-nav shadow-sm">
   <div class="d-flex align-items-center justify-content-between container-fluid">
-    <h3 class="fw-bold text-primary m-0">Panel de Control</h3>
+    <h3 class="fw-bold text-primary m-0">Panel de Control-Admin</h3>
 
     <div class="admin-profile d-flex align-items-center gap-2">
       <span class="fw-semibold"></span>
-      <img src="/icons/user-admin.png" class="profile-img" alt="Admin" />
-
+      <img src="/icons/logolargo.png" class="profile-img" alt="Admin" />
+      <!--  BOTÓN LOGOUT -->
+      <button class="logout-btn" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i>
+        Salir
+      </button>
     </div>
   </div>
 </nav>
@@ -48,7 +52,8 @@
       <tbody>
         <tr *ngFor="let u of usuarios">
           <td>{{ u.id }}</td>
-          <td>{{ u.nombre }}</td>  <!-- ✔ antes decía u.usuario -->
+          <td>{{ u.nombre }}</td>
+          <!-- ✔ antes decía u.usuario -->
           <td>{{ u.rol }}</td>
 
           <td>
