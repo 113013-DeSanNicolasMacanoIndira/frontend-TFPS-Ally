@@ -161,12 +161,25 @@ export class PagosPacienteComponent implements OnInit {
       this.procesandoPago = true;
 
       const user = this.authService.getUser();
-      const pagoData = {
+      const pagoData: any = {
         servicioId: this.solicitudSeleccionada.id,
         metodoPago: this.metodoPagoSeleccionado,
         monto: this.solicitudSeleccionada.monto || this.calcularMontoDefault(),
         emailPagador: this.username,
       };
+
+      // Si es transferencia -> agregar lo que backend espera
+      if (this.metodoPagoSeleccionado === 'TRANSFERENCIA_BANCARIA') {
+        pagoData.cbuDestino = this.pagoForm.value.datosTransferencia.cbu;
+      }
+
+      // Si es obra social -> agregar formato backend
+      if (this.metodoPagoSeleccionado === 'OBRA_SOCIAL') {
+        pagoData.numeroAfiliado = this.pagoForm.value.datosObraSocial.numeroAfiliado;
+        pagoData.codigoObraSocial = this.pagoForm.value.datosObraSocial.plan;
+      }
+
+      console.log('➡ Payload enviado:', pagoData);
 
       this.paymentService.createPayment(pagoData).subscribe({
         next: (pagoProcesado: any) => {
@@ -188,7 +201,7 @@ export class PagosPacienteComponent implements OnInit {
   }
 
   get mostrarDatosTransferencia(): boolean {
-    return this.metodoPagoSeleccionado === 'TRANSFERENCIA';
+    return this.metodoPagoSeleccionado === 'TRANSFERENCIA_BANCARIA';
   }
 
   get mostrarDatosObraSocial(): boolean {
