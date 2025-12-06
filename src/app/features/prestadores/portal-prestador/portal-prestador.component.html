@@ -103,7 +103,7 @@
                 </div>
               </div>
 
-              <div class="mb-3">
+             <div class="mb-3">
                 <label class="form-label">Dirección *</label>
                 <input type="text" class="form-control" formControlName="direccion"
                        [class.is-invalid]="prestadorForm.get('direccion')?.invalid && prestadorForm.get('direccion')?.touched">
@@ -112,7 +112,15 @@
                   La dirección es requerida
                 </div>
               </div>
-
+              <div class="mb-3">
+                <label class="form-label">CBU Bancaria *</label>
+                <input type="text" class="form-control" formControlName="CBUBancaria"
+                       [class.is-invalid]="prestadorForm.get('CBUBancaria')?.invalid && prestadorForm.get('CBUBancaria')?.touched">
+                <div *ngIf="prestadorForm.get('CBUBancaria')?.invalid && prestadorForm.get('CBUBancaria')?.touched"
+                     class="invalid-feedback">
+                  La CBU es requerida
+                </div>
+              </div>
               <div class="mb-3">
                 <label class="form-label">Especialidad *</label>
                 <select class="form-select" formControlName="especialidadId"
@@ -246,6 +254,16 @@
                   <div *ngIf="prestadorForm.get('direccion')?.invalid && prestadorForm.get('direccion')?.touched"
                        class="invalid-feedback">
                     La dirección es requerida
+                  </div>
+                </div>
+
+               <div class="mb-3">
+                  <label class="form-label">CBU Bancaria</label>
+                  <input type="text" class="form-control" formControlName="CBUBancaria"
+                         [class.is-invalid]="prestadorForm.get('CBUBancaria')?.invalid && prestadorForm.get('CBUBancaria')?.touched">
+                  <div *ngIf="prestadorForm.get('CBUBancaria')?.invalid && prestadorForm.get('CBUBancaria')?.touched"
+                       class="invalid-feedback">
+                    La CBU es requerida
                   </div>
                 </div>
 

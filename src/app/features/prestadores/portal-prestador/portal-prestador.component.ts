@@ -66,6 +66,7 @@ export class PortalPrestadorComponent implements OnInit {
       telefono: ['', Validators.required],
       direccion: ['', Validators.required],
       especialidadId: ['', Validators.required],
+      CBUBancaria: ['',Validators.required],
       matricula: [''],
       coberturaObraSocial: [false]
     });
@@ -160,6 +161,7 @@ export class PortalPrestadorComponent implements OnInit {
       email: prestador.email,
       telefono: prestador.telefono,
       direccion: prestador.direccion,
+      CBUBancaria: prestador.CBUBancaria,
       especialidadId: especialidad?.id || '',
 
     });
@@ -214,6 +216,7 @@ export class PortalPrestadorComponent implements OnInit {
       telefono: formValue.telefono,
       direccion: formValue.direccion,
       codigoEspecialidad: especialidadSeleccionada.codigo, // Usar el código, no el ID
+      CBUBancaria: formValue.CBUBancaria,
       activo: true,
       idUsuario: loggedUser.id,
 
@@ -282,6 +285,7 @@ export class PortalPrestadorComponent implements OnInit {
       telefono: formValue.telefono,
       direccion: formValue.direccion,
       codigoEspecialidad: especialidadSeleccionada.codigo,
+      CBUBancaria: formValue.CBUBancaria,
       activo: this.prestador.activo,
       idUsuario: this.prestador.idUsuario,
 

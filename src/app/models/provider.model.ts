@@ -7,6 +7,7 @@ export interface Provider {
   direccion: string;
   codigoEspecialidad?: string;           // Para el combo box
   activo?: boolean;
+  CBUBancaria?: string;
   fechaRegistro?: Date;
   idUsuario?: number;
 
