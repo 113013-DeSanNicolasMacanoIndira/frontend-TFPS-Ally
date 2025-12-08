@@ -33,7 +33,7 @@
         <h2>Pagos de Servicios</h2>
         <p>
           Hola, <strong>{{ username }}</strong
-          >. Aquí podés gestionar los pagos de tus servicios aceptados.
+        >. Aquí podés gestionar los pagos de tus servicios aceptados.
         </p>
       </div>
     </header>
@@ -89,7 +89,7 @@
                 </span>
                 <span class="monto">
                   <i class="bi bi-currency-dollar"></i>
-                  {{ solicitud.monto || calcularMontoDefault() | currency:'ARS':'symbol':'1.0-0' }}
+                  {{ getMontoSolicitud(solicitud) | currency:'$':'symbol':'1.0-0' }}
                 </span>
               </div>
             </div>
@@ -134,10 +134,13 @@
               <span class="detail-value">{{ solicitudSeleccionada.descripcion }}</span>
             </div>
             <div class="detail-row highlight">
-              <span class="detail-label">Monto a Pagar:</span>
-              <span class="detail-value precio"
-                >${{ solicitudSeleccionada.monto || calcularMontoDefault() }}</span
-              >
+              <span class="detail-label">Importe a Pagar:</span>
+              <span class="detail-value precio">
+                {{ getMontoSolicitud(solicitudSeleccionada) | currency:'$':'symbol':'1.0-0' }}
+                <span *ngIf="solicitudSeleccionada.montoApagar" class="text-muted small d-block mt-1">
+                  (Según presupuesto aceptado)
+                </span>
+              </span>
             </div>
           </div>
         </div>
@@ -169,6 +172,35 @@
                   <i class="bi bi-check-circle-fill"></i>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Campo de Importe a Pagar (solo lectura) -->
+          <div class="form-section">
+            <h4>
+              <i class="bi bi-cash-coin me-2"></i>
+              Importe a Pagar
+            </h4>
+            <div class="mb-3">
+              <label class="form-label">Monto del Servicio</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="formatMonto(importeAPagar)"
+                  readonly
+                  [ngClass]="{'bg-light': true}"
+                />
+                <span class="input-group-text">ARS</span>
+              </div>
+              <small class="text-muted">
+                Este importe corresponde al monto presupuestado y aceptado para el servicio.
+                <span *ngIf="solicitudSeleccionada.montoApagar" class="d-block mt-1">
+                  <i class="bi bi-info-circle"></i>
+                  Monto según presupuesto aceptado: {{ solicitudSeleccionada.montoApagar | currency:'$':'symbol':'1.0-0' }}
+                </span>
+              </small>
             </div>
           </div>
 
@@ -298,6 +330,74 @@
             </div>
           </div>
 
+          <!-- Datos para Mercado Pago -->
+          <div class="form-section" *ngIf="mostrarDatosMercadoPago">
+            <h4>
+              <i class="bi bi-credit-card-2-front me-2"></i>
+              Datos para Mercado Pago
+            </h4>
+            <div class="alert alert-info mb-3">
+              <h5><i class="bi bi-shield-check me-2"></i>Pago Seguro Online</h5>
+              <p class="mb-1">
+                Serás redirigido a la plataforma segura de Mercado Pago para completar el pago.
+              </p>
+              <p class="mb-0">
+                <small>Aceptamos todas las tarjetas de crédito y débito.</small>
+              </p>
+            </div>
+
+            <div formGroupName="datosMercadoPago">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label">Email para confirmación</label>
+                    <input
+                      type="email"
+                      formControlName="email"
+                      class="form-control"
+                      placeholder="ejemplo@email.com"
+                      [class.is-invalid]="
+                        pagoForm.get('datosMercadoPago.email')?.invalid &&
+                        pagoForm.get('datosMercadoPago.email')?.touched
+                      "
+                    />
+                    <div
+                      *ngIf="
+                        pagoForm.get('datosMercadoPago.email')?.invalid &&
+                        pagoForm.get('datosMercadoPago.email')?.touched
+                      "
+                      class="invalid-feedback"
+                    >
+                      Por favor, ingresa un email válido
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label">Teléfono (opcional)</label>
+                    <input
+                      type="tel"
+                      formControlName="telefono"
+                      class="form-control"
+                      placeholder="(11) 1234-5678"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <h6><i class="bi bi-credit-card me-2"></i>Tarjetas Aceptadas</h6>
+              <div class="tarjetas-aceptadas">
+                <img src="https://http2.mlstatic.com/frontend-assets/ui/checkout/2.0.0/checkout/logos/v1/visa@2x.png" alt="Visa" class="tarjeta-logo">
+                <img src="https://http2.mlstatic.com/frontend-assets/ui/checkout/2.0.0/checkout/logos/v1/mastercard@2x.png" alt="Mastercard" class="tarjeta-logo">
+                <img src="https://http2.mlstatic.com/frontend-assets/ui/checkout/2.0.0/checkout/logos/v1/amex@2x.png" alt="American Express" class="tarjeta-logo">
+                <img src="https://http2.mlstatic.com/frontend-assets/ui/checkout/2.0.0/checkout/logos/v1/argencard@2x.png" alt="Argencard" class="tarjeta-logo">
+                <img src="https://http2.mlstatic.com/frontend-assets/ui/checkout/2.0.0/checkout/logos/v1/diners@2x.png" alt="Diners Club" class="tarjeta-logo">
+              </div>
+            </div>
+          </div>
+
           <!-- Información de Pago en Efectivo -->
           <div class="form-section" *ngIf="metodoPagoSeleccionado === 'EFECTIVO'">
             <div class="alert alert-info">
@@ -324,12 +424,14 @@
               <label class="form-check-label" for="confirmacion">
                 Confirmo que los datos ingresados son correctos y autorizo el procesamiento del pago
                 por el monto de
-                <strong
-                  >{{
-                    solicitudSeleccionada.monto || calcularMontoDefault()
-                      | currency : 'ARS' : 'symbol' : '1.0-0'
-                  }} </strong
-                >.
+                <strong>
+                  {{ formatMonto(importeAPagar) }}
+                </strong>
+                ({{ importeAPagar | currency:'ARS':'symbol':'1.0-0' }}).
+                <span *ngIf="solicitudSeleccionada.montoApagar" class="d-block mt-1 text-muted small">
+                  <i class="bi bi-check-circle"></i>
+                  Este importe corresponde al monto presupuestado y aceptado previamente.
+                </span>
               </label>
               <div
                 *ngIf="
@@ -351,7 +453,11 @@
             >
               <span *ngIf="procesandoPago" class="spinner-border spinner-border-sm me-2"></span>
               <i class="bi bi-check-circle me-2" *ngIf="!procesandoPago"></i>
-              {{ procesandoPago ? 'Procesando Pago...' : 'Confirmar y Procesar Pago' }}
+              {{
+                metodoPagoSeleccionado === 'MERCADO_PAGO'
+                  ? (procesandoPago ? 'Redirigiendo a Mercado Pago...' : 'Pagar con Mercado Pago')
+                  : (procesandoPago ? 'Procesando Pago...' : 'Confirmar y Procesar Pago')
+              }}
             </button>
 
             <button

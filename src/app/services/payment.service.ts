@@ -45,6 +45,51 @@ export class PaymentService {
   }
 
   /**
+   * Crea una preferencia de pago en Mercado Pago
+   * @param pagoData Datos del pago
+   * @returns Observable con la respuesta de Mercado Pago
+   */
+  crearPreferenciaMercadoPago(pagoData: any): Observable<any> {
+    // Endpoint para crear preferencia de Mercado Pago
+    // Ajusta según tu backend
+    return this.http.post<any>(`${this.API_URL}/mercadopago/create-preference`, pagoData);
+
+    // O si prefieres simulación hasta implementar el backend:
+    // return of(this.simularPreferenciaMercadoPago(pagoData));
+  }
+
+  /**
+   * Simula la creación de una preferencia de Mercado Pago
+   */
+  private simularPreferenciaMercadoPago(pagoData: any): any {
+    // Simulación de respuesta de Mercado Pago
+    return {
+      id: 'pref_' + Date.now(),
+      init_point: 'https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=' + Date.now(),
+      sandbox_init_point: 'https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=' + Date.now(),
+      items: [
+        {
+          title: `Servicio: ${pagoData.servicioId}`,
+          quantity: 1,
+          unit_price: pagoData.monto,
+          currency_id: 'ARS'
+        }
+      ],
+      payer: {
+        email: pagoData.emailPagador || pagoData.emailMercadoPago || 'cliente@ejemplo.com'
+      },
+      external_reference: `servicio_${pagoData.servicioId}`,
+      notification_url: `${environment.apiUrl}/api/mercadopago/webhook`,
+      back_urls: {
+        success: `${window.location.origin}/pago-exitoso`,
+        failure: `${window.location.origin}/pago-fallido`,
+        pending: `${window.location.origin}/pago-pendiente`
+      },
+      auto_return: 'approved'
+    };
+  }
+
+  /**
    * Datos de prueba por si el backend no está disponible
    */
   private getDatosPrueba(): any[] {
