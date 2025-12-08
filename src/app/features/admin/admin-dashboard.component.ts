@@ -6,18 +6,19 @@ import { AuthService } from './../../services/auth.service'; //  IMPORTANTE
 //  IMPORTANTE: agregar el componente de gráficos
 import { AdminChartsComponent } from '../../components/admin-charts/admin-charts.component';
 import Swal from 'sweetalert2';
+import { AdminGestionMontosComponent } from '../../components/gestion-montos/admin-gestion-montos.component';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, AdminChartsComponent],
+  imports: [CommonModule, AdminChartsComponent, AdminGestionMontosComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss'],
 })
 export class AdminDashboardComponent implements OnInit {
   metricCards: any[] = [];
   usuarios: AdminUser[] = [];
-   //  Agregado para el sistema de pestañas
+  //  Agregado para el sistema de pestañas
   tabActiva: string = 'dashboard';
   constructor(private adminService: AdminService, private authService: AuthService) {}
 
@@ -66,6 +67,12 @@ export class AdminDashboardComponent implements OnInit {
           value: data.serviciosAceptados,
           icon: 'bi bi-check2-circle',
           gradient: 'linear-gradient(135deg,#28a745,#009688)',
+        },
+        {
+          label: 'Pagos Procesados',
+          value: data.pagosProcesados,
+          icon: 'bi bi-cash-coin',
+          gradient: 'linear-gradient(135deg,#17a2b8,#0d6efd)',
         },
       ];
     });

@@ -5,8 +5,7 @@
     <div class="admin-profile d-flex align-items-center gap-2">
       <img src="/icons/logolargo.png" class="profile-img" alt="Admin" />
       <button class="logout-btn" (click)="logout()">
-        <i class="bi bi-box-arrow-right"></i>
-        Salir
+        <i class="bi bi-box-arrow-right"></i> Salir
       </button>
     </div>
   </div>
@@ -36,7 +35,16 @@
         <i class="bi bi-people"></i> Gestión Usuarios
       </a>
     </li>
+
+    <!-- 📌 NUEVA PESTAÑA -->
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="tabActiva === 'montos'"
+         (click)="tabActiva = 'montos'">
+        <i class="bi bi-cash-coin"></i> Gestión Montos
+      </a>
+    </li>
   </ul>
+
 
   <!-- 📌 TAB: MÉTRICAS -->
   <div *ngIf="tabActiva === 'dashboard'">
@@ -53,14 +61,15 @@
     </div>
   </div>
 
+
   <!-- 📌 TAB: GRÁFICOS -->
   <div *ngIf="tabActiva === 'estadisticas'">
     <app-admin-charts></app-admin-charts>
   </div>
 
+
   <!-- 📌 TAB: USUARIOS -->
   <div *ngIf="tabActiva === 'usuarios'">
-    <!-- (REUTILIZAMOS TU TABLA EXISTENTE) -->
     <div class="card shadow p-3">
       <h5 class="fw-bold mb-3">Usuarios del Sistema</h5>
 
@@ -96,6 +105,12 @@
         </tbody>
       </table>
     </div>
+  </div>
+
+
+  <!-- 📌 TAB: GESTIÓN DE MONTOS -->
+  <div *ngIf="tabActiva === 'montos'">
+    <app-admin-gestion-montos></app-admin-gestion-montos>
   </div>
 
 </div>

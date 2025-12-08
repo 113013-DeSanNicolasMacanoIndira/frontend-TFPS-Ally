@@ -9,6 +9,7 @@ export interface Specialty {
   nombre: string;
   descripcion?: string;
   activo?: boolean;
+  monto?: number; //  Asegurar que el monto venga del backend
 }
 
 @Injectable({
@@ -33,5 +34,10 @@ export class SpecialtyService {
   // Obtener especialidades activas - CORREGIDO: usar any[] en lugar de Specialty[]
   getActivas(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/activas`);
+
+  }
+   // 🆕 ACTUALIZAR MONTO DE UNA ESPECIALIDAD
+  updateMonto(id: number, nuevoMonto: number): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/${id}/monto`, { monto: nuevoMonto });
   }
 }

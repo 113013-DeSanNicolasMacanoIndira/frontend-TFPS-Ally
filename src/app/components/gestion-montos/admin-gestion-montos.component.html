@@ -1,0 +1,26 @@
+<h4 class="fw-bold text-primary mb-3">💲 Gestión de Montos por Especialidad</h4>
+
+<table class="table table-hover align-middle">
+  <thead class="table-primary">
+    <tr>
+      <th>Especialidad</th>
+      <th>Monto Actual</th>
+      <th>Nuevo Monto</th>
+      <th>Acción</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let esp of especialidades">
+      <td>{{ esp.nombre }}</td>
+      <td>{{ esp.monto | currency:'ARS':'symbol' }}</td>
+      <td>
+        <input type="number" class="form-control" [(ngModel)]="esp.nuevoMonto" />
+      </td>
+      <td>
+        <button class="btn btn-success btn-sm" (click)="actualizarMonto(esp)">
+          Guardar
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

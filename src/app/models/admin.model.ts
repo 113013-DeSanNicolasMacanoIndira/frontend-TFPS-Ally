@@ -5,6 +5,7 @@ export interface AdminMetrics {
   admins: number;
   solicitudesPendientes: number;
   serviciosAceptados: number;
+  pagosProcesados: number; // ← AGREGAR ESTA LÍNEA
 }
 
 export interface AdminUser {

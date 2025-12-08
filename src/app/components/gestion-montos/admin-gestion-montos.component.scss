@@ -1,0 +1,68 @@
+:host {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 🔹 Título */
+h4 {
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 🔹 Tabla */
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table-primary {
+  background: linear-gradient(135deg, #0d6efd, #4ba3ff) !important;
+  color: #fff !important;
+  text-align: center;
+}
+
+/* 🔹 Fila */
+tbody tr {
+  transition: 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: #eef6ff;
+}
+
+/* 🔹 Input de monto */
+input.form-control {
+  max-width: 120px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* 🔹 Botón Guardar */
+.btn-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  transition: 0.2s ease-in-out;
+}
+
+.btn-success:hover {
+  transform: scale(1.05);
+}
+
+/* Animación de fade */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
