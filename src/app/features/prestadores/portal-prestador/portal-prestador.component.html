@@ -11,17 +11,16 @@
       </li>
 
       <!-- Sección 2: Solicitudes Recibidas -->
-      <li class="menu-item" [class.active]="seccionActiva === 'solicitudes'" (click)="cargarSolicitudesRecibidas(); cambiarSeccion('solicitudes')">
+      <li class="menu-item" [class.active]="seccionActiva === 'solicitudes'"
+          (click)="cargarSolicitudesRecibidas(); cambiarSeccion('solicitudes')">
         <i class="bi bi-inbox"></i> Solicitudes Recibidas
       </li>
 
       <!-- Sección 3: Solicitudes Confirmadas -->
-      <li class="menu-item" [class.active]="seccionActiva === 'confirmadas'" (click)="cargarSolicitudesConfirmadas(); cambiarSeccion('confirmadas')">
+      <li class="menu-item" [class.active]="seccionActiva === 'confirmadas'"
+          (click)="cargarSolicitudesConfirmadas(); cambiarSeccion('confirmadas')">
         <i class="bi bi-check-circle"></i> Solicitudes Confirmadas
       </li>
-
-      <!-- Enlace a Preguntas Frecuentes -->
-      
 
       <!-- CERRAR SESIÓN -->
       <li class="menu-item logout" (click)="logout()">
@@ -45,6 +44,7 @@
 
         <!-- Mensaje de carga -->
         <div *ngIf="loading" class="alert alert-info text-center">
+          <div class="spinner-border spinner-border-sm me-2" role="status"></div>
           Cargando información del prestador...
         </div>
 
@@ -111,6 +111,70 @@
                 </div>
               </div>
 
+              <!-- NUEVOS CAMPOS: Fecha Nacimiento y Telegram -->
+              <div class="row">
+                <!-- Fecha de Nacimiento -->
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Fecha de Nacimiento *</label>
+                  <input type="date" class="form-control" formControlName="fechaNacimiento"
+                         [class.is-invalid]="prestadorForm.get('fechaNacimiento')?.invalid && prestadorForm.get('fechaNacimiento')?.touched"
+                         [max]="maxDate">
+                  <div *ngIf="prestadorForm.get('fechaNacimiento')?.invalid && prestadorForm.get('fechaNacimiento')?.touched"
+                       class="invalid-feedback">
+                    <span *ngIf="prestadorForm.get('fechaNacimiento')?.errors?.['required']">
+                      La fecha de nacimiento es requerida
+                    </span>
+                    <span *ngIf="prestadorForm.get('fechaNacimiento')?.errors?.['maxDate']">
+                      La fecha no puede ser futura
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Telegram -->
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Usuario de Telegram</label>
+                  <div class="input-group">
+                    <span class="input-group-text">@</span>
+                    <input type="text" class="form-control" formControlName="telegram"
+                           placeholder="usuario_telegram (sin @)">
+                    <button type="button" class="btn btn-outline-secondary"
+                            (click)="abrirTelegramInfo()" title="¿Qué es Telegram?">
+                      <i class="bi bi-question-circle"></i>
+                    </button>
+                  </div>
+                  <small class="form-text text-muted">
+                    Opcional - Para comunicación directa con pacientes
+                  </small>
+                </div>
+              </div>
+
+              <!-- CBU Bancaria -->
+              <div class="mb-3">
+                <label class="form-label">CBU Bancaria *</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" formControlName="cbuBancaria"
+                         [class.is-invalid]="prestadorForm.get('cbuBancaria')?.invalid && prestadorForm.get('cbuBancaria')?.touched"
+                         placeholder="22 dígitos (sin espacios)"
+                         (input)="formatearCBU($event)">
+                  <button type="button" class="btn btn-outline-secondary"
+                          (click)="mostrarInfoCBU()" title="Información sobre CBU">
+                    <i class="bi bi-info-circle"></i>
+                  </button>
+                </div>
+                <div *ngIf="prestadorForm.get('cbuBancaria')?.invalid && prestadorForm.get('cbuBancaria')?.touched"
+                     class="invalid-feedback">
+                  <span *ngIf="prestadorForm.get('cbuBancaria')?.errors?.['required']">
+                    La CBU es requerida para recibir pagos
+                  </span>
+                  <span *ngIf="prestadorForm.get('cbuBancaria')?.errors?.['pattern']">
+                    Formato inválido. La CBU debe tener 22 dígitos
+                  </span>
+                </div>
+                <small class="form-text text-muted">
+                  Necesaria para transferencias de pagos. Ej: 0720321188000034567890
+                </small>
+              </div>
+
               <div class="mb-3">
                 <label class="form-label">Especialidad *</label>
                 <select class="form-select" formControlName="especialidadId"
@@ -135,7 +199,7 @@
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Matrícula</label>
                   <input type="text" class="form-control" formControlName="matricula"
-                         placeholder="Opcional">
+                         placeholder="Opcional - N° de matrícula profesional">
                 </div>
                 <div class="col-md-6 mb-3">
                   <div class="form-check mt-4">
@@ -172,13 +236,24 @@
                   <p><strong>Nombre:</strong> {{ prestador.nombre }}</p>
                   <p><strong>Apellido:</strong> {{ prestador.apellido }}</p>
                   <p><strong>Email:</strong> {{ prestador.email }}</p>
-
+                  <p><strong>Fecha Nacimiento:</strong> {{ prestador.fechaNacimiento | date:'dd/MM/yyyy' }}</p>
+                  <p><strong>Telegram:</strong> {{ prestador.telegram ? '@' + prestador.telegram : 'No registrado' }}</p>
                 </div>
                 <div class="col-md-6">
                   <p><strong>Teléfono:</strong> {{ prestador.telefono }}</p>
                   <p><strong>Dirección:</strong> {{ prestador.direccion }}</p>
                   <p><strong>Especialidad:</strong> {{ especialidadNombreMostrar || 'No especificada' }}</p>
-
+                  <p><strong>CBU Bancaria:</strong> {{ prestador.cbuBancaria | cbuFormat }}</p>
+                  <p><strong>Matrícula:</strong> {{ prestador.matricula || 'No registrada' }}</p>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12">
+                  <p><strong>Acepta Obra Social:</strong>
+                    <span class="badge" [ngClass]="prestador.coberturaObraSocial ? 'bg-success' : 'bg-secondary'">
+                      {{ prestador.coberturaObraSocial ? 'Sí' : 'No' }}
+                    </span>
+                  </p>
                 </div>
               </div>
               <div class="mt-4">
@@ -247,6 +322,57 @@
                   </div>
                 </div>
 
+                <!-- NUEVOS CAMPOS EN EDICIÓN -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" formControlName="fechaNacimiento"
+                           [class.is-invalid]="prestadorForm.get('fechaNacimiento')?.invalid && prestadorForm.get('fechaNacimiento')?.touched"
+                           [max]="maxDate">
+                    <div *ngIf="prestadorForm.get('fechaNacimiento')?.invalid && prestadorForm.get('fechaNacimiento')?.touched"
+                         class="invalid-feedback">
+                      <span *ngIf="prestadorForm.get('fechaNacimiento')?.errors?.['required']">
+                        La fecha de nacimiento es requerida
+                      </span>
+                      <span *ngIf="prestadorForm.get('fechaNacimiento')?.errors?.['maxDate']">
+                        La fecha no puede ser futura
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Usuario de Telegram</label>
+                    <div class="input-group">
+                      <span class="input-group-text">@</span>
+                      <input type="text" class="form-control" formControlName="telegram"
+                             placeholder="usuario_telegram (sin @)">
+                    </div>
+                    <small class="form-text text-muted">
+                      Opcional - Para comunicación con pacientes
+                    </small>
+                  </div>
+                </div>
+
+                <!-- CBU Bancaria en edición -->
+                <div class="mb-3">
+                  <label class="form-label">CBU Bancaria</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" formControlName="cbuBancaria"
+                           [class.is-invalid]="prestadorForm.get('cbuBancaria')?.invalid && prestadorForm.get('cbuBancaria')?.touched"
+                           placeholder="22 dígitos (sin espacios)"
+                           (input)="formatearCBU($event)">
+                  </div>
+                  <div *ngIf="prestadorForm.get('cbuBancaria')?.invalid && prestadorForm.get('cbuBancaria')?.touched"
+                       class="invalid-feedback">
+                    <span *ngIf="prestadorForm.get('cbuBancaria')?.errors?.['required']">
+                      La CBU es requerida
+                    </span>
+                    <span *ngIf="prestadorForm.get('cbuBancaria')?.errors?.['pattern']">
+                      Formato inválido. 22 dígitos requeridos
+                    </span>
+                  </div>
+                </div>
+
                 <div class="mb-3">
                   <label class="form-label">Especialidad</label>
                   <select class="form-select" formControlName="especialidadId"
@@ -260,9 +386,6 @@
                   <div *ngIf="prestadorForm.get('especialidadId')?.invalid && prestadorForm.get('especialidadId')?.touched"
                        class="invalid-feedback">
                     La especialidad es requerida
-                  </div>
-                  <div *ngIf="loadingEspecialidades" class="form-text text-info">
-                    <i class="bi bi-arrow-repeat spinner"></i> Cargando especialidades...
                   </div>
                 </div>
 
@@ -309,10 +432,12 @@
         </div>
 
         <div *ngIf="loading" class="alert alert-info text-center">
+          <div class="spinner-border spinner-border-sm me-2" role="status"></div>
           Cargando solicitudes...
         </div>
 
         <div *ngIf="!loading && solicitudesRecibidas.length === 0" class="alert alert-warning text-center">
+          <i class="bi bi-inbox-x me-2"></i>
           No tienes solicitudes pendientes por el momento.
         </div>
 
@@ -339,10 +464,12 @@
                   </span>
               </td>
               <td>
-                <button class="btn btn-success btn-sm me-2" (click)="aceptarSolicitud(s.id!)">
+                <button class="btn btn-success btn-sm me-2" (click)="aceptarSolicitud(s.id!)"
+                        title="Aceptar solicitud">
                   <i class="bi bi-check-lg"></i> Aceptar
                 </button>
-                <button class="btn btn-danger btn-sm" (click)="rechazarSolicitud(s.id!)">
+                <button class="btn btn-danger btn-sm" (click)="rechazarSolicitud(s.id!)"
+                        title="Rechazar solicitud">
                   <i class="bi bi-x-lg"></i> Rechazar
                 </button>
               </td>
@@ -362,10 +489,12 @@
         </div>
 
         <div *ngIf="loading" class="alert alert-info text-center">
+          <div class="spinner-border spinner-border-sm me-2" role="status"></div>
           Cargando solicitudes confirmadas...
         </div>
 
         <div *ngIf="!loading && solicitudesConfirmadas.length === 0" class="alert alert-warning text-center">
+          <i class="bi bi-check-circle me-2"></i>
           No tienes solicitudes confirmadas por el momento.
         </div>
 
@@ -411,40 +540,44 @@
     </div>
   </main>
 </div>
+
 <!-- ====================================================================================== -->
-<!--  BOTÓN FLOTANTE DE AYUDA -->
-<div class="help-button" (click)="abrirFaq()">
+<!-- BOTÓN FLOTANTE DE AYUDA -->
+<div class="help-button" (click)="abrirFaq()" title="Preguntas frecuentes">
   <i class="bi bi-question-circle"></i>
 </div>
 
-<!-- MODAL FAQ MEJORADO -->
+<!-- MODAL FAQ -->
 <div class="faq-modal" *ngIf="mostrarFaq">
   <div class="faq-box shadow-lg">
-    <button class="btn-close close-faq" (click)="cerrarFaq()"></button>
+    <button class="btn-close close-faq" (click)="cerrarFaq()" title="Cerrar"></button>
 
     <h4 class="text-center mb-3 fw-bold text-primary">Preguntas Frecuentes</h4>
 
     <div class="faq-content scrollable">
       <h6><strong>¿Cómo recibo nuevas solicitudes?</strong></h6>
-      <p>En la sección “Solicitudes”, donde podrás aceptar o rechazar pacientes.</p>
+      <p>En la sección "Solicitudes Recibidas" podrás ver, aceptar o rechazar solicitudes de pacientes.</p>
 
-      <h6><strong>¿Puedo actualizar mis horarios?</strong></h6>
-      <p>Sí, desde tu perfil profesional en “Disponibilidad”.</p>
+      <h6><strong>¿Puedo actualizar mis datos personales?</strong></h6>
+      <p>Sí, desde la sección "Mi Perfil" puedes editar toda tu información, incluyendo CBU y especialidad.</p>
 
-      <h6><strong>¿Cómo gestiono turnos activos?</strong></h6>
-      <p>Desde “Mis Servicios”, donde verás la agenda de pacientes asignados.</p>
+      <h6><strong>¿Cómo gestiono mis pagos?</strong></h6>
+      <p>Los pagos se procesan automáticamente según la forma de pago elegida por el paciente.</p>
 
-      <h6><strong>¿Quién puede ver mis datos?</strong></h6>
-      <p>Solo pacientes asignados y el equipo administrativo de la plataforma.</p>
+      <h6><strong>¿Quién puede ver mis datos de contacto?</strong></h6>
+      <p>Solo los pacientes a quienes hayas aceptado podrán ver tu información de contacto.</p>
 
-      <h6><strong>¿Dónde veo mis pagos?</strong></h6>
-      <p>En la sección “Liquidaciones”, con historial y estado de cobros.</p>
+      <h6><strong>¿Para qué sirve la CBU Bancaria?</strong></h6>
+      <p>Es necesaria para recibir transferencias de los pagos de tus servicios.</p>
+
       <hr />
-      <p class="text-center fw-bold">¿Alguna otra consulta? ¡Estamos para ayudarte!</p>
+      <p class="text-center fw-bold text-primary">¿Alguna otra consulta? ¡Estamos para ayudarte!</p>
     </div>
 
     <div class="text-center mt-3">
-      <button class="btn btn-primary px-4" (click)="cerrarFaq()">Entendido</button>
+      <button class="btn btn-primary px-4" (click)="cerrarFaq()">
+        <i class="bi bi-check-lg me-1"></i> Entendido
+      </button>
     </div>
   </div>
 </div>
