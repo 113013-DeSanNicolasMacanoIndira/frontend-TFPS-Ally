@@ -11,8 +11,12 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
-  getMetrics(): Observable<AdminMetrics> {
-    return this.http.get<AdminMetrics>(`${this.apiUrl}/metrics`);
+  getMetrics(fechaDesde?: string, fechaHasta?: string): Observable<AdminMetrics> {
+    let params: any = {};
+    if (fechaDesde) params.fechaDesde = fechaDesde;
+    if (fechaHasta) params.fechaHasta = fechaHasta;
+
+    return this.http.get<AdminMetrics>(`${this.apiUrl}/metrics`, { params });
   }
 
   getUsers(): Observable<AdminUser[]> {
@@ -23,6 +27,6 @@ export class AdminService {
     return this.http.patch<any>(`${this.apiUrl}/users/${id}/toggle`, {});
   }
   getPagosPorEspecialidad(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.apiUrl}/pagos-por-especialidad`);
- }
+    return this.http.get<any[]>(`${this.apiUrl}/pagos-por-especialidad`);
+  }
 }
