@@ -8,13 +8,14 @@ import { ProviderService } from '../../../services/provider.service';
 import { SpecialtyService } from '../../../services/specialty.service';
 import { Provider } from '../../../models/provider.model';
 import Swal from 'sweetalert2';
-
+import { CbuFormatPipe } from '../../../cbu-format-pipe'; // Pipe para formatear CBU
 @Component({
   selector: 'app-portal-prestador',
   standalone: true,
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CbuFormatPipe // Agregar el pipe
   ],
   templateUrl: './portal-prestador.component.html',
   styleUrls: ['./portal-prestador.component.scss']
@@ -48,6 +49,9 @@ export class PortalPrestadorComponent implements OnInit {
   solicitudes: any[] = [];
   cargando = true;
 
+  // Fecha máxima para fecha de nacimiento (no puede ser futura)
+  maxDate: string;
+
 
 
   constructor(
@@ -58,6 +62,12 @@ export class PortalPrestadorComponent implements OnInit {
     private specialtyService: SpecialtyService,
     private router: Router
   ) {
+
+    // Configurar fecha máxima para fecha de nacimiento
+    // Fecha actual para validación
+    const today = new Date();
+    this.maxDate = today.toISOString().split('T')[0];
+
     // Inicializar formulario reactivo (igual que en registrar-paciente)
     this.prestadorForm = this.fb.group({
       nombre: ['', Validators.required],
@@ -67,7 +77,11 @@ export class PortalPrestadorComponent implements OnInit {
       direccion: ['', Validators.required],
       especialidadId: ['', Validators.required],
       matricula: [''],
-      coberturaObraSocial: [false]
+      coberturaObraSocial: [false],
+      // NUEVOS CAMPOS
+      fechaNacimiento: ['', [Validators.required, this.maxDateValidator.bind(this)]],
+      telegram: [''],
+      cbuBancaria: ['', [Validators.required, Validators.pattern(/^\d{22}$/)]]
     });
   }
 
@@ -84,7 +98,21 @@ export class PortalPrestadorComponent implements OnInit {
     this.cargarEspecialidades();
     this.verificarPrestadorRegistrado(user.id);
   }
+  // Validador personalizado para fecha máxima (no futura)
+  private maxDateValidator(control: any) {
+    if (!control.value) {
+      return null;
+    }
 
+    const selectedDate = new Date(control.value);
+    const today = new Date();
+
+    // Limpiar horas para comparar solo fechas
+    selectedDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+
+    return selectedDate > today ? { maxDate: true } : null;
+  }
   // Cargar especialidades desde el endpoint
   cargarEspecialidades() {
     this.loadingEspecialidades = true;
@@ -102,7 +130,13 @@ export class PortalPrestadorComponent implements OnInit {
           { id: 2, codigo: 'PED', nombre: 'Pediatría' },
           { id: 3, codigo: 'CARD', nombre: 'Cardiología' },
           { id: 4, codigo: 'DERM', nombre: 'Dermatología' },
-          { id: 5, codigo: 'OFT', nombre: 'Oftalmología' }
+          { id: 5, codigo: 'OFT', nombre: 'Oftalmología' },
+          { id: 6, codigo: 'KINESIOLOGIA', nombre: 'Kinesiología' },
+          { id: 7, codigo: 'PSICOLOGIA', nombre: 'Psicología' },
+          { id: 8, codigo: 'FONOAUDIOLOGIA', nombre: 'Fonoaudiología' },
+          { id: 9, codigo: 'TERAPIA_OCUPACIONAL', nombre: 'Terapia Ocupacional' },
+          { id: 10, codigo: 'ASISTENTE_TERAPEUTICO', nombre: 'Asistente Terapéutico' },
+          { id: 11, codigo: 'TRANSPORTE_SANITARIO', nombre: 'Transporte Sanitario' }
         ];
         Swal.fire('Información', 'Se cargaron especialidades de ejemplo', 'info');
       }
@@ -154,6 +188,14 @@ export class PortalPrestadorComponent implements OnInit {
     // Encontrar el ID de la especialidad basado en el código
     const especialidad = this.especialidades.find(esp => esp.codigo === prestador.codigoEspecialidad);
 
+
+    // Formatear fecha para input type="date"
+    let fechaNacimientoFormatted = '';
+    if (prestador.fechaNacimiento) {
+      const fecha = new Date(prestador.fechaNacimiento);
+      fechaNacimientoFormatted = fecha.toISOString().split('T')[0];
+    }
+
     this.prestadorForm.patchValue({
       nombre: prestador.nombre,
       apellido: prestador.apellido,
@@ -161,7 +203,12 @@ export class PortalPrestadorComponent implements OnInit {
       telefono: prestador.telefono,
       direccion: prestador.direccion,
       especialidadId: especialidad?.id || '',
-
+      matricula: prestador.matricula || '',
+      coberturaObraSocial: prestador.coberturaObraSocial || false,
+      // NUEVOS CAMPOS
+      fechaNacimiento: fechaNacimientoFormatted,
+      telegram: prestador.telegram || '',
+      cbuBancaria: prestador.cbuBancaria || ''
     });
 
     this.especialidadNombreMostrar = especialidad?.nombre || prestador.codigoEspecialidad;
@@ -176,6 +223,69 @@ export class PortalPrestadorComponent implements OnInit {
     } else if (seccion === 'confirmadas') {
       this.cargarSolicitudesConfirmadas();
     }
+  }
+
+  // Formatear CBU mientras se escribe
+  formatearCBU(event: any): void {
+    let value = event.target.value.replace(/\D/g, ''); // Solo números
+
+    // Limitar a 22 dígitos
+    if (value.length > 22) {
+      value = value.substring(0, 22);
+    }
+
+    // Formato visual: 0000-0000-0000-0000-0000
+    if (value.length > 0) {
+      const formatted = value.match(/.{1,4}/g)?.join('-') || value;
+      event.target.value = formatted;
+    }
+
+    // Actualizar el form control con solo números
+    this.prestadorForm.get('cbuBancaria')?.setValue(value, { emitEvent: false });
+  }
+
+  // Mostrar información sobre CBU
+  mostrarInfoCBU(): void {
+    Swal.fire({
+      title: '¿Qué es la CBU?',
+      html: `
+        <div class="text-start">
+          <p><strong>CBU (Clave Bancaria Uniforme)</strong> es un código de 22 dígitos que identifica tu cuenta bancaria.</p>
+          <p><strong>¿Dónde la encuentro?</strong></p>
+          <ul>
+            <li>En tu home banking</li>
+            <li>En el resumen de cuenta</li>
+            <li>En la app de tu banco</li>
+            <li>Formato: 0720-3211-8800-0034-5678-90</li>
+          </ul>
+          <p class="text-danger"><strong>Importante:</strong> Solo ingresá números, sin espacios ni guiones.</p>
+        </div>
+      `,
+      icon: 'info',
+      confirmButtonText: 'Entendido'
+    });
+  }
+
+  // Información sobre Telegram
+  abrirTelegramInfo(): void {
+    Swal.fire({
+      title: '¿Por qué Telegram?',
+      html: `
+        <div class="text-start">
+          <p>Telegram nos permite:</p>
+          <ul>
+            <li>Comunicación directa con pacientes</li>
+            <li>Envío de recordatorios de turnos</li>
+            <li>Compartir documentos e información</li>
+            <li>Mensajes cifrados y seguros</li>
+          </ul>
+          <p><strong>Ejemplo:</strong> Si tu usuario es @dr_roberto, solo ingresá: <code>dr_roberto</code></p>
+          <p class="text-muted"><small>Este campo es opcional pero recomendado.</small></p>
+        </div>
+      `,
+      icon: 'question',
+      confirmButtonText: 'Entendido'
+    });
   }
 
   // SECCIÓN PERFIL - Registrar prestador
@@ -216,7 +326,12 @@ export class PortalPrestadorComponent implements OnInit {
       codigoEspecialidad: especialidadSeleccionada.codigo, // Usar el código, no el ID
       activo: true,
       idUsuario: loggedUser.id,
-
+      matricula: formValue.matricula || undefined,
+      coberturaObraSocial: formValue.coberturaObraSocial || false,
+      // NUEVOS CAMPOS
+      fechaNacimiento: formValue.fechaNacimiento,
+      telegram: formValue.telegram || undefined,
+      cbuBancaria: formValue.cbuBancaria.replace(/\D/g, '') // Limpiar guiones
     };
 
     this.providerService.create(payload).subscribe({
@@ -284,6 +399,12 @@ export class PortalPrestadorComponent implements OnInit {
       codigoEspecialidad: especialidadSeleccionada.codigo,
       activo: this.prestador.activo,
       idUsuario: this.prestador.idUsuario,
+      matricula: formValue.matricula || undefined,
+      coberturaObraSocial: formValue.coberturaObraSocial || false,
+      // NUEVOS CAMPOS
+      fechaNacimiento: formValue.fechaNacimiento,
+      telegram: formValue.telegram || undefined,
+      cbuBancaria: formValue.cbuBancaria.replace(/\D/g, '') // Limpiar guiones
 
     };
 
