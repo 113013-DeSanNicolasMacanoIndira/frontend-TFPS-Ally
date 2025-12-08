@@ -32,13 +32,13 @@
       <div>
         <h2>Pagos de Servicios</h2>
         <p>
-          Hola, <strong>{{ username }}</strong>. Aquí podés gestionar los pagos de tus servicios aceptados.
+          Hola, <strong>{{ username }}</strong
+          >. Aquí podés gestionar los pagos de tus servicios aceptados.
         </p>
       </div>
     </header>
 
     <section class="pagos-container">
-
       <!-- ============ LISTA DE SOLICITUDES ACEPTADAS ============ -->
       <article class="card solicitudes-card" *ngIf="!solicitudSeleccionada">
         <div class="card-header">
@@ -52,7 +52,7 @@
         </div>
 
         <div *ngIf="!cargando && solicitudesAceptadas.length === 0" class="alert alert-empty">
-          <i class="bi bi-check-circle-fill text-success mb-3" style="font-size: 3rem;"></i>
+          <i class="bi bi-check-circle-fill text-success mb-3" style="font-size: 3rem"></i>
           <h4>¡No tenés pagos pendientes!</h4>
           <p>Todos tus servicios aceptados ya han sido pagados.</p>
           <button class="btn btn-outline-primary" routerLink="/mis-solicitudes">
@@ -61,10 +61,11 @@
         </div>
 
         <div *ngIf="solicitudesAceptadas.length > 0" class="solicitudes-list">
-          <div *ngFor="let solicitud of solicitudesAceptadas"
-               class="solicitud-item"
-               [class.selected]="solicitudSeleccionada?.id === solicitud.id">
-
+          <div
+            *ngFor="let solicitud of solicitudesAceptadas"
+            class="solicitud-item"
+            [class.selected]="solicitudSeleccionada?.id === solicitud.id"
+          >
             <div class="solicitud-info">
               <div class="solicitud-header">
                 <h4>{{ solicitud.especialidad || 'Servicio de Salud' }}</h4>
@@ -73,7 +74,9 @@
                 </span>
               </div>
 
-              <p class="solicitud-descripcion">{{ solicitud.descripcion || 'Sin descripción adicional' }}</p>
+              <p class="solicitud-descripcion">
+                {{ solicitud.descripcion || 'Sin descripción adicional' }}
+              </p>
 
               <div class="solicitud-details">
                 <span class="prestador">
@@ -82,11 +85,11 @@
                 </span>
                 <span class="fecha">
                   <i class="bi bi-calendar-event"></i>
-                  {{ solicitud.fechaSolicitud | date:'dd/MM/yyyy' }}
+                  {{ solicitud.fechaSolicitud | date : 'dd/MM/yyyy' }}
                 </span>
                 <span class="monto">
                   <i class="bi bi-currency-dollar"></i>
-                  ${{ solicitud.monto || calcularMontoDefault() }}
+                  {{ solicitud.monto || calcularMontoDefault() | currency:'ARS':'symbol':'1.0-0' }}
                 </span>
               </div>
             </div>
@@ -132,13 +135,14 @@
             </div>
             <div class="detail-row highlight">
               <span class="detail-label">Monto a Pagar:</span>
-              <span class="detail-value precio">${{ solicitudSeleccionada.monto || calcularMontoDefault() }}</span>
+              <span class="detail-value precio"
+                >${{ solicitudSeleccionada.monto || calcularMontoDefault() }}</span
+              >
             </div>
           </div>
         </div>
 
         <form [formGroup]="pagoForm" (ngSubmit)="procesarPago()">
-
           <!-- Método de Pago -->
           <div class="form-section">
             <h4>
@@ -148,10 +152,12 @@
             <p class="text-muted">Elegí cómo deseas realizar el pago del servicio</p>
 
             <div class="metodos-pago">
-              <div *ngFor="let metodo of metodosPago"
-                   class="metodo-pago-option"
-                   [class.selected]="metodoPagoSeleccionado === metodo.value"
-                   (click)="onMetodoPagoChange(metodo.value)">
+              <div
+                *ngFor="let metodo of metodosPago"
+                class="metodo-pago-option"
+                [class.selected]="metodoPagoSeleccionado === metodo.value"
+                (click)="onMetodoPagoChange(metodo.value)"
+              >
                 <div class="metodo-icon">
                   <i class="bi {{ metodo.icon }}"></i>
                 </div>
@@ -177,24 +183,37 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-label">Número de Cuenta</label>
-                    <input type="text" formControlName="numeroCuenta" class="form-control"
-                           placeholder="Ej: 123-456789/1">
+                    <input
+                      type="text"
+                      formControlName="numeroCuenta"
+                      class="form-control"
+                      placeholder="Ej: 123-456789/1"
+                    />
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-label">Nombre del Titular</label>
-                    <input type="text" formControlName="nombreTitular" class="form-control"
-                           placeholder="Nombre como aparece en la cuenta">
+                    <input
+                      type="text"
+                      formControlName="nombreTitular"
+                      class="form-control"
+                      placeholder="Nombre como aparece en la cuenta"
+                    />
                   </div>
                 </div>
               </div>
               <div class="form-group">
                 <label class="form-label">CBU/CVU</label>
-                <input type="text" formControlName="cbu" class="form-control"
-                       placeholder="22 dígitos del CBU o CVU">
+                <input
+                  type="text"
+                  formControlName="cbu"
+                  class="form-control"
+                  placeholder="22 dígitos del CBU o CVU"
+                />
                 <small class="form-text text-muted">
-                  Una vez realizada la transferencia, enviá el comprobante a través de la plataforma.
+                  Una vez realizada la transferencia, enviá el comprobante a través de la
+                  plataforma.
                 </small>
               </div>
             </div>
@@ -211,10 +230,22 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-label">Número de Afiliado *</label>
-                    <input type="text" formControlName="numeroAfiliado" class="form-control"
-                           [class.is-invalid]="pagoForm.get('datosObraSocial.numeroAfiliado')?.invalid && pagoForm.get('datosObraSocial.numeroAfiliado')?.touched">
-                    <div *ngIf="pagoForm.get('datosObraSocial.numeroAfiliado')?.invalid && pagoForm.get('datosObraSocial.numeroAfiliado')?.touched"
-                         class="invalid-feedback">
+                    <input
+                      type="text"
+                      formControlName="numeroAfiliado"
+                      class="form-control"
+                      [class.is-invalid]="
+                        pagoForm.get('datosObraSocial.numeroAfiliado')?.invalid &&
+                        pagoForm.get('datosObraSocial.numeroAfiliado')?.touched
+                      "
+                    />
+                    <div
+                      *ngIf="
+                        pagoForm.get('datosObraSocial.numeroAfiliado')?.invalid &&
+                        pagoForm.get('datosObraSocial.numeroAfiliado')?.touched
+                      "
+                      class="invalid-feedback"
+                    >
                       El número de afiliado es requerido
                     </div>
                   </div>
@@ -222,10 +253,22 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="form-label">Plan *</label>
-                    <input type="text" formControlName="plan" class="form-control"
-                           [class.is-invalid]="pagoForm.get('datosObraSocial.plan')?.invalid && pagoForm.get('datosObraSocial.plan')?.touched">
-                    <div *ngIf="pagoForm.get('datosObraSocial.plan')?.invalid && pagoForm.get('datosObraSocial.plan')?.touched"
-                         class="invalid-feedback">
+                    <input
+                      type="text"
+                      formControlName="plan"
+                      class="form-control"
+                      [class.is-invalid]="
+                        pagoForm.get('datosObraSocial.plan')?.invalid &&
+                        pagoForm.get('datosObraSocial.plan')?.touched
+                      "
+                    />
+                    <div
+                      *ngIf="
+                        pagoForm.get('datosObraSocial.plan')?.invalid &&
+                        pagoForm.get('datosObraSocial.plan')?.touched
+                      "
+                      class="invalid-feedback"
+                    >
                       El plan es requerido
                     </div>
                   </div>
@@ -233,10 +276,22 @@
               </div>
               <div class="form-group">
                 <label class="form-label">Teléfono de Contacto *</label>
-                <input type="tel" formControlName="telefono" class="form-control"
-                       [class.is-invalid]="pagoForm.get('datosObraSocial.telefono')?.invalid && pagoForm.get('datosObraSocial.telefono')?.touched">
-                <div *ngIf="pagoForm.get('datosObraSocial.telefono')?.invalid && pagoForm.get('datosObraSocial.telefono')?.touched"
-                     class="invalid-feedback">
+                <input
+                  type="tel"
+                  formControlName="telefono"
+                  class="form-control"
+                  [class.is-invalid]="
+                    pagoForm.get('datosObraSocial.telefono')?.invalid &&
+                    pagoForm.get('datosObraSocial.telefono')?.touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    pagoForm.get('datosObraSocial.telefono')?.invalid &&
+                    pagoForm.get('datosObraSocial.telefono')?.touched
+                  "
+                  class="invalid-feedback"
+                >
                   El teléfono es requerido
                 </div>
               </div>
@@ -247,21 +302,41 @@
           <div class="form-section" *ngIf="metodoPagoSeleccionado === 'EFECTIVO'">
             <div class="alert alert-info">
               <h5><i class="bi bi-info-circle me-2"></i>Pago en Efectivo</h5>
-              <p class="mb-0">El pago se realizará al momento de recibir el servicio. El prestador te proporcionará un comprobante de pago.</p>
+              <p class="mb-0">
+                El pago se realizará al momento de recibir el servicio. El prestador te
+                proporcionará un comprobante de pago.
+              </p>
             </div>
           </div>
 
           <!-- Confirmación -->
           <div class="form-section">
             <div class="form-check confirmation-check">
-              <input type="checkbox" formControlName="confirmacion" class="form-check-input" id="confirmacion"
-                     [class.is-invalid]="pagoForm.get('confirmacion')?.invalid && pagoForm.get('confirmacion')?.touched">
+              <input
+                type="checkbox"
+                formControlName="confirmacion"
+                class="form-check-input"
+                id="confirmacion"
+                [class.is-invalid]="
+                  pagoForm.get('confirmacion')?.invalid && pagoForm.get('confirmacion')?.touched
+                "
+              />
               <label class="form-check-label" for="confirmacion">
-                Confirmo que los datos ingresados son correctos y autorizo el procesamiento del pago por el monto de
-                <strong>${{ solicitudSeleccionada.monto || calcularMontoDefault() }}</strong>.
+                Confirmo que los datos ingresados son correctos y autorizo el procesamiento del pago
+                por el monto de
+                <strong
+                  >{{
+                    solicitudSeleccionada.monto || calcularMontoDefault()
+                      | currency : 'ARS' : 'symbol' : '1.0-0'
+                  }} </strong
+                >.
               </label>
-              <div *ngIf="pagoForm.get('confirmacion')?.invalid && pagoForm.get('confirmacion')?.touched"
-                   class="invalid-feedback">
+              <div
+                *ngIf="
+                  pagoForm.get('confirmacion')?.invalid && pagoForm.get('confirmacion')?.touched
+                "
+                class="invalid-feedback"
+              >
                 Debes confirmar para proceder con el pago
               </div>
             </div>
@@ -269,24 +344,27 @@
 
           <!-- Botones de acción -->
           <div class="form-actions">
-            <button type="submit"
-                    class="btn btn-success btn-lg"
-                    [disabled]="pagoForm.invalid || procesandoPago">
+            <button
+              type="submit"
+              class="btn btn-success btn-lg"
+              [disabled]="pagoForm.invalid || procesandoPago"
+            >
               <span *ngIf="procesandoPago" class="spinner-border spinner-border-sm me-2"></span>
               <i class="bi bi-check-circle me-2" *ngIf="!procesandoPago"></i>
               {{ procesandoPago ? 'Procesando Pago...' : 'Confirmar y Procesar Pago' }}
             </button>
 
-            <button type="button"
-                    class="btn btn-outline-secondary"
-                    (click)="solicitudSeleccionada = null">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              (click)="solicitudSeleccionada = null"
+            >
               <i class="bi bi-x-circle me-1"></i>
               Cancelar
             </button>
           </div>
         </form>
       </article>
-
     </section>
   </main>
 </div>

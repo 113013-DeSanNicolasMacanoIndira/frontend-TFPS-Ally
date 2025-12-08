@@ -3,20 +3,22 @@ import { CommonModule } from '@angular/common';
 import { AdminService } from './../../services/admin.service';
 import { AdminMetrics, AdminUser } from './../../models/admin.model';
 import { AuthService } from './../../services/auth.service'; //  IMPORTANTE
-
+//  IMPORTANTE: agregar el componente de gráficos
+import { AdminChartsComponent } from '../../components/admin-charts/admin-charts.component';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, AdminChartsComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss'],
 })
 export class AdminDashboardComponent implements OnInit {
   metricCards: any[] = [];
   usuarios: AdminUser[] = [];
-
+   //  Agregado para el sistema de pestañas
+  tabActiva: string = 'dashboard';
   constructor(private adminService: AdminService, private authService: AuthService) {}
 
   ngOnInit(): void {

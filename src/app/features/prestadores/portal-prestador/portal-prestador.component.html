@@ -399,7 +399,7 @@
                 <span class="text-muted">{{ s.formaPago || 'No especificado' }}</span>
               </td>
               <td>
-                <strong>{{ s.monto || '0' | currency }}</strong>
+                <strong>{{ s.monto || 0 | currency:'ARS':'symbol':'1.0-0' }}</strong>
               </td>
             </tr>
             </tbody>

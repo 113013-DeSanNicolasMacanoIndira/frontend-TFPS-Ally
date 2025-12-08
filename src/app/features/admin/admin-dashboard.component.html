@@ -1,11 +1,9 @@
 <nav class="admin-nav shadow-sm">
   <div class="d-flex align-items-center justify-content-between container-fluid">
-    <h3 class="fw-bold text-primary m-0">Panel de Control-Admin</h3>
+    <h3 class="fw-bold text-primary m-0">Panel de Administración</h3>
 
     <div class="admin-profile d-flex align-items-center gap-2">
-      <span class="fw-semibold"></span>
       <img src="/icons/logolargo.png" class="profile-img" alt="Admin" />
-      <!--  BOTÓN LOGOUT -->
       <button class="logout-btn" (click)="logout()">
         <i class="bi bi-box-arrow-right"></i>
         Salir
@@ -15,69 +13,89 @@
 </nav>
 
 <div class="container mt-4">
-  <!--  MÉTRICAS -->
-  <div class="stats-grid">
-    <div
-      *ngFor="let card of metricCards"
-      class="stat-card shadow"
-      [ngStyle]="{ background: card.gradient }"
-    >
-      <div class="icon-box">
-        <i [class]="card.icon"></i>
-      </div>
 
-      <div>
-        <h3>{{ card.value }}</h3>
-        <p>{{ card.label }}</p>
+  <!-- 🔹 Navegación por pestañas -->
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="tabActiva === 'dashboard'"
+         (click)="tabActiva = 'dashboard'">
+        <i class="bi bi-speedometer2"></i> Dashboard General
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="tabActiva === 'estadisticas'"
+         (click)="tabActiva = 'estadisticas'">
+        <i class="bi bi-bar-chart"></i> Estadísticas
+      </a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="tabActiva === 'usuarios'"
+         (click)="tabActiva = 'usuarios'">
+        <i class="bi bi-people"></i> Gestión Usuarios
+      </a>
+    </li>
+  </ul>
+
+  <!-- 📌 TAB: MÉTRICAS -->
+  <div *ngIf="tabActiva === 'dashboard'">
+    <div class="stats-grid">
+      <div *ngFor="let card of metricCards"
+           class="stat-card shadow"
+           [ngStyle]="{ background: card.gradient }">
+        <div class="icon-box"><i [class]="card.icon"></i></div>
+        <div>
+          <h3>{{ card.value }}</h3>
+          <p>{{ card.label }}</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <hr class="my-4" />
-
-  <!--  TABLA DE USUARIOS -->
-  <div class="card shadow p-3">
-    <h5 class="fw-bold mb-3">Usuarios del Sistema</h5>
-
-    <table class="table table-hover align-middle text-center">
-      <thead class="table-primary">
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Rol</th>
-          <th>Estado</th>
-          <th>Acción</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let u of usuarios">
-          <td>{{ u.id }}</td>
-          <td>{{ u.nombre }}</td>
-          <!-- ✔ antes decía u.usuario -->
-          <td>{{ u.rol }}</td>
-
-          <td>
-            <span
-              class="badge status-pill"
-              [ngClass]="u.activo ? 'active-status' : 'blocked-status'"
-            >
-              <i class="bi" [ngClass]="u.activo ? 'bi-check-circle' : 'bi-x-circle'"></i>
-              {{ u.activo ? 'Activo' : 'Bloqueado' }}
-            </span>
-          </td>
-
-          <td>
-            <button
-              class="btn action-btn btn-sm"
-              [ngClass]="u.activo ? 'btn-block' : 'btn-activate'"
-              (click)="toggleEstado(u)"
-            >
-              <i class="bi" [ngClass]="u.activo ? 'bi-lock' : 'bi-unlock'"></i>
-              {{ u.activo ? 'Bloquear' : 'Activar' }}
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- 📌 TAB: GRÁFICOS -->
+  <div *ngIf="tabActiva === 'estadisticas'">
+    <app-admin-charts></app-admin-charts>
   </div>
+
+  <!-- 📌 TAB: USUARIOS -->
+  <div *ngIf="tabActiva === 'usuarios'">
+    <!-- (REUTILIZAMOS TU TABLA EXISTENTE) -->
+    <div class="card shadow p-3">
+      <h5 class="fw-bold mb-3">Usuarios del Sistema</h5>
+
+      <table class="table table-hover align-middle text-center">
+        <thead class="table-primary">
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of usuarios">
+            <td>{{ u.id }}</td>
+            <td>{{ u.nombre }}</td>
+            <td>{{ u.rol }}</td>
+            <td>
+              <span class="badge status-pill"
+                [ngClass]="u.activo ? 'active-status' : 'blocked-status'">
+                {{ u.activo ? 'Activo' : 'Bloqueado' }}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-sm"
+                [ngClass]="u.activo ? 'btn-danger' : 'btn-success'"
+                (click)="toggleEstado(u)">
+                {{ u.activo ? 'Bloquear' : 'Activar' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
