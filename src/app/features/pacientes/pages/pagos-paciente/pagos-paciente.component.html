@@ -173,6 +173,13 @@
                 </div>
               </div>
             </div>
+
+            <!-- Mostrar error si no se selecciona método -->
+            <div *ngIf="pagoForm.get('metodoPago')?.invalid && pagoForm.get('metodoPago')?.touched"
+                 class="alert alert-danger mt-2">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              Debes seleccionar un método de pago
+            </div>
           </div>
 
           <!-- Campo de Importe a Pagar (solo lectura) -->
@@ -210,11 +217,42 @@
               <i class="bi bi-bank me-2"></i>
               Datos para Transferencia Bancaria
             </h4>
+            <p class="text-muted">Complete los datos de su cuenta bancaria</p>
             <div formGroupName="datosTransferencia">
+              <div class="form-group">
+                <label class="form-label">CBU/CVU *</label>
+                <input
+                  type="text"
+                  formControlName="cbu"
+                  class="form-control"
+                  placeholder="22 dígitos del CBU o CVU"
+                  [class.is-invalid]="
+                    pagoForm.get('datosTransferencia.cbu')?.invalid &&
+                    pagoForm.get('datosTransferencia.cbu')?.touched
+                  "
+                />
+                <div
+                  *ngIf="
+                    pagoForm.get('datosTransferencia.cbu')?.invalid &&
+                    pagoForm.get('datosTransferencia.cbu')?.touched
+                  "
+                  class="invalid-feedback"
+                >
+                  <span *ngIf="pagoForm.get('datosTransferencia.cbu')?.errors?.['required']">
+                    El CBU es requerido
+                  </span>
+                  <span *ngIf="pagoForm.get('datosTransferencia.cbu')?.errors?.['minlength'] || pagoForm.get('datosTransferencia.cbu')?.errors?.['maxlength']">
+                    El CBU debe tener 22 dígitos exactos
+                  </span>
+                </div>
+                <small class="form-text text-muted">
+                  El CBU es necesario para procesar la transferencia. Ej: 0720321188000034567890
+                </small>
+              </div>
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-label">Número de Cuenta</label>
+                    <label class="form-label">Número de Cuenta (opcional)</label>
                     <input
                       type="text"
                       formControlName="numeroCuenta"
@@ -225,7 +263,7 @@
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-label">Nombre del Titular</label>
+                    <label class="form-label">Nombre del Titular (opcional)</label>
                     <input
                       type="text"
                       formControlName="nombreTitular"
@@ -234,19 +272,6 @@
                     />
                   </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">CBU/CVU</label>
-                <input
-                  type="text"
-                  formControlName="cbu"
-                  class="form-control"
-                  placeholder="22 dígitos del CBU o CVU"
-                />
-                <small class="form-text text-muted">
-                  Una vez realizada la transferencia, enviá el comprobante a través de la
-                  plataforma.
-                </small>
               </div>
             </div>
           </div>
@@ -350,7 +375,7 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="form-label">Email para confirmación</label>
+                    <label class="form-label">Email para confirmación (opcional)</label>
                     <input
                       type="email"
                       formControlName="email"
@@ -370,6 +395,9 @@
                     >
                       Por favor, ingresa un email válido
                     </div>
+                    <small class="form-text text-muted">
+                      Si no completas, se usará tu email de registro: {{ username }}
+                    </small>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -398,8 +426,8 @@
             </div>
           </div>
 
-          <!-- Información de Pago en Efectivo -->
-          <div class="form-section" *ngIf="metodoPagoSeleccionado === 'EFECTIVO'">
+          <!-- Información de Pago en Efectivo (CONTADO) -->
+          <div class="form-section" *ngIf="metodoPagoSeleccionado === 'CONTADO'">
             <div class="alert alert-info">
               <h5><i class="bi bi-info-circle me-2"></i>Pago en Efectivo</h5>
               <p class="mb-0">
@@ -459,6 +487,13 @@
                   : (procesandoPago ? 'Procesando Pago...' : 'Confirmar y Procesar Pago')
               }}
             </button>
+
+            <!-- Debug info (activar temporalmente si hay problemas) -->
+            <div class="mt-2 small text-danger" *ngIf="false">
+              <strong>Debug:</strong> Form válido: {{ pagoForm.valid }} |
+              Confirmación: {{ pagoForm.get('confirmacion')?.value }} |
+              Método: {{ pagoForm.get('metodoPago')?.value }}
+            </div>
 
             <button
               type="button"

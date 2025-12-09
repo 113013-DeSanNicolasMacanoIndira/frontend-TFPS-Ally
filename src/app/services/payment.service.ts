@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
-import {Pago} from '../models/pago.model';
+import { Pago, PaymentRequestDTO, MercadoPagoPreferenceResponse } from '../models/pago.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,6 @@ export class PaymentService {
 
   /**
    * Obtiene las solicitudes aceptadas de un paciente para pagar
-   * Usa el endpoint: GET /api/pagos-paciente-aceptadas/{idPaciente}
    */
   getSolicitudesAceptadasParaPago(): Observable<any[]> {
     const user = this.authService.getUser();
@@ -33,60 +32,20 @@ export class PaymentService {
   }
 
   /**
-   * Crea un nuevo pago
-   * (Ajusta el endpoint según tu backend)
+   * Crea un nuevo pago (para métodos tradicionales)
    */
-  createPayment(paymentData: any): Observable<Pago> {
-    // Endpoint temporal - ajusta según tu backend
-    return this.http.post<Pago>(`${this.API_URL}/v1/payments/process`, paymentData);
-
-    // O si prefieres simulación:
-    // return of(this.simularPagoExitoso(paymentData));
+  createPayment(paymentRequest: PaymentRequestDTO): Observable<Pago> {
+    return this.http.post<Pago>(`${this.API_URL}/v1/payments/process`, paymentRequest);
   }
 
   /**
    * Crea una preferencia de pago en Mercado Pago
-   * @param pagoData Datos del pago
-   * @returns Observable con la respuesta de Mercado Pago
    */
-  crearPreferenciaMercadoPago(pagoData: any): Observable<any> {
-    // Endpoint para crear preferencia de Mercado Pago
-    // Ajusta según tu backend
-    return this.http.post<any>(`${this.API_URL}/mercadopago/create-preference`, pagoData);
-
-    // O si prefieres simulación hasta implementar el backend:
-    // return of(this.simularPreferenciaMercadoPago(pagoData));
-  }
-
-  /**
-   * Simula la creación de una preferencia de Mercado Pago
-   */
-  private simularPreferenciaMercadoPago(pagoData: any): any {
-    // Simulación de respuesta de Mercado Pago
-    return {
-      id: 'pref_' + Date.now(),
-      init_point: 'https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=' + Date.now(),
-      sandbox_init_point: 'https://sandbox.mercadopago.com.ar/checkout/v1/redirect?pref_id=' + Date.now(),
-      items: [
-        {
-          title: `Servicio: ${pagoData.servicioId}`,
-          quantity: 1,
-          unit_price: pagoData.monto,
-          currency_id: 'ARS'
-        }
-      ],
-      payer: {
-        email: pagoData.emailPagador || pagoData.emailMercadoPago || 'cliente@ejemplo.com'
-      },
-      external_reference: `servicio_${pagoData.servicioId}`,
-      notification_url: `${environment.apiUrl}/api/mercadopago/webhook`,
-      back_urls: {
-        success: `${window.location.origin}/pago-exitoso`,
-        failure: `${window.location.origin}/pago-fallido`,
-        pending: `${window.location.origin}/pago-pendiente`
-      },
-      auto_return: 'approved'
-    };
+  crearPreferenciaMercadoPago(paymentRequest: PaymentRequestDTO): Observable<MercadoPagoPreferenceResponse> {
+    return this.http.post<MercadoPagoPreferenceResponse>(
+      `${this.API_URL}/v1/payments/mercado-pago/preference`,
+      paymentRequest
+    );
   }
 
   /**
@@ -96,51 +55,24 @@ export class PaymentService {
     return [
       {
         id: 1,
-        especialidad: 'FISIOTERAPIA',
+        especialidad: 'Fisioterapia',
         descripcion: 'Sesión de rehabilitación muscular',
         prestadorNombre: 'Dr. Juan Pérez',
-        prestadorId: 101,
+        montoApagar: 4500,
         monto: 4500,
-        fechaSolicitud: new Date('2025-11-27'),
+        fechaSolicitud: new Date(),
         estado: 'ACEPTADO',
-        pagado: false
       },
       {
         id: 2,
-        especialidad: 'ENFERMERIA',
+        especialidad: 'Enfermería',
         descripcion: 'Cuidados domiciliarios post-operatorios',
         prestadorNombre: 'Lic. María García',
-        prestadorId: 102,
+        montoApagar: 3500,
         monto: 3500,
-        fechaSolicitud: new Date('2025-11-26'),
+        fechaSolicitud: new Date(),
         estado: 'ACEPTADO',
-        pagado: false
       },
-      {
-        id: 3,
-        especialidad: 'TERAPIA_OCUPACIONAL',
-        descripcion: 'Terapia de integración sensorial',
-        prestadorNombre: 'Lic. Carlos López',
-        prestadorId: 103,
-        monto: 5000,
-        fechaSolicitud: new Date('2025-11-25'),
-        estado: 'ACEPTADO',
-        pagado: false
-      }
     ];
-  }
-
-  /**
-   * Simula un pago exitoso
-   */
-  private simularPagoExitoso(paymentData: any): any {
-    return {
-      id: Math.floor(Math.random() * 10000),
-      ...paymentData,
-      estadoPago: 'COMPLETADO',
-      numeroTransaccion: 'TX-' + Date.now(),
-      fechaPago: new Date(),
-      mensaje: 'Pago procesado exitosamente'
-    };
   }
 }
