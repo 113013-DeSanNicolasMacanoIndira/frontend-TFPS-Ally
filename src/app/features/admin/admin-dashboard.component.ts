@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule,FormsModule, AdminChartsComponent, AdminGestionMontosComponent],
+  imports: [CommonModule, FormsModule, AdminChartsComponent, AdminGestionMontosComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss'],
 })
@@ -24,6 +24,9 @@ export class AdminDashboardComponent implements OnInit {
   tabActiva: string = 'dashboard';
   fechaDesde: string = '';
   fechaHasta: string = '';
+  listaDetalle: any[] = [];
+  tituloDetalle: string = '';
+  mostrarDetalle: boolean = false;
   constructor(private adminService: AdminService, private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -33,53 +36,62 @@ export class AdminDashboardComponent implements OnInit {
 
   // MÉTRICAS
   loadMetrics(): void {
-    this.adminService.getMetrics(this.fechaDesde, this.fechaHasta).subscribe((data: AdminMetrics) => {
-      this.metricCards = [
-        {
-          label: 'Pacientes',
-          value: data.pacientes,
-          icon: 'bi bi-people',
-          gradient: 'linear-gradient(135deg,#007bff,#0dcaf0)',
-        },
-        {
-          label: 'Prestadores',
-          value: data.prestadores,
-          icon: 'bi bi-person-badge',
-          gradient: 'linear-gradient(135deg,#6610f2,#6f42c1)',
-        },
-        {
-          label: 'Transportistas',
-          value: data.transportistas,
-          icon: 'bi bi-truck',
-          gradient: 'linear-gradient(135deg,#20c997,#198754)',
-        },
-        {
-          label: 'Admins Activos',
-          value: data.admins,
-          icon: 'bi bi-shield-lock',
-          gradient: 'linear-gradient(135deg,#fd7e14,#dc3545)',
-        },
-        //  NUEVAS TARJETAS
-        {
-          label: 'Solicitudes Pendientes',
-          value: data.solicitudesPendientes,
-          icon: 'bi bi-hourglass-split',
-          gradient: 'linear-gradient(135deg,#ffc107,#ff9800)',
-        },
-        {
-          label: 'Servicios Aceptados',
-          value: data.serviciosAceptados,
-          icon: 'bi bi-check2-circle',
-          gradient: 'linear-gradient(135deg,#28a745,#009688)',
-        },
-        {
-          label: 'Pagos Procesados',
-          value: `ARS $${data.pagosProcesados}`, //  Aquí!
-          icon: 'bi bi-cash-coin',
-          gradient: 'linear-gradient(135deg,#17a2b8,#0d6efd)',
-        },
-      ];
-    });
+    this.adminService
+      .getMetrics(this.fechaDesde, this.fechaHasta)
+      .subscribe((data: AdminMetrics) => {
+        this.metricCards = [
+          {
+            label: 'Pacientes',
+            value: data.pacientes,
+            icon: 'bi bi-people',
+            gradient: 'linear-gradient(135deg,#007bff,#0dcaf0)',
+            action: 'pacientes',
+          },
+          {
+            label: 'Prestadores',
+            value: data.prestadores,
+            icon: 'bi bi-person-badge',
+            gradient: 'linear-gradient(135deg,#6610f2,#6f42c1)',
+            action: 'prestadores',
+          },
+          {
+            label: 'Transportistas',
+            value: data.transportistas,
+            icon: 'bi bi-truck',
+            gradient: 'linear-gradient(135deg,#20c997,#198754)',
+            action: 'transportistas',
+          },
+          {
+            label: 'Admins Activos',
+            value: data.admins,
+            icon: 'bi bi-shield-lock',
+            gradient: 'linear-gradient(135deg,#fd7e14,#dc3545)',
+            action: 'usuarios',
+          },
+          //  NUEVAS TARJETAS
+          {
+            label: 'Solicitudes Pendientes',
+            value: data.solicitudesPendientes,
+            icon: 'bi bi-hourglass-split',
+            gradient: 'linear-gradient(135deg,#ffc107,#ff9800)',
+            action: 'solicitudesPendientes',
+          },
+          {
+            label: 'Servicios Aceptados',
+            value: data.serviciosAceptados,
+            icon: 'bi bi-check2-circle',
+            gradient: 'linear-gradient(135deg,#28a745,#009688)',
+            action: 'serviciosAceptados',
+          },
+          {
+            label: 'Pagos Procesados',
+            value: data.pagosProcesados, //  Aquí!
+            icon: 'bi bi-cash-coin',
+            gradient: 'linear-gradient(135deg,#17a2b8,#0d6efd)',
+            action: 'pagosProcesados',
+          },
+        ];
+      });
   }
 
   //  USUARIOS
@@ -107,6 +119,51 @@ export class AdminDashboardComponent implements OnInit {
         Swal.fire('Error', 'No se pudo actualizar el estado', 'error');
       },
     });
+  }
+  onCardClick(action: string): void {
+    this.mostrarDetalle = true;
+
+    switch (action) {
+      case 'pacientes':
+        this.tituloDetalle = 'Pacientes';
+        this.listaDetalle = this.usuarios.filter((u) => u.rol === 'PACIENTE');
+        this.tabActiva = 'usuarios';
+        break;
+
+      case 'prestadores':
+        this.tituloDetalle = 'Prestadores';
+        this.listaDetalle = this.usuarios.filter((u) => u.rol === 'PRESTADOR');
+        this.tabActiva = 'usuarios';
+        break;
+
+      case 'transportistas':
+        this.tituloDetalle = 'Transportistas';
+        this.listaDetalle = this.usuarios.filter((u) => u.rol === 'TRANSPORTISTA');
+        this.tabActiva = 'usuarios';
+        break;
+
+      case 'solicitudesPendientes':
+        this.tituloDetalle = 'Solicitudes Pendientes';
+        this.adminService
+          .getServicesByEstado('PENDIENTE')
+          .subscribe((data) => (this.listaDetalle = data));
+        this.tabActiva = 'estadisticas';
+        break;
+
+      case 'serviciosAceptados':
+        this.tituloDetalle = 'Servicios Aceptados';
+        this.adminService
+          .getServicesByEstado('ACEPTADO')
+          .subscribe((data) => (this.listaDetalle = data));
+        this.tabActiva = 'estadisticas';
+        break;
+
+      case 'pagosProcesados':
+        this.tituloDetalle = 'Pagos Procesados';
+        this.adminService.getPagos().subscribe((data) => (this.listaDetalle = data));
+        this.tabActiva = 'montos';
+        break;
+    }
   }
 
   //  CERRAR SESIÓN

@@ -29,4 +29,11 @@ export class AdminService {
   getPagosPorEspecialidad(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/pagos-por-especialidad`);
   }
+  getServicesByEstado(estado: string) {
+    return this.http.get<any[]>(`${this.apiUrl}/services?estado=${estado}`);
+  }
+
+  getPagos() {
+    return this.http.get<any[]>(`${this.apiUrl}/pagos`);
+  }
 }
