@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AdminMetrics, AdminUser } from '../models/admin.model';
-import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -26,7 +26,26 @@ export class AdminService {
   toggleUser(id: number): Observable<any> {
     return this.http.patch<any>(`${this.apiUrl}/users/${id}/toggle`, {});
   }
+
+  //  Gráficos admin
   getPagosPorEspecialidad(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/pagos-por-especialidad`);
+  }
+
+  //  Solicitudes con nombres reales
+  getSolicitudesPendientes(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/services/detalle/pendientes`);
+  }
+
+  getServiciosAceptados(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/services/detalle/aceptados`);
+  }
+
+  //  Pagos totales
+  getPagos(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/pagos`);
+  }
+  actualizarEstadoServicio(id: number, estado: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/services/${id}/estado?estado=${estado}`, {});
   }
 }
