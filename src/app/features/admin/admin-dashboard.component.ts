@@ -27,6 +27,8 @@ export class AdminDashboardComponent implements OnInit {
   listaDetalle: any[] = [];
   tituloDetalle: string = '';
   mostrarDetalle: boolean = false;
+  solicitudes: any[] = [];
+  tituloSolicitudes: string = '';
   constructor(private adminService: AdminService, private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -121,51 +123,37 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
   onCardClick(action: string): void {
-    this.mostrarDetalle = true;
 
-    switch (action) {
-      case 'pacientes':
-        this.tituloDetalle = 'Pacientes';
-        this.listaDetalle = this.usuarios.filter((u) => u.rol === 'PACIENTE');
-        this.tabActiva = 'usuarios';
-        break;
-
-      case 'prestadores':
-        this.tituloDetalle = 'Prestadores';
-        this.listaDetalle = this.usuarios.filter((u) => u.rol === 'PRESTADOR');
-        this.tabActiva = 'usuarios';
-        break;
-
-      case 'transportistas':
-        this.tituloDetalle = 'Transportistas';
-        this.listaDetalle = this.usuarios.filter((u) => u.rol === 'TRANSPORTISTA');
-        this.tabActiva = 'usuarios';
-        break;
-
-      case 'solicitudesPendientes':
-        this.tituloDetalle = 'Solicitudes Pendientes';
-        this.adminService
-          .getServicesByEstado('PENDIENTE')
-          .subscribe((data) => (this.listaDetalle = data));
-        this.tabActiva = 'estadisticas';
-        break;
-
-      case 'serviciosAceptados':
-        this.tituloDetalle = 'Servicios Aceptados';
-        this.adminService
-          .getServicesByEstado('ACEPTADO')
-          .subscribe((data) => (this.listaDetalle = data));
-        this.tabActiva = 'estadisticas';
-        break;
-
-      case 'pagosProcesados':
-        this.tituloDetalle = 'Pagos Procesados';
-        this.adminService.getPagos().subscribe((data) => (this.listaDetalle = data));
-        this.tabActiva = 'montos';
-        break;
-    }
+  if (action === 'solicitudesPendientes') {
+    this.tituloSolicitudes = 'Solicitudes Pendientes';
+    this.adminService.getSolicitudesPendientes().subscribe((data) => {
+      this.solicitudes = data.map(s => {
+        return {
+          ...s,
+          fechaSolicitud: new Date(
+            s[5][0], s[5][1] - 1, s[5][2], s[5][3], s[5][4], s[5][5]
+          )
+        };
+      });
+      this.tabActiva = 'solicitudes';
+    });
   }
 
+  if (action === 'serviciosAceptados') {
+    this.tituloSolicitudes = 'Servicios Aceptados';
+    this.adminService.getServiciosAceptados().subscribe((data) => {
+      this.solicitudes = data.map(s => {
+        return {
+          ...s,
+          fechaSolicitud: new Date(
+            s[5][0], s[5][1] - 1, s[5][2], s[5][3], s[5][4], s[5][5]
+          )
+        };
+      });
+      this.tabActiva = 'solicitudes';
+    });
+  }
+}
   //  CERRAR SESIÓN
   logout(): void {
     this.authService.logout();

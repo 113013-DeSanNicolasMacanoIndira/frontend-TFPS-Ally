@@ -44,7 +44,16 @@
       </a>
     </li>
 
-    <!--  NUEVA PESTAÑA -->
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        [class.active]="tabActiva === 'solicitudes'"
+        (click)="tabActiva = 'solicitudes'"
+      >
+        <i class="bi bi-clipboard-check"></i> Solicitudes
+      </a>
+    </li>
+
     <li class="nav-item">
       <a class="nav-link" [class.active]="tabActiva === 'montos'" (click)="tabActiva = 'montos'">
         <i class="bi bi-cash-coin"></i> Gestión Montos
@@ -59,6 +68,7 @@
       <input type="date" [(ngModel)]="fechaHasta" class="form-control" />
       <button class="btn btn-primary" (click)="loadMetrics()">Filtrar</button>
     </div>
+
     <div class="stats-grid">
       <div
         *ngFor="let card of metricCards"
@@ -67,8 +77,6 @@
         (click)="onCardClick(card.action)"
         style="cursor: pointer"
       >
-        <!-- 👈 AHORA SÍ EN EL DIV -->
-
         <div class="icon-box"><i [class]="card.icon"></i></div>
         <div>
           <h3>{{ card.value }}</h3>
@@ -124,6 +132,44 @@
         </tbody>
       </table>
     </div>
+  </div>
+
+  <!-- 📌 TAB: SOLICITUDES DETALLADAS -->
+  <div *ngIf="tabActiva === 'solicitudes'">
+    <h4 class="fw-bold mb-3">{{ tituloSolicitudes }}</h4>
+
+    <table class="table table-hover table-striped text-center shadow-sm">
+      <thead class="table-primary">
+        <tr>
+          <th>ID</th>
+          <th>Paciente</th>
+          <th>Prestador</th>
+          <th>Especialidad</th>
+          <th>Estado</th>
+          <th>Fecha Solicitud</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of solicitudes">
+          <td>{{ s[0] }}</td>
+          <td>{{ s[1] }}</td>
+          <td>{{ s[2] || '-' }}</td>
+          <td>{{ s[3] }}</td>
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-warning text-dark': s[4] === 'PAGO_PENDIENTE',
+                'bg-success': s[4] === 'ACEPTADO',
+                'bg-danger': s[4] === 'RECHAZADO'
+              }"
+              >{{ s[4] }}</span
+            >
+          </td>
+          <td>{{ s[5] | date : 'dd/MM/yyyy HH:mm' }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- 📌 TAB: GESTIÓN DE MONTOS -->
