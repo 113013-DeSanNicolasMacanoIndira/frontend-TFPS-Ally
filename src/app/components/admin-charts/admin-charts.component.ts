@@ -8,10 +8,9 @@ Chart.register(...registerables);
   selector: 'app-admin-charts',
   standalone: true,
   templateUrl: './admin-charts.component.html',
-  styleUrls: ['./admin-charts.component.scss']
+  styleUrls: ['./admin-charts.component.scss'],
 })
 export class AdminChartsComponent implements OnInit {
-
   constructor(private adminService: AdminService) {}
 
   ngOnInit(): void {
@@ -22,34 +21,48 @@ export class AdminChartsComponent implements OnInit {
     this.adminService.getPagosPorEspecialidad().subscribe({
       next: (data) => {
         if (!data || data.length === 0) {
-          alert("No hay datos para mostrar aún");
+          alert('No hay datos para mostrar aún');
           return;
         }
 
-        const labels = data.map(x => x.especialidad);
-        const values = data.map(x => x.cantidad);
+        const labels = data.map((x) => x.especialidad);
+        const values = data.map((x) => x.cantidad);
 
-        new Chart("serviciosChart", {
+        new Chart('serviciosChart', {
           type: 'bar',
           data: {
             labels,
-            datasets: [{
-              label: 'Servicios Pagados',
-              data: values,
-              backgroundColor: ['#36A2EB', '#4BC0C0', '#FFCE56', '#FF6384', '#8E44AD']
-            }]
+            datasets: [
+              {
+                label: 'Servicios Pagados (ARS $)',
+                data: values,
+                backgroundColor: ['#36A2EB', '#4BC0C0', '#FFCE56', '#FF6384', '#8E44AD'],
+              },
+            ],
           },
           options: {
             responsive: true,
             plugins: {
-              legend: { display: true, position: 'top' }
-            }
-          }
+              tooltip: {
+                callbacks: {
+                  label: (context: any) => `ARS $${context.raw.toLocaleString('es-AR')}`,
+                },
+              },
+              legend: { display: true, position: 'top' },
+            },
+            scales: {
+              y: {
+                ticks: {
+                  callback: (value: any) => `ARS $${value}`,
+                },
+              },
+            },
+          },
         });
       },
       error: () => {
         alert(' Error cargando datos del gráfico');
-      }
+      },
     });
   }
 }

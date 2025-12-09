@@ -74,7 +74,7 @@ export class AdminDashboardComponent implements OnInit {
         },
         {
           label: 'Pagos Procesados',
-          value: data.pagosProcesados,
+          value: `ARS $${data.pagosProcesados}`, //  Aquí!
           icon: 'bi bi-cash-coin',
           gradient: 'linear-gradient(135deg,#17a2b8,#0d6efd)',
         },
