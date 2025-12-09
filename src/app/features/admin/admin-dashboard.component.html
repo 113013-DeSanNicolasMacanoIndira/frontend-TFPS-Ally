@@ -36,7 +36,7 @@
       </a>
     </li>
 
-    <!-- 📌 NUEVA PESTAÑA -->
+    <!--  NUEVA PESTAÑA -->
     <li class="nav-item">
       <a class="nav-link" [class.active]="tabActiva === 'montos'"
          (click)="tabActiva = 'montos'">
@@ -46,9 +46,15 @@
   </ul>
 
 
-  <!-- 📌 TAB: MÉTRICAS -->
+  <!--  TAB: MÉTRICAS -->
   <div *ngIf="tabActiva === 'dashboard'">
+     <div class="filter-box d-flex gap-3 mb-3">
+    <input type="date" [(ngModel)]="fechaDesde" class="form-control">
+    <input type="date" [(ngModel)]="fechaHasta" class="form-control">
+    <button class="btn btn-primary" (click)="loadMetrics()">Filtrar</button>
+  </div>
     <div class="stats-grid">
+
       <div *ngFor="let card of metricCards"
            class="stat-card shadow"
            [ngStyle]="{ background: card.gradient }">

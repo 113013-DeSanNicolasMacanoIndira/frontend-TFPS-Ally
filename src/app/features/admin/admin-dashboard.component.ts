@@ -7,19 +7,23 @@ import { AuthService } from './../../services/auth.service'; //  IMPORTANTE
 import { AdminChartsComponent } from '../../components/admin-charts/admin-charts.component';
 import Swal from 'sweetalert2';
 import { AdminGestionMontosComponent } from '../../components/gestion-montos/admin-gestion-montos.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, AdminChartsComponent, AdminGestionMontosComponent],
+  imports: [CommonModule,FormsModule, AdminChartsComponent, AdminGestionMontosComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrls: ['./admin-dashboard.component.scss'],
 })
 export class AdminDashboardComponent implements OnInit {
   metricCards: any[] = [];
   usuarios: AdminUser[] = [];
+
   //  Agregado para el sistema de pestañas
   tabActiva: string = 'dashboard';
+  fechaDesde: string = '';
+  fechaHasta: string = '';
   constructor(private adminService: AdminService, private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -29,7 +33,7 @@ export class AdminDashboardComponent implements OnInit {
 
   // MÉTRICAS
   loadMetrics(): void {
-    this.adminService.getMetrics().subscribe((data: AdminMetrics) => {
+    this.adminService.getMetrics(this.fechaDesde, this.fechaHasta).subscribe((data: AdminMetrics) => {
       this.metricCards = [
         {
           label: 'Pacientes',

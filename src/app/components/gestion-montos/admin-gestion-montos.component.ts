@@ -8,10 +8,9 @@ import { SpecialtyService } from '../../services/specialty.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './admin-gestion-montos.component.html',
-  styleUrls: ['./admin-gestion-montos.component.scss']
+  styleUrls: ['./admin-gestion-montos.component.scss'],
 })
 export class AdminGestionMontosComponent implements OnInit {
-  
   especialidades: any[] = [];
 
   constructor(private specialtyService: SpecialtyService) {}
@@ -26,10 +25,11 @@ export class AdminGestionMontosComponent implements OnInit {
       next: (data) => {
         this.especialidades = data.map((esp: any) => ({
           ...esp,
-          nuevoMonto: esp.monto // Se guarda un valor editable sin perder el original
+          monto: esp.importeConsulta, //  Ajustar nombre
+          nuevoMonto: esp.importeConsulta, // Se guarda un valor editable sin perder el original
         }));
       },
-      error: () => alert('❌ Error cargando montos')
+      error: () => alert(' Error cargando montos'),
     });
   }
 
@@ -40,8 +40,7 @@ export class AdminGestionMontosComponent implements OnInit {
         especialidad.monto = especialidad.nuevoMonto;
         alert(`✔ Monto actualizado: $${especialidad.monto}`);
       },
-      error: () => alert('❌ Error al actualizar monto')
+      error: () => alert(' Error al actualizar monto'),
     });
   }
-
 }

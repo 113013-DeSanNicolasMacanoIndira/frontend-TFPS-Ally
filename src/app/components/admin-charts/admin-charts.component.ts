@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import { AdminService } from '../../services/admin.service';
 
 Chart.register(...registerables);
 
@@ -11,29 +12,43 @@ Chart.register(...registerables);
 })
 export class AdminChartsComponent implements OnInit {
 
+  constructor(private adminService: AdminService) {}
+
   ngOnInit(): void {
-    this.createServiciosChart();
+    this.loadChartData();
   }
 
-  createServiciosChart() {
-    new Chart("serviciosChart", {
-      type: 'bar',
-      data: {
-        labels: ['Psicología', 'Enfermería', 'Kinesiología', 'Transporte'],
-        datasets: [{
-          label: 'Servicios Pagados',
-          backgroundColor: ['#36A2EB', '#4BC0C0', '#FFCE56', '#FF6384'],
-          data: [3, 1, 4, 2]
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true,
-            position: 'top'
-          }
+  loadChartData() {
+    this.adminService.getPagosPorEspecialidad().subscribe({
+      next: (data) => {
+        if (!data || data.length === 0) {
+          alert("No hay datos para mostrar aún");
+          return;
         }
+
+        const labels = data.map(x => x.especialidad);
+        const values = data.map(x => x.cantidad);
+
+        new Chart("serviciosChart", {
+          type: 'bar',
+          data: {
+            labels,
+            datasets: [{
+              label: 'Servicios Pagados',
+              data: values,
+              backgroundColor: ['#36A2EB', '#4BC0C0', '#FFCE56', '#FF6384', '#8E44AD']
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: true, position: 'top' }
+            }
+          }
+        });
+      },
+      error: () => {
+        alert(' Error cargando datos del gráfico');
       }
     });
   }
