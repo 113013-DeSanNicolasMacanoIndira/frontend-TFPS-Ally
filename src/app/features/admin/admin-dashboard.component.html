@@ -150,7 +150,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let s of solicitudes">
+        <tr *ngFor="let s of solicitudes" (click)="abrirDetalle(s)" style="cursor: pointer">
           <td>{{ s[0] }}</td>
           <td>{{ s[1] }}</td>
           <td>{{ s[2] || '-' }}</td>
@@ -175,5 +175,57 @@
   <!-- 📌 TAB: GESTIÓN DE MONTOS -->
   <div *ngIf="tabActiva === 'montos'">
     <app-admin-gestion-montos></app-admin-gestion-montos>
+  </div>
+  <!-- MODAL DETALLE SOLICITUD -->
+  <div class="modal fade" id="detalleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content shadow">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Detalle del Servicio</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body" *ngIf="solicitudSeleccionada">
+          <table class="table table-bordered">
+            <tr>
+              <th>ID</th>
+              <td>{{ solicitudSeleccionada[0] }}</td>
+            </tr>
+            <tr>
+              <th>Paciente</th>
+              <td>{{ solicitudSeleccionada[1] }}</td>
+            </tr>
+            <tr>
+              <th>Prestador</th>
+              <td>{{ solicitudSeleccionada[2] }}</td>
+            </tr>
+            <tr>
+              <th>Especialidad</th>
+              <td>{{ solicitudSeleccionada[3] }}</td>
+            </tr>
+            <tr>
+              <th>Estado</th>
+              <td>{{ solicitudSeleccionada[4] }}</td>
+            </tr>
+            <tr>
+              <th>Fecha Solicitud</th>
+              <td>{{ solicitudSeleccionada[5] | date : 'dd/MM/yyyy HH:mm' }}</td>
+            </tr>
+          </table>
+
+          <!-- 📌 CAMBIAR ESTADO SOLO PARA ADMIN -->
+          <div class="text-end">
+            <button class="btn btn-success me-2" (click)="cambiarEstado('ACEPTADO')">
+              Aceptar
+            </button>
+            <button class="btn btn-danger" (click)="cambiarEstado('RECHAZADO')">Rechazar</button>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -45,4 +45,7 @@ export class AdminService {
   getPagos(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/pagos`);
   }
+  actualizarEstadoServicio(id: number, estado: string): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/services/${id}/estado?estado=${estado}`, {});
+  }
 }
