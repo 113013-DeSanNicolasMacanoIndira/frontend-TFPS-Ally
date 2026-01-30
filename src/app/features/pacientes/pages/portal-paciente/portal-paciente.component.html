@@ -1,140 +1,89 @@
-<!-- Barra de navegación -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
-  <div class="container-fluid">
-    <a class="navbar-brand fw-bold text-primary" routerLink="/portal-paciente"></a>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar shadow-sm">
+    <div class="sidebar-logo">
+      <img src="/icons/logolargo.png" alt="ALLY" />
+    </div>
 
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
+    <nav class="sidebar-nav">
+      <!-- Inicio -->
+      <a class="nav-item" routerLink="/portal-paciente" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <i class="bi bi-house"></i>
+        <span>Inicio</span>
+      </a>
+
+      <!-- Reportes -->
+      <a class="nav-item" routerLink="/reportes" routerLinkActive="active">
+        <i class="bi bi-bar-chart"></i>
+        <span>Reportes</span>
+      </a>
+
+      <!-- Servicios (submenu) -->
+      <button class="nav-item nav-item-btn" type="button" (click)="toggleMenu('servicios')">
+        <i class="bi bi-briefcase"></i>
+        <span>Servicios</span>
+        <i class="bi ms-auto" [class.bi-chevron-down]="!menuServicios" [class.bi-chevron-up]="menuServicios"></i>
+      </button>
+
+      <div class="submenu" *ngIf="menuServicios">
+        <a class="submenu-item" routerLink="/transportistas" routerLinkActive="active">Transportistas</a>
+        <a class="submenu-item" routerLink="/medicos" routerLinkActive="active">Médicos</a>
+        <a class="submenu-item" routerLink="/terapeuta" routerLinkActive="active">Terapeuta</a>
+        <a class="submenu-item" routerLink="/psicologo" routerLinkActive="active">Psicólogo</a>
+        <a class="submenu-item" routerLink="/otro" routerLinkActive="active">Otro</a>
+      </div>
+
+      <!-- Información (submenu) -->
+      <button class="nav-item nav-item-btn" type="button" (click)="toggleMenu('info')">
+        <i class="bi bi-info-circle"></i>
+        <span>Información</span>
+        <i class="bi ms-auto" [class.bi-chevron-down]="!menuInfo" [class.bi-chevron-up]="menuInfo"></i>
+      </button>
+
+      <div class="submenu" *ngIf="menuInfo">
+        <!-- si aún no tenés rutas, podés apuntar a una sola /informacion y filtrar por queryParam -->
+        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'cognitiva' }">Discapacidad Cognitiva</a>
+        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'fisica' }">Discapacidad Física</a>
+        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'intelectual' }">Discapacidad Intelectual</a>
+        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'sensorial' }">Discapacidad Sensorial</a>
+        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'pluri' }">Pluridiscapacidad</a>
+      </div>
+
+      <!-- Pacientes (submenu) -->
+      <button class="nav-item nav-item-btn" type="button" (click)="toggleMenu('pacientes')">
+        <i class="bi bi-people"></i>
+        <span>Pacientes</span>
+        <i class="bi ms-auto" [class.bi-chevron-down]="!menuPacientes" [class.bi-chevron-up]="menuPacientes"></i>
+      </button>
+
+      <div class="submenu" *ngIf="menuPacientes">
+        <a class="submenu-item" routerLink="/portal-pacientes" routerLinkActive="active">Portal Pacientes</a>
+      </div>
+    </nav>
+
+    <!-- Cerrar sesión -->
+    <button class="sidebar-logout" type="button" (click)="logout()">
+      <i class="bi bi-box-arrow-right"></i>
+      <span>Cerrar sesión</span>
     </button>
+  </aside>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto align-items-center">
-        <!-- Servicios -->
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="serviciosDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Servicios
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="serviciosDropdown">
-            <li><a class="dropdown-item" href="#">Transportistas</a></li>
-            <li><a class="dropdown-item" href="#">Médicos</a></li>
-            <li><a class="dropdown-item" routerLink="/terapeuta">Terapeuta</a></li>
-            <li><a class="dropdown-item" routerLink="/psicologo">Psicólogo</a></li>
-            <li><a class="dropdown-item" routerLink="/otro">Otro</a></li>
-          </ul>
-        </li>
-
-        <!-- Información -->
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="informacionDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Información
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="informacionDropdown">
-            <li><a class="dropdown-item" href="#">Discapacidad Cognitiva</a></li>
-            <li><a class="dropdown-item" href="#">Discapacidad física</a></li>
-            <li><a class="dropdown-item" href="#">Discapacidad intelectual</a></li>
-            <li><a class="dropdown-item" href="#">Discapacidad sensorial</a></li>
-            <li><a class="dropdown-item" href="#">Pluridiscapacidad</a></li>
-          </ul>
-        </li>
-
-        <!-- Pacientes -->
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="pacientesDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Pacientes
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="pacientesDropdown">
-            <li><a class="dropdown-item" routerLink="/portal-pacientes">Portal Pacientes</a></li>
-          </ul>
-        </li>
-
-        <!--  Cerrar sesión (FUERA DEL MENÚ) -->
-        <li class="nav-item ms-2">
-          <a class="nav-link text-danger fw-bold" style="cursor: pointer" (click)="logout()">
-            Cerrar sesión
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- HERO SECTION -->
-<section class="hero d-flex align-items-center">
-  <div class="container d-flex justify-content-between align-items-center">
-    <!-- IZQUIERDA — Logo + Título -->
-    <div class="hero-left text-start">
-      <img src="/icons/logolargo.png" alt="ALLY Logo" class="hero-logo mb-4" />
-
-      <h1 class="fw-bold text-primary">Personas que Ayudan a Personas</h1>
-
-      <p class="lead text-muted mt-2">
-        Sistema de Atención y Apoyo de Discapacidad (S.A.I.D.) – promoviendo inclusión y
-        acompañamiento.
-      </p>
-    </div>
-
-    <!-- DERECHA — Imagen principal -->
-    <div class="hero-right">
-      <img src="/icons/prtp.PNG" class="hero-main-img" alt="Salud y apoyo" />
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="bg-light text-center text-lg-start mt-5">
-  <div class="container p-4">
-    <div class="row">
-      <div class="col-lg-6 col-md-12 mb-4">
-        <h5 class="text-uppercase">Sobre Ally</h5>
-        <p>
-          Ally es una plataforma dedicada a facilitar la vida de personas con discapacidad,
-          ofreciendo servicios personalizados y recursos útiles.
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="content">
+    <section class="hero d-flex align-items-center">
+      <div class="container">
+        <h1 class="fw-bold text-primary">Personas que Ayudan a Personas</h1>
+        <p class="lead text-muted">
+          Sistema de Atención y Apoyo de Discapacidad (S.A.I.D.) – promoviendo inclusión y acompañamiento.
         </p>
       </div>
+    </section>
 
-      <div class="col-lg-3 col-md-6 mb-4">
-        <h5 class="text-uppercase">Enlaces útiles</h5>
-        <ul class="list-unstyled mb-0">
-          <li><a routerLink="/portal-paciente" class="text-dark">Inicio</a></li>
-          <li><a routerLink="/portal-pacientes" class="text-dark">Portal</a></li>
-          <li><a routerLink="/registrar" class="text-dark">Registrar</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</footer>
+    <section class="dashboard-placeholder"></section>
+  </main>
+</div>
 
-<!-- ====================================================================================== -->
-<!--  BOTÓN FLOTANTE DE AYUDA -->
+<!-- BOTÓN FAQ (ahora abajo a la DERECHA) -->
 <div class="help-button" (click)="abrirFaq()">
   <i class="bi bi-question-circle"></i>
 </div>
@@ -144,30 +93,60 @@
   <div class="faq-box shadow-lg">
     <button class="btn-close close-faq" (click)="cerrarFaq()"></button>
 
-    <h4 class="text-center mb-3 fw-bold text-primary">Preguntas Frecuentes</h4>
+    <h4 class="text-center mb-3 fw-bold text-primary">
+      Preguntas Frecuentes
+    </h4>
 
     <div class="faq-content scrollable">
+
       <h6><strong>¿Cómo solicito un prestador?</strong></h6>
-      <p>Ingresá a “Buscar Prestadores”, elegí una opción y enviá la solicitud.</p>
+      <p>
+        Ingresá a la sección <strong>Servicios</strong>, elegí el tipo de prestador
+        (terapeuta, psicólogo, transportista, etc.) y enviá la solicitud correspondiente.
+      </p>
 
       <h6><strong>¿Cómo veo mis prestaciones?</strong></h6>
-      <p>Entrando a “Mis Prestaciones” podrás ver su estado y detalles.</p>
+      <p>
+        Desde el menú <strong>Reportes</strong> o <strong>Mis servicios</strong>
+        podés consultar el estado de todas tus prestaciones.
+      </p>
 
       <h6><strong>¿Puedo editar mis datos personales?</strong></h6>
-      <p>Sí, desde la Configuración del Paciente.</p>
+      <p>
+        Sí. Podés hacerlo desde la sección <strong>Configuración</strong> del portal
+        de pacientes.
+      </p>
 
       <h6><strong>¿Qué hago si me rechazan una prestación?</strong></h6>
-      <p>Podés revisar el motivo en la solicitud y reenviar la petición.</p>
+      <p>
+        Podés revisar el motivo del rechazo dentro del detalle del servicio
+        y reenviar la solicitud si corresponde.
+      </p>
 
       <h6><strong>¿Dónde veo mis transportistas asignados?</strong></h6>
-      <p>En la sección “Transportes”, con detalles de horarios y recorridos.</p>
+      <p>
+        En la sección <strong>Servicios &gt; Transportistas</strong> vas a encontrar
+        los traslados asignados, con horarios y recorridos.
+      </p>
+
+      <h6><strong>¿Cómo veo mis pagos pendientes?</strong></h6>
+      <p>
+        Desde <strong>Reportes</strong> podés identificar los servicios con
+        pago pendiente y su método de pago correspondiente.
+      </p>
 
       <hr />
-      <p class="text-center fw-bold">¿Tenés más dudas? Estamos para ayudarte</p>
+
+      <p class="text-center fw-bold mb-0">
+        ¿Tenés más dudas? Estamos para ayudarte 
+      </p>
     </div>
 
     <div class="text-center mt-3">
-      <button class="btn btn-primary px-4" (click)="cerrarFaq()">Entendido</button>
+      <button class="btn btn-primary px-4" (click)="cerrarFaq()">
+        Entendido
+      </button>
     </div>
   </div>
 </div>
+

@@ -1,7 +1,10 @@
 <div class="login-container">
-  <!-- FORMULARIO CENTRADO -->
+  <!-- FONDO -->
+  <div class="bg-registro"></div>
+
+  <!-- FORMULARIO -->
   <div class="form-side">
-    <div class="card p-4 shadow" style="width: 400px">
+    <div class="card register-card">
       <h3 class="text-center mb-4">Formulario de Registro</h3>
 
       <form (ngSubmit)="onRegister()" #registerForm="ngForm">
@@ -120,6 +123,7 @@
         </a>
       </form>
     </div>
+    </div>
   </div>
 
   <!-- Modal Términos (versión reducida solo para Registro) -->
@@ -162,5 +166,7 @@
         </div>
       </div>
     </div>
+   
   </div>
-</div>
+   
+

@@ -5,8 +5,15 @@
 
   <!-- FORMULARIO CENTRADO -->
   <div class="form-side">
-    <div class="card p-4">
-      <h2 class="text-center mb-4">Iniciar Sesión</h2>
+    <div class="card login-card">
+  <!-- NUEVO: header -->
+  <div class="login-header text-center">
+    <h2 class="login-title">Bienvenido a Ally</h2>
+    <p class="login-subtitle">Ingresá para continuar</p>
+  </div>
+
+  <!-- Opcional: si querés mantener “Iniciar sesión” como etiqueta -->
+  <!-- <h2 class="text-center mb-4">Iniciar Sesión</h2> -->
 
 
     <form (ngSubmit)="onLogin()" #loginForm="ngForm">
@@ -36,7 +43,8 @@
 
       <!-- Checkbox Términos -->
       <!--  CAMBIO AQUÍ: Checkbox + enlaces de términos -->
-      <div class="form-check mb-2 text-center">
+      <!-- <div class="form-check mb-2 text-center"> -->
+      <div class="form-check mb-3">
         <input
           class="form-check-input"
           type="checkbox"
