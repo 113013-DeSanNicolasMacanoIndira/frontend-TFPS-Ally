@@ -79,7 +79,123 @@
       </div>
     </section>
 
-    <section class="dashboard-placeholder"></section>
+    <section class="dash">
+
+  <!-- TITULO + SUBTITULO como la captura -->
+  <div class="dash-header">
+    
+    <div class="dash-title">
+      <h2>Datos sobre Discapacidad en Argentina</h2>
+      
+    </div>
+  </div>
+
+  <!-- GRID de tarjetas -->
+  <div class="dash-grid">
+
+    <!-- Prevalencia -->
+    <div class="card card-lg">
+      <h3>Prevalencia de Discapacidad</h3>
+      <div class="big-number">
+        <span class="num">10,2%</span>
+        <span class="txt">de la población argentina tiene alguna dificultad o limitación permanente (2018)</span>
+      </div>
+      <p class="muted">
+        Equivale a unos <strong>4,7 – 5,1 millones</strong> de personas aproximadamente.
+      </p>
+    </div>
+
+    <!-- Tipos -->
+    <div class="card card-lg">
+      <h3>Tipos de Discapacidad</h3>
+
+      <!-- “fake donut” simple (sin librerías) + leyenda -->
+      <div class="donut-row">
+        <div class="donut" aria-label="Gráfico de tipos de discapacidad"></div>
+
+        <div class="legend">
+          <div class="legend-item"><span class="dot dot-motora"></span> Motora <strong>49%</strong></div>
+          <div class="legend-item"><span class="dot dot-visual"></span> Visual <strong>25%</strong></div>
+          <div class="legend-item"><span class="dot dot-auditiva"></span> Auditiva <strong>20,8%</strong></div>
+          <div class="legend-item"><span class="dot dot-cognitiva"></span> Cognitiva <strong>12,3%</strong></div>
+          <div class="legend-item"><span class="dot dot-habla"></span> Del habla <strong>~8%</strong></div>
+          <div class="legend-item"><span class="dot dot-novidente"></span> No vidente <strong>3,6%</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CUD -->
+    <div class="card">
+      <h3>Certificados CUD</h3>
+      <div class="metric">
+        <i class="bi bi-file-earmark-medical"></i>
+        <div>
+          <div class="metric-value">1,9M</div>
+          <div class="metric-sub">Personas con Certificado Único de Discapacidad (CUD) válido (Mar 2025)</div>
+        </div>
+      </div>
+      <p class="muted">
+        Solo un <strong>4,1%</strong> de la población tiene CUD válido, mostrando un subregistro.
+      </p>
+    </div>
+
+    <!-- Mundial -->
+    <div class="card">
+      <h3>Comparación Mundial</h3>
+      <div class="metric">
+        <i class="bi bi-globe-americas"></i>
+        <div>
+          <div class="metric-value">15%</div>
+          <div class="metric-sub">de la población mundial vive con alguna forma de discapacidad (OMS)</div>
+        </div>
+      </div>
+      <p class="muted">
+        Contexto: Argentina se estima en el rango <strong>10–13%</strong> según metodología.
+      </p>
+    </div>
+
+    <!-- Pacientes que ingresaron (tu SQL) -->
+    <div class="card card-wide">
+      <h3>Pacientes acumulados</h3>
+
+      <div class="metric">
+        <i class="bi bi-people"></i>
+        <div>
+          <div class="metric-value">{{ pacientesRegistrados }}</div>
+          <div class="metric-sub">Pacientes registrados / ingresaron a la web (según tu base)</div>
+        </div>
+      </div>
+
+      <div class="mini-bars" aria-label="Tendencia últimos 6 meses">
+        <div class="bar" style="height: 28%"></div>
+        <div class="bar" style="height: 40%"></div>
+        <div class="bar" style="height: 52%"></div>
+        <div class="bar" style="height: 66%"></div>
+        <div class="bar" style="height: 74%"></div>
+        <div class="bar active" style="height: 88%"></div>
+      </div>
+
+      <div class="muted tiny">
+        * El gráfico es ilustrativo (luego lo conectás a tu endpoint real).
+      </div>
+    </div>
+
+    <!-- Fuentes -->
+    <div class="card card-wide">
+      <h3>Fuentes</h3>
+      <ul class="sources">
+        <li><strong>INDEC</strong> – Estudio Nacional / mediciones (prevalencia).</li>
+        <li><strong>ANDIS</strong> – Certificado Único de Discapacidad (CUD) vigente.</li>
+        <li><strong>OMS</strong> – estimación global (15%).</li>
+      </ul>
+      <p class="muted tiny">
+        Nota: los porcentajes pueden variar según definición (censo/encuesta).
+      </p>
+    </div>
+
+  </div>
+ </section>
+
   </main>
 </div>
 

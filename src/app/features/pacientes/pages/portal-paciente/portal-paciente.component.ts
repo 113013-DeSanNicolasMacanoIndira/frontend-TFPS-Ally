@@ -11,6 +11,8 @@ import { AuthService } from '../../../../services/auth.service';
   styleUrls: ['./portal-paciente.component.scss']
 })
 export class PortalPacienteComponent {
+  // Pacientes registrados (mock por ahora)
+  pacientesRegistrados = 54;
   // FAQ
   mostrarFaq = false;
 
