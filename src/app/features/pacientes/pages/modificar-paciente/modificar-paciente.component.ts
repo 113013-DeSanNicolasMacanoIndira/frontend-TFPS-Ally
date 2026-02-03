@@ -3,13 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PatientService } from '../../../../services/patient.service';
+import { AuthService } from '../../../../services/auth.service';
+import { RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-modificar-paciente',
   standalone: true,
   templateUrl: './modificar-paciente.component.html',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
 })
 export class ModificarPacienteComponent implements OnInit {
   form!: FormGroup;
@@ -18,7 +20,8 @@ export class ModificarPacienteComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private patientService: PatientService,
-    private router: Router
+    private authService: AuthService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -29,6 +32,18 @@ export class ModificarPacienteComponent implements OnInit {
       direccion: [this.patient.direccion],
       tipoDiscapacidad: [this.patient.tipoDiscapacidad],
     });
+  }
+  mostrarAtencion() {
+    Swal.fire({
+      title: 'Atención',
+      text: 'Comunicate con el servicio de atención al cliente de Ally',
+      icon: 'warning',
+      confirmButtonText: 'Aceptar',
+    });
+  }
+  // ✅ ACÁ VA (por ejemplo arriba de guardarCambios o abajo, da igual)
+  logout(): void {
+    this.authService.logout();
   }
 
   guardarCambios() {
@@ -66,5 +81,26 @@ export class ModificarPacienteComponent implements OnInit {
 
         error: () => alert('Error al actualizar'),
       });
+  }
+  darDeBaja() {
+    Swal.fire({
+      title: '¿Darte de baja?',
+      text: 'Esta acción puede desactivar tu cuenta/paciente.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, darme de baja',
+      cancelButtonText: 'Cancelar',
+    }).then((res) => {
+      if (!res.isConfirmed) return;
+
+      this.patientService.delete(this.patient.id).subscribe({
+        next: () => {
+          Swal.fire('Listo', 'Tu baja fue registrada.', 'success');
+          localStorage.removeItem('paciente');
+          this.router.navigate(['/login']);
+        },
+        error: () => Swal.fire('Error', 'No se pudo procesar la baja.', 'error'),
+      });
+    });
   }
 }
