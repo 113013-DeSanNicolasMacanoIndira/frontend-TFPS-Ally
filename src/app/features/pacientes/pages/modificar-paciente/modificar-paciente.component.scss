@@ -1,93 +1,272 @@
-.registro-container {
-  max-width: 500px;
-  margin: 40px auto;
-  background: #ffffff;
-  padding: 2rem 2.5rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 15px rgba(0, 120, 180, 0.15);
-  border: 1px solid #d8e8f0;
-}
-
-.titulo {
-  text-align: center;
-  color: #007bba;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-
-.formulario {
+/* Estructura de la pantalla */
+.layout {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-
-  label {
-    font-weight: 500;
-    margin-bottom: 0.3rem;
-    color: #444;
-  }
-
-  input,
-  select {
-    padding: 0.6rem 0.8rem;
-    border: 1px solid #bcdff5;
-    border-radius: 8px;
-    font-size: 15px;
-    outline: none;
-    transition: all 0.2s ease;
-
-    &:focus {
-      border-color: #007bba;
-      box-shadow: 0 0 5px rgba(0, 123, 186, 0.2);
-    }
-  }
-}
-
-.botones {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-
-  button {
-    width: 48%;
-    padding: 0.6rem;
-    font-size: 15px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .btn-guardar {
-    background-color: #007bba;
-    color: white;
-
-    &:hover {
-      background-color: #00609a;
-    }
-  }
-
-  .btn-borrar {
-    background-color: #e9f4fb;
-    color: #007bba;
-    border: 1px solid #bcdff5;
-
-    &:hover {
-      background-color: #d3ecfa;
-    }
-  }
-}
-
-.mensaje {
+/* Tarjeta contenedora del formulario */
+.form-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10 px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(16, 24, 40, 0.08);
   margin-top: 1.5rem;
-  padding: 0.8rem;
+}
+
+/* Título de la tarjeta */
+.form-card-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.2rem;
+}
+
+/* Grilla en dos columnas con espacio uniforme */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem 1.5rem;
+}
+
+/* Campo que ocupa toda la fila */
+.full {
+  grid-column: span 2;
+}
+
+/* Etiquetas */
+.form-item label {
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.4rem;
+}
+
+/* Contenedor de cada input (con fondo y borde) */
+.input-container {
+  display: flex;
+  align-items: center;
+  background: #f5f7fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.5rem 0.75rem;
+}
+
+.input-container.readonly {
+  background: #f1f5f9;
+}
+
+/* Ajustes para el input dentro del contenedor */
+.input-container input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding-right: 0.25rem;
+}
+
+/* Botón con ícono de candado */
+.icon-button {
+  background: none;
+  border: none;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Botonera */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Botones */
+.btn {
+  border-radius: 12px;
+  font-weight: 700;
+  padding: 0.8rem 1.5rem;
+  border: none;
+}
+
+.btn-primary {
+  background: #1677ff;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  filter: brightness(1.05);
+}
+/* …otros estilos… */
+
+/* Establece la familia tipográfica Inter en elementos clave */
+.form-card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;        /* un tamaño más vistoso para el título */
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 1.2rem;
+}
+
+.form-item label {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;        /* etiquetas con un tamaño ligeramente menor */
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 0.35rem;
+}
+
+.input-container input {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: #334155;
+}
+
+/* Ajusta la altura y el tamaño de fuente de los botones */
+.actions .btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  min-height: 48px;      /* altura consistente con la captura */
+  padding: 0.8rem 1.5rem;
+  flex: 1;               /* ambos botones ocupan el mismo ancho disponible */
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+/* Aplica el mismo fondo degradado en el área de contenido */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+  background-attachment: fixed;
+}
+/* Tarjeta envolvente del formulario */
+.form-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;  /* esquinas más redondeadas (ajusta a 18px o 20px según tu gusto) */
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(16, 24, 40, 0.08);
+  margin-top: 1.5rem;
+
+  /* Opcional: limita su ancho para que no ocupe todo el espacio */
+  max-width: 650px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.form-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Título con barra azul curvada a la izquierda */
+.form-card-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  /* añadimos relleno en todos los lados */
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+
+  /* barra azul en el costado izquierdo */
+  border-left: 6px solid #0d6efd;
+
+  /* redondeamos sólo el lado izquierdo */
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+
+  /* fondo blanco para que se perciba la curva */
+  background: #ffffff;
+
+  /* sombra ligera opcional para separarlo visualmente del fondo */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+/* Contenedor para cada campo (input + icono) */
+.input-container {
+  display: flex;
+  align-items: center;
+  border: 2px solid #e9ecef;
   border-radius: 8px;
-  text-align: center;
-  background-color: #eaf7ff;
-  color: #007bba;
-  font-weight: 500;
+  padding: 12px 15px;
+  background: #f5f7fa;
+  transition: all 0.3s ease;
+}
+
+.input-container.readonly {
+  background: #f1f5f9;
+}
+
+.input-container input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+}
+
+.input-container:focus-within {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+  transform: translateY(-1px);
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  color: #64748b;
+  margin-left: 6px;
+  cursor: pointer;
+}
+
+/* Botones con dimensiones y degradados del prestador */
+.actions .btn {
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  min-height: 48px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+  border-color: #0d6efd;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
+  border-color: #dc3545;
+}
+
+.actions .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Ajusta el ancho de la tarjeta del formulario */
+.form-card {
+  max-width: 800px;  /* limita la anchura del formulario */
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }

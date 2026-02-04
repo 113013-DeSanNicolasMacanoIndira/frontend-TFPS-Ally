@@ -5,7 +5,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router'; // ← AGREGAR ESTA IMPORTACIÓN
 import Swal from 'sweetalert2';
-
+import { MenuPacienteComponent } from '../../../../components/menu-paciente/menu-paciente.component';
 import { ServiceRequestService } from '../../../../services/service-request.service';
 import { AuthService } from '../../../../services/auth.service';
 
@@ -19,7 +19,7 @@ interface ProfesionalOpcion {
 @Component({
   selector: 'app-solicitudes-paciente',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterModule], // ← AGREGAR RouterModule
+  imports: [CommonModule, ReactiveFormsModule, MenuPacienteComponent, FormsModule, RouterModule], // ← AGREGAR RouterModule
   templateUrl: './solicitudes-paciente.component.html',
   styleUrls: ['./solicitudes-paciente.component.scss'],
 })

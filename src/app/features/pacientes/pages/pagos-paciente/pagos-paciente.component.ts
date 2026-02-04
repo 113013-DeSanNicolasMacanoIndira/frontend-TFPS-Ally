@@ -9,11 +9,13 @@ import { RouterModule } from '@angular/router';
 import { AuthService, User } from '../../../../services/auth.service';
 import { PaymentService } from '../../../../services/payment.service';
 import { PaymentRequestDTO } from '../../../../models/pago.model';
+import { MenuPacienteComponent } from '../../../../components/menu-paciente/menu-paciente.component';
+
 
 @Component({
   selector: 'app-pagos-paciente',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule,MenuPacienteComponent],
   templateUrl: './pagos-paciente.component.html',
   styleUrls: ['./pagos-paciente.component.scss'],
 })

@@ -1,0 +1,30 @@
+<!-- src/app/shared/components/menu-paciente/menu-paciente.component.html -->
+<aside class="sidebar">
+  <h3 class="sidebar-title">Paciente</h3>
+  <ul class="menu">
+    <li class="menu-item" routerLink="/solicitudes-paciente" routerLinkActive="active">
+      <i class="bi bi-send"></i>
+      Mis solicitudes
+    </li>
+    <li class="menu-item" routerLink="/portal-paciente" routerLinkActive="active">
+      <i class="bi bi-house"></i>
+      Inicio
+    </li>
+    <li class="menu-item" routerLink="/modificar-paciente" routerLinkActive="active">
+      <i class="bi bi-person"></i>
+      Mis datos
+    </li>
+    <li class="menu-item" *ngIf="mostrarPagos" routerLink="/pagos-paciente" routerLinkActive="active">
+      <i class="bi bi-cash-coin"></i>
+      Pagos de servicios
+    </li>
+    <li class="menu-item disabled">
+      <i class="bi bi-gear"></i>
+      Configuración
+    </li>
+    <li class="menu-item logout" (click)="logout()">
+      <i class="bi bi-box-arrow-right"></i>
+      Cerrar sesión
+    </li>
+  </ul>
+</aside>

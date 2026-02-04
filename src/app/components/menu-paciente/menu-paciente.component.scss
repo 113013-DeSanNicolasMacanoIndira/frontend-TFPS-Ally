@@ -1,0 +1,58 @@
+// src/app/shared/components/menu-paciente/menu-paciente.component.scss
+@use 'sass:color';
+
+.sidebar {
+  width: 280px;                         /* ancho del menú (ajusta a 280 px o 300 px según quieras) */
+  background: linear-gradient(180deg, #1677ff 0%, #0b5ed7 100%);
+  color: #fff;
+  padding: 22px 16px;
+  border-radius: 0 16px 16px 0;
+  min-height: 100vh;
+}
+
+.sidebar-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 6px 8px 18px;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  margin: 6px 0;
+  border-radius: 12px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.95);
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.menu-item i {
+  font-size: 18px;
+}
+
+.menu-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.menu-item.active {
+  background: rgba(255, 255, 255, 0.22);
+  font-weight: 700;
+}
+
+.menu-item.disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.menu-item.logout {
+  margin-top: 14px;
+  background: rgba(0, 0, 0, 0.12);
+}

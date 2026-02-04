@@ -306,3 +306,35 @@ textarea.form-control {
   background-color: #6c757d;
   color: white;
 }
+/* Título con barra azul curvada a la izquierda */
+.form-card-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-left: 6px solid #0d6efd;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+/* Para los párrafos y etiquetas */
+.form-card p,
+.form-card label {
+  font-family: 'Inter', sans-serif;
+  color: #475569;
+}
+/* Estilo general del subtítulo */
+.subtitle {
+  font-size: 1rem;
+  font-weight: 400;   /* El texto del subtítulo no estará en negrita */
+  color: #6c757d;     /* Tono gris suave, como en el portal del prestador */
+  margin: -0.25rem 0 1.25rem 0;
+}
+
+/* Sólo el nombre (dentro del <strong>) se mantiene con un peso superior */
+.subtitle strong {
+  font-weight: 600;   /* Destaca únicamente el nombre */
+}
+/* Si quieres resaltar el nombre en negrita, ya lo tienes encapsulado en <strong> */

@@ -275,3 +275,25 @@
     flex-direction: column;
   }
 }
+/* Título con barra azul curvada a la izquierda */
+.form-card-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  /* añadimos relleno en todos los lados */
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+
+  /* barra azul en el costado izquierdo */
+  border-left: 6px solid #0d6efd;
+
+  /* redondeamos sólo el lado izquierdo */
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+
+  /* fondo blanco para que se perciba la curva */
+  background: #ffffff;
+
+  /* sombra ligera opcional para separarlo visualmente del fondo */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}

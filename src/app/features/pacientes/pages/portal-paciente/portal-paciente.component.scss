@@ -1,17 +1,45 @@
-.layout {
+.layout{
   display: flex;
   min-height: 100vh;
-  background: #f7f9fc;
+
+  padding: 14px;                 /* marco celeste visible */
+  background: #e6edf6;           /* color del marco */
+
+  border-radius: 32px;           /* 👈 ESTA ES LA CURVA QUE TE FALTA */
+  overflow: hidden;              /* 👈 CLAVE */
+
+  box-shadow: 0 25px 70px rgba(15, 23, 42, 0.14);
+  gap: 14px;  
 }
 
 .sidebar {
-  width: 240px;
-  background: #fff;
-  padding: 16px;
+  width: var(--sb-w);
+  min-height: calc(100vh - 28px);
+
+  background: #ffffff;
+
+  border-radius: 22px;   /* RADIO GRANDE */
+  overflow: hidden;
+  padding: 18px 14px;
+
+   box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+
   display: flex;
   flex-direction: column;
 }
 
+
+
+.sidebar-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: var(--text-strong);
+
+  margin: 6px 8px 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
 .sidebar-logo img {
   width: 140px;
   display: block;
@@ -69,13 +97,13 @@
 }
 
 .submenu-item:hover {
-  background: #f1f5f9;
+  background: #b4cee7;
 }
 
 .sidebar-logout {
   margin-top: 8px;
   border: none;
-  background: #fff;
+  background: #f38b94;
   color: #dc2626;
   font-weight: 700;
   padding: 10px 12px;
@@ -87,14 +115,53 @@
 }
 
 .sidebar-logout:hover {
-  background: #fef2f2;
+  background: #7791c0;
 }
 
 /* CONTENT */
+/* Ajusta el fondo del área de contenido al nuevo degradado azul */
 .content {
-  flex: 1;
-  padding: 24px;
+  position: relative;            /* clave para posicionar el tornasol */
+  overflow: hidden;              /* para que no se salga del borde */
+  border-radius: 22px;           /* mismo radio que venís usando */
+  padding: 25px;
+
+  background: linear-gradient(180deg, #bed1ec 0%, #5a8bf5 100%);
 }
+/* HERO: correr contenido para que no se “choque” con el tornasol */
+.hero-inner{
+  padding-left: 110px;   /* 👈 ajustá entre 50 y 90 según te guste */
+}
+
+/* Título en gris oscuro */
+.hero-title{
+  color: #1f2937;       /* gris oscuro (tipo Tailwind slate/gray) */
+}
+
+/* Subtítulo también en gris más suave */
+.hero-subtitle{
+  color: #4b5563;
+}
+
+/* Tornasol / esquina decorativa */
+.content::before {
+  content: "";
+  position: absolute;
+  top: -55px;
+  left: -55px;
+
+  width: 180px;
+  height: 180px;
+
+  background: #0b5ed7;           /* azul fuerte (ajustalo a tu gusto) */
+  border-radius: 0 0 120px 0;    /* forma tipo “gota” */
+
+  box-shadow: 0 18px 40px rgba(11, 94, 215, 0.35);
+  opacity: 0.95;
+
+  pointer-events: none;          /* no bloquea clicks */
+}
+
 
 /* FAQ BUTTON -> DERECHA */
 .help-button {
@@ -386,4 +453,44 @@
   .legend { grid-template-columns: 1fr; }
   .dash-title h2 { font-size: 22px; }
 }
+/* FORMULARIO PRINCIPAL */
+.form-wrapper,
+.main-form,
+.content form {
+  background: #ffffff;
+  border-radius: 22px;   /* <-- LA CURVATURA QUE BUSCAS */
+  padding: 28px;
+ 
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.08),
+    0 2px 6px rgba(15, 23, 42, 0.04);
 
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+body{
+  background: linear-gradient(
+    135deg,
+    #dbeafe,
+    #eef2ff  );
+  padding: 10px;
+ 
+}
+.sidebar{
+  border-radius: 26px 0 0 26px;
+
+  box-shadow:
+    4px 0 20px rgba(0,0,0,.04);
+}
+.content{
+  flex: 1;
+
+  border-radius: 32px;
+
+  background: linear-gradient(180deg, oklab(84.627% -0.00805 -0.03146) 0%, #69d0ff 100%);
+
+  padding: 25px;
+
+  margin-left: 12px;
+}

@@ -1,0 +1,89 @@
+/* El contenedor principal conserva la disposición en columnas */
+.layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 14px;          /* crea espacio para ver la curva */
+  background: #e6edf6;    /* color del marco */
+}
+
+/* Fondo con degradado azul para el área de contenido */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 25px;
+  border-radius: 32px;     /* 👈 CURVATURA GRANDE */
+  overflow: hidden;        /* MUY IMPORTANTE */
+  background: linear-gradient(180deg, oklab(84.627% -0.00805 -0.03146) 0%, #69d0ff 100%);
+}
+
+/* Card envolvente con sombra y esquinas muy redondeadas */
+.form-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 24px;
+  padding: 2rem 2.5rem 2.5rem;
+  box-shadow: 0 20px 40px rgba(16, 24, 40, 0.1);
+  max-width: 720px;
+  width: 90%;
+  margin: 2rem auto;
+}
+
+/* Adorno curvo en la esquina superior izquierda */
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -40px;
+  width: 110px;
+  height: 80px;
+  background: #005ed6;             // tono azul intenso
+  border-radius:  0 110px 110px;   /* (arriba izq, arriba der, abajo der, abajo izq) */
+}
+
+/* Título del formulario */
+.form-card-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a2c60;
+  margin: 0 0 0.5rem;
+  padding-left: 3.5rem;            // desplaza el título para no superponer el adorno
+}
+
+/* Subtítulo ligero */
+.subtitle {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #4a5670;
+  padding-left: 3.5rem;            // alinear con el título
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+/* Ajuste de todos los botones */
+.btn {
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, #005ed6 0%, #1f7cff 100%);
+  border-color: #005ed6;
+  color: #fff;
+}
+
+.btn-outline-primary {
+  background: transparent;
+  color: #005ed6;
+  border-color: #005ed6;
+}
+
+.btn-primary:hover,
+.btn-outline-primary:hover {
+  transform: translateY(-2px);
+}

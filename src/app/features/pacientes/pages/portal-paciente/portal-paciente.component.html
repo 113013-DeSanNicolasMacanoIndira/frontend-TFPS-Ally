@@ -7,7 +7,12 @@
 
     <nav class="sidebar-nav">
       <!-- Inicio -->
-      <a class="nav-item" routerLink="/portal-paciente" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <a
+        class="nav-item"
+        routerLink="/portal-paciente"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
         <i class="bi bi-house"></i>
         <span>Inicio</span>
       </a>
@@ -22,11 +27,17 @@
       <button class="nav-item nav-item-btn" type="button" (click)="toggleMenu('servicios')">
         <i class="bi bi-briefcase"></i>
         <span>Servicios</span>
-        <i class="bi ms-auto" [class.bi-chevron-down]="!menuServicios" [class.bi-chevron-up]="menuServicios"></i>
+        <i
+          class="bi ms-auto"
+          [class.bi-chevron-down]="!menuServicios"
+          [class.bi-chevron-up]="menuServicios"
+        ></i>
       </button>
 
       <div class="submenu" *ngIf="menuServicios">
-        <a class="submenu-item" routerLink="/transportistas" routerLinkActive="active">Transportistas</a>
+        <a class="submenu-item" routerLink="/transportistas" routerLinkActive="active"
+          >Transportistas</a
+        >
         <a class="submenu-item" routerLink="/medicos" routerLinkActive="active">Médicos</a>
         <a class="submenu-item" routerLink="/terapeuta" routerLinkActive="active">Terapeuta</a>
         <a class="submenu-item" routerLink="/psicologo" routerLinkActive="active">Psicólogo</a>
@@ -37,27 +48,56 @@
       <button class="nav-item nav-item-btn" type="button" (click)="toggleMenu('info')">
         <i class="bi bi-info-circle"></i>
         <span>Información</span>
-        <i class="bi ms-auto" [class.bi-chevron-down]="!menuInfo" [class.bi-chevron-up]="menuInfo"></i>
+        <i
+          class="bi ms-auto"
+          [class.bi-chevron-down]="!menuInfo"
+          [class.bi-chevron-up]="menuInfo"
+        ></i>
       </button>
 
       <div class="submenu" *ngIf="menuInfo">
         <!-- si aún no tenés rutas, podés apuntar a una sola /informacion y filtrar por queryParam -->
-        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'cognitiva' }">Discapacidad Cognitiva</a>
-        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'fisica' }">Discapacidad Física</a>
-        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'intelectual' }">Discapacidad Intelectual</a>
-        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'sensorial' }">Discapacidad Sensorial</a>
-        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'pluri' }">Pluridiscapacidad</a>
+        <a
+          class="submenu-item"
+          [routerLink]="['/informacion']"
+          [queryParams]="{ tipo: 'cognitiva' }"
+          >Discapacidad Cognitiva</a
+        >
+        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'fisica' }"
+          >Discapacidad Física</a
+        >
+        <a
+          class="submenu-item"
+          [routerLink]="['/informacion']"
+          [queryParams]="{ tipo: 'intelectual' }"
+          >Discapacidad Intelectual</a
+        >
+        <a
+          class="submenu-item"
+          [routerLink]="['/informacion']"
+          [queryParams]="{ tipo: 'sensorial' }"
+          >Discapacidad Sensorial</a
+        >
+        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'pluri' }"
+          >Pluridiscapacidad</a
+        >
       </div>
 
       <!-- Pacientes (submenu) -->
       <button class="nav-item nav-item-btn" type="button" (click)="toggleMenu('pacientes')">
         <i class="bi bi-people"></i>
         <span>Pacientes</span>
-        <i class="bi ms-auto" [class.bi-chevron-down]="!menuPacientes" [class.bi-chevron-up]="menuPacientes"></i>
+        <i
+          class="bi ms-auto"
+          [class.bi-chevron-down]="!menuPacientes"
+          [class.bi-chevron-up]="menuPacientes"
+        ></i>
       </button>
 
       <div class="submenu" *ngIf="menuPacientes">
-        <a class="submenu-item" routerLink="/portal-pacientes" routerLinkActive="active">Portal Pacientes</a>
+        <a class="submenu-item" routerLink="/portal-pacientes" routerLinkActive="active"
+          >Portal Pacientes</a
+        >
       </div>
     </nav>
 
@@ -71,131 +111,148 @@
   <!-- CONTENIDO PRINCIPAL -->
   <main class="content">
     <section class="hero d-flex align-items-center">
-      <div class="container">
-        <h1 class="fw-bold text-primary">Personas que Ayudan a Personas</h1>
-        <p class="lead text-muted">
-          Sistema de Atención y Apoyo de Discapacidad (S.A.I.D.) – promoviendo inclusión y acompañamiento.
+      <div class="container hero-inner">
+        <h1 class="fw-bold hero-title">Personas que Ayudan a Personas</h1>
+        <p class="lead hero-subtitle">
+          Sistema de Atención y Apoyo de Discapacidad (S.A.I.D.) – promoviendo inclusión y
+          acompañamiento.
         </p>
       </div>
     </section>
 
     <section class="dash">
-
-  <!-- TITULO + SUBTITULO como la captura -->
-  <div class="dash-header">
-    
-    <div class="dash-title">
-      <h2>Datos sobre Discapacidad en Argentina</h2>
-      
-    </div>
-  </div>
-
-  <!-- GRID de tarjetas -->
-  <div class="dash-grid">
-
-    <!-- Prevalencia -->
-    <div class="card card-lg">
-      <h3>Prevalencia de Discapacidad</h3>
-      <div class="big-number">
-        <span class="num">10,2%</span>
-        <span class="txt">de la población argentina tiene alguna dificultad o limitación permanente (2018)</span>
-      </div>
-      <p class="muted">
-        Equivale a unos <strong>4,7 – 5,1 millones</strong> de personas aproximadamente.
-      </p>
-    </div>
-
-    <!-- Tipos -->
-    <div class="card card-lg">
-      <h3>Tipos de Discapacidad</h3>
-
-      <!-- “fake donut” simple (sin librerías) + leyenda -->
-      <div class="donut-row">
-        <div class="donut" aria-label="Gráfico de tipos de discapacidad"></div>
-
-        <div class="legend">
-          <div class="legend-item"><span class="dot dot-motora"></span> Motora <strong>49%</strong></div>
-          <div class="legend-item"><span class="dot dot-visual"></span> Visual <strong>25%</strong></div>
-          <div class="legend-item"><span class="dot dot-auditiva"></span> Auditiva <strong>20,8%</strong></div>
-          <div class="legend-item"><span class="dot dot-cognitiva"></span> Cognitiva <strong>12,3%</strong></div>
-          <div class="legend-item"><span class="dot dot-habla"></span> Del habla <strong>~8%</strong></div>
-          <div class="legend-item"><span class="dot dot-novidente"></span> No vidente <strong>3,6%</strong></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CUD -->
-    <div class="card">
-      <h3>Certificados CUD</h3>
-      <div class="metric">
-        <i class="bi bi-file-earmark-medical"></i>
-        <div>
-          <div class="metric-value">1,9M</div>
-          <div class="metric-sub">Personas con Certificado Único de Discapacidad (CUD) válido (Mar 2025)</div>
-        </div>
-      </div>
-      <p class="muted">
-        Solo un <strong>4,1%</strong> de la población tiene CUD válido, mostrando un subregistro.
-      </p>
-    </div>
-
-    <!-- Mundial -->
-    <div class="card">
-      <h3>Comparación Mundial</h3>
-      <div class="metric">
-        <i class="bi bi-globe-americas"></i>
-        <div>
-          <div class="metric-value">15%</div>
-          <div class="metric-sub">de la población mundial vive con alguna forma de discapacidad (OMS)</div>
-        </div>
-      </div>
-      <p class="muted">
-        Contexto: Argentina se estima en el rango <strong>10–13%</strong> según metodología.
-      </p>
-    </div>
-
-    <!-- Pacientes que ingresaron (tu SQL) -->
-    <div class="card card-wide">
-      <h3>Pacientes acumulados</h3>
-
-      <div class="metric">
-        <i class="bi bi-people"></i>
-        <div>
-          <div class="metric-value">{{ pacientesRegistrados }}</div>
-          <div class="metric-sub">Pacientes registrados / ingresaron a la web (según tu base)</div>
+      <!-- TITULO + SUBTITULO como la captura -->
+      <div class="dash-header">
+        <div class="dash-title">
+          <h2>Datos sobre Discapacidad en Argentina</h2>
         </div>
       </div>
 
-      <div class="mini-bars" aria-label="Tendencia últimos 6 meses">
-        <div class="bar" style="height: 28%"></div>
-        <div class="bar" style="height: 40%"></div>
-        <div class="bar" style="height: 52%"></div>
-        <div class="bar" style="height: 66%"></div>
-        <div class="bar" style="height: 74%"></div>
-        <div class="bar active" style="height: 88%"></div>
+      <!-- GRID de tarjetas -->
+      <div class="dash-grid">
+        <!-- Prevalencia -->
+        <div class="card card-lg">
+          <h3>Prevalencia de Discapacidad</h3>
+          <div class="big-number">
+            <span class="num">10,2%</span>
+            <span class="txt"
+              >de la población argentina tiene alguna dificultad o limitación permanente
+              (2018)</span
+            >
+          </div>
+          <p class="muted">
+            Equivale a unos <strong>4,7 – 5,1 millones</strong> de personas aproximadamente.
+          </p>
+        </div>
+
+        <!-- Tipos -->
+        <div class="card card-lg">
+          <h3>Tipos de Discapacidad</h3>
+
+          <!-- “fake donut” simple (sin librerías) + leyenda -->
+          <div class="donut-row">
+            <div class="donut" aria-label="Gráfico de tipos de discapacidad"></div>
+
+            <div class="legend">
+              <div class="legend-item">
+                <span class="dot dot-motora"></span> Motora <strong>49%</strong>
+              </div>
+              <div class="legend-item">
+                <span class="dot dot-visual"></span> Visual <strong>25%</strong>
+              </div>
+              <div class="legend-item">
+                <span class="dot dot-auditiva"></span> Auditiva <strong>20,8%</strong>
+              </div>
+              <div class="legend-item">
+                <span class="dot dot-cognitiva"></span> Cognitiva <strong>12,3%</strong>
+              </div>
+              <div class="legend-item">
+                <span class="dot dot-habla"></span> Del habla <strong>~8%</strong>
+              </div>
+              <div class="legend-item">
+                <span class="dot dot-novidente"></span> No vidente <strong>3,6%</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CUD -->
+        <div class="card">
+          <h3>Certificados CUD</h3>
+          <div class="metric">
+            <i class="bi bi-file-earmark-medical"></i>
+            <div>
+              <div class="metric-value">1,9M</div>
+              <div class="metric-sub">
+                Personas con Certificado Único de Discapacidad (CUD) válido (Mar 2025)
+              </div>
+            </div>
+          </div>
+          <p class="muted">
+            Solo un <strong>4,1%</strong> de la población tiene CUD válido, mostrando un
+            subregistro.
+          </p>
+        </div>
+
+        <!-- Mundial -->
+        <div class="card">
+          <h3>Comparación Mundial</h3>
+          <div class="metric">
+            <i class="bi bi-globe-americas"></i>
+            <div>
+              <div class="metric-value">15%</div>
+              <div class="metric-sub">
+                de la población mundial vive con alguna forma de discapacidad (OMS)
+              </div>
+            </div>
+          </div>
+          <p class="muted">
+            Contexto: Argentina se estima en el rango <strong>10–13%</strong> según metodología.
+          </p>
+        </div>
+
+        <!-- Pacientes que ingresaron (tu SQL) -->
+        <div class="card card-wide">
+          <h3>Pacientes acumulados</h3>
+
+          <div class="metric">
+            <i class="bi bi-people"></i>
+            <div>
+              <div class="metric-value">{{ pacientesRegistrados }}</div>
+              <div class="metric-sub">
+                Pacientes registrados / ingresaron a la web (según tu base)
+              </div>
+            </div>
+          </div>
+
+          <div class="mini-bars" aria-label="Tendencia últimos 6 meses">
+            <div class="bar" style="height: 28%"></div>
+            <div class="bar" style="height: 40%"></div>
+            <div class="bar" style="height: 52%"></div>
+            <div class="bar" style="height: 66%"></div>
+            <div class="bar" style="height: 74%"></div>
+            <div class="bar active" style="height: 88%"></div>
+          </div>
+
+          <div class="muted tiny">
+            * El gráfico es ilustrativo (luego lo conectás a tu endpoint real).
+          </div>
+        </div>
+
+        <!-- Fuentes -->
+        <div class="card card-wide">
+          <h3>Fuentes</h3>
+          <ul class="sources">
+            <li><strong>INDEC</strong> – Estudio Nacional / mediciones (prevalencia).</li>
+            <li><strong>ANDIS</strong> – Certificado Único de Discapacidad (CUD) vigente.</li>
+            <li><strong>OMS</strong> – estimación global (15%).</li>
+          </ul>
+          <p class="muted tiny">
+            Nota: los porcentajes pueden variar según definición (censo/encuesta).
+          </p>
+        </div>
       </div>
-
-      <div class="muted tiny">
-        * El gráfico es ilustrativo (luego lo conectás a tu endpoint real).
-      </div>
-    </div>
-
-    <!-- Fuentes -->
-    <div class="card card-wide">
-      <h3>Fuentes</h3>
-      <ul class="sources">
-        <li><strong>INDEC</strong> – Estudio Nacional / mediciones (prevalencia).</li>
-        <li><strong>ANDIS</strong> – Certificado Único de Discapacidad (CUD) vigente.</li>
-        <li><strong>OMS</strong> – estimación global (15%).</li>
-      </ul>
-      <p class="muted tiny">
-        Nota: los porcentajes pueden variar según definición (censo/encuesta).
-      </p>
-    </div>
-
-  </div>
- </section>
-
+    </section>
   </main>
 </div>
 
@@ -209,16 +266,13 @@
   <div class="faq-box shadow-lg">
     <button class="btn-close close-faq" (click)="cerrarFaq()"></button>
 
-    <h4 class="text-center mb-3 fw-bold text-primary">
-      Preguntas Frecuentes
-    </h4>
+    <h4 class="text-center mb-3 fw-bold text-primary">Preguntas Frecuentes</h4>
 
     <div class="faq-content scrollable">
-
       <h6><strong>¿Cómo solicito un prestador?</strong></h6>
       <p>
-        Ingresá a la sección <strong>Servicios</strong>, elegí el tipo de prestador
-        (terapeuta, psicólogo, transportista, etc.) y enviá la solicitud correspondiente.
+        Ingresá a la sección <strong>Servicios</strong>, elegí el tipo de prestador (terapeuta,
+        psicólogo, transportista, etc.) y enviá la solicitud correspondiente.
       </p>
 
       <h6><strong>¿Cómo veo mis prestaciones?</strong></h6>
@@ -229,40 +283,34 @@
 
       <h6><strong>¿Puedo editar mis datos personales?</strong></h6>
       <p>
-        Sí. Podés hacerlo desde la sección <strong>Configuración</strong> del portal
-        de pacientes.
+        Sí. Podés hacerlo desde la sección <strong>Configuración</strong> del portal de pacientes.
       </p>
 
       <h6><strong>¿Qué hago si me rechazan una prestación?</strong></h6>
       <p>
-        Podés revisar el motivo del rechazo dentro del detalle del servicio
-        y reenviar la solicitud si corresponde.
+        Podés revisar el motivo del rechazo dentro del detalle del servicio y reenviar la solicitud
+        si corresponde.
       </p>
 
       <h6><strong>¿Dónde veo mis transportistas asignados?</strong></h6>
       <p>
-        En la sección <strong>Servicios &gt; Transportistas</strong> vas a encontrar
-        los traslados asignados, con horarios y recorridos.
+        En la sección <strong>Servicios &gt; Transportistas</strong> vas a encontrar los traslados
+        asignados, con horarios y recorridos.
       </p>
 
       <h6><strong>¿Cómo veo mis pagos pendientes?</strong></h6>
       <p>
-        Desde <strong>Reportes</strong> podés identificar los servicios con
-        pago pendiente y su método de pago correspondiente.
+        Desde <strong>Reportes</strong> podés identificar los servicios con pago pendiente y su
+        método de pago correspondiente.
       </p>
 
       <hr />
 
-      <p class="text-center fw-bold mb-0">
-        ¿Tenés más dudas? Estamos para ayudarte 
-      </p>
+      <p class="text-center fw-bold mb-0">¿Tenés más dudas? Estamos para ayudarte</p>
     </div>
 
     <div class="text-center mt-3">
-      <button class="btn btn-primary px-4" (click)="cerrarFaq()">
-        Entendido
-      </button>
+      <button class="btn btn-primary px-4" (click)="cerrarFaq()">Entendido</button>
     </div>
   </div>
 </div>
-

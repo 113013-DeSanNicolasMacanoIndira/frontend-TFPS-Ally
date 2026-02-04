@@ -1,87 +1,108 @@
 <div class="layout">
-  
+  <!-- Menú lateral -->
+  <app-menu-paciente [mostrarPagos]="false"></app-menu-paciente>
 
-  <!-- ============ CONTENIDO ============ -->
+  <!-- Contenido principal -->
   <main class="content">
-    <!-- Header tipo card (como tu estética) -->
-    <div class="card" style="margin-bottom: 20px;">
-      <h2 style="margin:0;">Modificar datos del paciente</h2>
-    </div>
+    <!-- Tarjeta contenedora -->
+    <div class="form-card">
+      <h2 class="form-card-title">Modificar datos del paciente</h2>
 
-    <!-- Card del formulario -->
-    <div class="card">
       <form [formGroup]="form" (ngSubmit)="guardarCambios()">
+        <!-- Grilla de campos -->
+        <div class="form-grid">
+          <!-- DNI con icono de candado -->
+          <div class="form-item">
+            <label>DNI</label>
+            <div class="input-container readonly">
+              <input class="form-control"
+                     [value]="patient?.numeroHistoriaClinica || patient?.dni || ''"
+                     readonly (click)="mostrarAtencion()" />
+              <button type="button" class="icon-button" (click)="mostrarAtencion()">
+                <i class="bi bi-lock-fill"></i>
+              </button>
+            </div>
+          </div>
 
-        <!-- 🔒 CAMPOS FIJOS (solo lectura + alerta al click) -->
-        <div class="form-group">
-          <label>DNI</label>
-          <input
-            type="text"
-            class="form-control"
-            [value]="patient?.numeroHistoriaClinica || patient?.dni || ''"
-            readonly
-            (click)="mostrarAtencion()"
-          />
+          <!-- Apellido con icono de candado -->
+          <div class="form-item">
+            <label>Apellido</label>
+            <div class="input-container readonly">
+              <input class="form-control"
+                     [value]="patient?.apellido || ''"
+                     readonly (click)="mostrarAtencion()" />
+              <button type="button" class="icon-button" (click)="mostrarAtencion()">
+                <i class="bi bi-lock-fill"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Nombre con icono de candado -->
+          <div class="form-item">
+            <label>Nombre</label>
+            <div class="input-container readonly">
+              <input class="form-control"
+                     [value]="patient?.nombre || ''"
+                     readonly (click)="mostrarAtencion()" />
+              <button type="button" class="icon-button" (click)="mostrarAtencion()">
+                <i class="bi bi-lock-fill"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dirección editable -->
+          <div class="form-item">
+            <label>Dirección</label>
+            <div class="input-container">
+              <input class="form-control" formControlName="direccion" />
+            </div>
+          </div>
+
+          <!-- Teléfono editable -->
+          <div class="form-item">
+            <label>Teléfono</label>
+            <div class="input-container">
+              <input class="form-control" formControlName="telefono" />
+            </div>
+          </div>
+
+          <!-- Obra social -->
+          <div class="form-item">
+            <label>Obra social</label>
+            <div class="input-container">
+              <input class="form-control" formControlName="obraSocial" />
+            </div>
+          </div>
+
+          <!-- N° de afiliado -->
+          <div class="form-item">
+            <label>N° de afiliado</label>
+            <div class="input-container">
+              <input class="form-control" formControlName="nroAfiliado" />
+            </div>
+          </div>
+
+          <!-- Tipo de discapacidad ocupa toda la fila -->
+          <div class="form-item full">
+            <label>Tipo de discapacidad</label>
+            <div class="input-container">
+              <input class="form-control" formControlName="tipoDiscapacidad" />
+            </div>
+          </div>
         </div>
 
-        <div class="form-group">
-          <label>Nombre</label>
-          <input
-            type="text"
-            class="form-control"
-            [value]="patient?.nombre || ''"
-            readonly
-            (click)="mostrarAtencion()"
-          />
+        <!-- Botones de acción -->
+        <div class="actions">
+          <button type="button"
+                  class="btn btn-danger"
+                  (click)="darDeBaja()">
+            <i class="bi bi-trash me-2"></i>Darme de baja
+          </button>
+          <button type="submit"
+                  class="btn btn-primary">
+            Guardar cambios
+          </button>
         </div>
-
-        <div class="form-group">
-          <label>Apellido</label>
-          <input
-            type="text"
-            class="form-control"
-            [value]="patient?.apellido || ''"
-            readonly
-            (click)="mostrarAtencion()"
-          />
-        </div>
-
-        <!-- ✅ EDITABLES -->
-        <div class="form-group">
-          <label>Teléfono</label>
-          <input type="text" class="form-control" formControlName="telefono" />
-        </div>
-
-        <div class="form-group">
-          <label>Dirección</label>
-          <input type="text" class="form-control" formControlName="direccion" />
-        </div>
-
-        <div class="form-group">
-          <label>Obra social</label>
-          <input type="text" class="form-control" formControlName="obraSocial" />
-        </div>
-
-        <div class="form-group">
-          <label>N° de afiliado</label>
-          <input type="text" class="form-control" formControlName="nroAfiliado" />
-        </div>
-
-        <div class="form-group">
-          <label>Tipo de discapacidad</label>
-          <input type="text" class="form-control" formControlName="tipoDiscapacidad" />
-        </div>
-
-        <!-- Botones -->
-        <button type="submit" class="btn btn-primary mt-3 w-100">
-          Guardar cambios
-        </button>
-
-        <button type="button" class="btn btn-danger mt-3 w-100" (click)="darDeBaja()">
-          <i class="bi bi-trash me-2"></i>
-          Darme de baja
-        </button>
-
       </form>
     </div>
   </main>
