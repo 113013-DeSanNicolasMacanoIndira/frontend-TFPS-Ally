@@ -5,18 +5,20 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  padding: 18px;
+  background: #e6edf6;
 }
 
 .bg-registro {
   position: absolute;
   inset: 0;
-  background-image: url("/icons/registro.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  opacity: 0.35;
-  filter: blur(0.4px);
-  transform: scale(1.02);
+
+  background: linear-gradient(
+    180deg,
+    #dadfe6 0%,
+    #79bad8 100%
+  );
+
   z-index: 0;
 }
 
@@ -42,6 +44,32 @@
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18),
               0 8px 24px rgba(0, 0, 0, 0.12);
 }
+.login-container::before{
+  content: "";
+  position: absolute;
+  inset: 12px;
+
+  border-radius: 36px;   /* 🔥 curva grande */
+  background: linear-gradient(
+    180deg,
+    #e4e7eb,
+    #6bb6da
+  );
+
+  z-index: 0;
+}
+/* Adorno curvo en la esquina superior izquierda */
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: -15px;
+  left: -40px;
+  width: 110px;
+  height: 80px;
+  background: #005ed6;             // tono azul intenso
+  border-radius:  0 110px 110px;   /* (arriba izq, arriba der, abajo der, abajo izq) */
+}
+
 
 
 

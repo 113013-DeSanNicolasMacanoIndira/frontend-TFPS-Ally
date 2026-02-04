@@ -33,8 +33,8 @@ export class ModificarPacienteComponent implements OnInit {
       telefono: [this.patient.telefono],
       direccion: [this.patient.direccion],
       tipoDiscapacidad: [this.patient.tipoDiscapacidad],
-      obraSocial: [this.patient.obraSocial],
-      nroAfiliado: [this.patient.nroAfiliado],
+      obraSocial: [this.patient.codigoObraSocial], // <- Obtenemos los datos con su nombre real
+      nroAfiliado: [this.patient.nroAfiliadoObraSocial],
     });
   }
 
@@ -52,34 +52,38 @@ export class ModificarPacienteComponent implements OnInit {
   }
 
   guardarCambios(): void {
-    this.patientService
-      .updatePartial({
-        id: this.patient.id,
-        telefono: this.form.value.telefono,
-        direccion: this.form.value.direccion,
-        tipoDiscapacidad: this.form.value.tipoDiscapacidad,
-        obraSocial: this.form.value.obraSocial,
-        nroAfiliado: this.form.value.nroAfiliado,
-      })
-      .subscribe({
-        next: () => {
-          const user = JSON.parse(localStorage.getItem('user')!);
-          this.patientService.getByUserId(user.id).subscribe({
-            next: (updatedPatient) => {
-              localStorage.setItem('paciente', JSON.stringify(updatedPatient));
-              Swal.fire({
-                title: '¡Datos actualizados!',
-                text: 'Los cambios se guardaron correctamente.',
-                icon: 'success',
-                confirmButtonText: 'Aceptar',
-              });
-              this.router.navigate(['/portal-pacientes']);
-            },
-            error: () => alert('Error al recargar datos actualizado'),
-          });
-        },
-        error: () => alert('Error al actualizar'),
-      });
+    // Mapeamos los nombres usados en el formulario a los campos que espera el backend
+    const payload: any = {
+      id: this.patient.id,
+      telefono: this.form.value.telefono,
+      direccion: this.form.value.direccion,
+      tipoDiscapacidad: this.form.value.tipoDiscapacidad,
+      codigoObraSocial: this.form.value.obraSocial, // <- nombre correcto
+      nroAfiliadoObraSocial: this.form.value.nroAfiliado, // <- nombre correcto
+    };
+
+    this.patientService.updatePartial(payload).subscribe({
+      next: () => {
+        const user = JSON.parse(localStorage.getItem('user')!);
+        this.patientService.getByUserId(user.id).subscribe({
+          next: (updatedPatient) => {
+            localStorage.setItem('paciente', JSON.stringify(updatedPatient));
+            Swal.fire({
+              title: '¡Datos actualizados!',
+              text: 'Los cambios se guardaron correctamente.',
+              icon: 'success',
+              confirmButtonText: 'Aceptar',
+            });
+            this.router.navigate(['/portal-pacientes']);
+          },
+          error: () => alert('Error al recargar datos actualizado'),
+        });
+      },
+      error: (err) => {
+        console.error('Error al actualizar', err);
+        Swal.fire('Error', 'No se pudo actualizar los datos. Revisa los campos enviados.', 'error');
+      },
+    });
   }
 
   darDeBaja(): void {

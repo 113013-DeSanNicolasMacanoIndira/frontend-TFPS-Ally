@@ -54,4 +54,8 @@ export class PatientService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+  getTotalPacientes(): Observable<number> {
+  return this.http.get<number>('http://localhost:8080/api/patients/count');
+  // ajusta la URL según tu configuración
+ }
 }

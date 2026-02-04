@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
+import { PatientService } from '../../../../services/patient.service';
 
 @Component({
   selector: 'app-portal-paciente',
@@ -10,20 +11,30 @@ import { AuthService } from '../../../../services/auth.service';
   templateUrl: './portal-paciente.component.html',
   styleUrls: ['./portal-paciente.component.scss']
 })
-export class PortalPacienteComponent {
-  // Pacientes registrados (mock por ahora)
-  pacientesRegistrados = 54;
-  // FAQ
+export class PortalPacienteComponent implements OnInit {
+
+  pacientesRegistrados = 0;
   mostrarFaq = false;
 
-  // Menús del sidebar
   menuServicios = false;
   menuInfo = false;
   menuPacientes = false;
 
-  constructor(private auth: AuthService) {}
+  constructor(
+    private auth: AuthService,
+    private patientService: PatientService
+  ) {}
 
-  // Abre/cierra submenús
+  ngOnInit(): void {
+    this.patientService.getTotalPacientes().subscribe({
+      next: (total) => this.pacientesRegistrados = total,
+      error: (err) => {
+        console.error('Error al obtener el total de pacientes:', err);
+        this.pacientesRegistrados = 0;
+      }
+    });
+  }
+
   toggleMenu(menu: 'servicios' | 'info' | 'pacientes') {
     if (menu === 'servicios') this.menuServicios = !this.menuServicios;
     if (menu === 'info') this.menuInfo = !this.menuInfo;
@@ -34,11 +45,6 @@ export class PortalPacienteComponent {
     this.auth.logout();
   }
 
-  abrirFaq() {
-    this.mostrarFaq = true;
-  }
-
-  cerrarFaq() {
-    this.mostrarFaq = false;
-  }
+  abrirFaq() { this.mostrarFaq = true; }
+  cerrarFaq() { this.mostrarFaq = false; }
 }
