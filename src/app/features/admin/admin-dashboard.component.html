@@ -1,231 +1,281 @@
-<nav class="admin-nav shadow-sm">
-  <div class="d-flex align-items-center justify-content-between container-fluid">
-    <h3 class="fw-bold text-primary m-0">Panel de Administración</h3>
-
-    <div class="admin-profile d-flex align-items-center gap-2">
-      <img src="/icons/logolargo.png" class="profile-img" alt="Admin" />
-      <button class="logout-btn" (click)="logout()">
-        <i class="bi bi-box-arrow-right"></i> Salir
-      </button>
+<div class="admin-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="/icons/logolargo.png" alt="Ally" />
     </div>
-  </div>
-</nav>
 
-<div class="container mt-4">
-  <!-- 🔹 Navegación por pestañas -->
-  <ul class="nav nav-tabs mb-4">
-    <li class="nav-item">
-      <a
-        class="nav-link"
-        [class.active]="tabActiva === 'dashboard'"
-        (click)="tabActiva = 'dashboard'"
-      >
+    <ul class="sidebar-menu">
+      <li [class.active]="tabActiva === 'dashboard'" (click)="tabActiva = 'dashboard'">
         <i class="bi bi-speedometer2"></i> Dashboard General
-      </a>
-    </li>
+      </li>
 
-    <li class="nav-item">
-      <a
-        class="nav-link"
-        [class.active]="tabActiva === 'estadisticas'"
-        (click)="tabActiva = 'estadisticas'"
-      >
+      <li [class.active]="tabActiva === 'estadisticas'" (click)="tabActiva = 'estadisticas'">
         <i class="bi bi-bar-chart"></i> Estadísticas
-      </a>
-    </li>
+      </li>
 
-    <li class="nav-item">
-      <a
-        class="nav-link"
-        [class.active]="tabActiva === 'usuarios'"
-        (click)="tabActiva = 'usuarios'"
-      >
+      <li [class.active]="tabActiva === 'usuarios'" (click)="tabActiva = 'usuarios'">
         <i class="bi bi-people"></i> Gestión Usuarios
-      </a>
-    </li>
+      </li>
 
-    <li class="nav-item">
-      <a
-        class="nav-link"
-        [class.active]="tabActiva === 'solicitudes'"
-        (click)="tabActiva = 'solicitudes'"
-      >
+      <li [class.active]="tabActiva === 'solicitudes'" (click)="tabActiva = 'solicitudes'">
         <i class="bi bi-clipboard-check"></i> Solicitudes
-      </a>
-    </li>
+      </li>
 
-    <li class="nav-item">
-      <a class="nav-link" [class.active]="tabActiva === 'montos'" (click)="tabActiva = 'montos'">
+      <li [class.active]="tabActiva === 'montos'" (click)="tabActiva = 'montos'">
         <i class="bi bi-cash-coin"></i> Gestión Montos
-      </a>
-    </li>
-  </ul>
+      </li>
 
-  <!--  TAB: MÉTRICAS -->
-  <div *ngIf="tabActiva === 'dashboard'">
-    <div class="filter-box d-flex gap-3 mb-3">
-      <input type="date" [(ngModel)]="fechaDesde" class="form-control" />
-      <input type="date" [(ngModel)]="fechaHasta" class="form-control" />
-      <button class="btn btn-primary" (click)="loadMetrics()">Filtrar</button>
-    </div>
+      <li class="logout-item" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+      </li>
+    </ul>
+  </aside>
 
-    <div class="stats-grid">
-      <div
-        *ngFor="let card of metricCards"
-        class="stat-card shadow"
-        [ngStyle]="{ background: card.gradient }"
-        (click)="onCardClick(card.action)"
-        style="cursor: pointer"
-      >
-        <div class="icon-box"><i [class]="card.icon"></i></div>
-        <div>
-          <h3>{{ card.value }}</h3>
-          <p>{{ card.label }}</p>
+  <!-- CONTENIDO -->
+  <main class="admin-content">
+    <!-- tu navbar -->
+    <nav class="admin-nav shadow-sm">
+      <div class="d-flex align-items-center justify-content-between container-fluid">
+        <h3 class="admin-title m-0">Panel de Administración</h3>
+
+        <div class="admin-profile d-flex align-items-center gap-2">
+          <button class="logout-btn" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i> Salir
+          </button>
         </div>
       </div>
-    </div>
-  </div>
+    </nav>
 
-  <!-- 📌 TAB: GRÁFICOS -->
-  <div *ngIf="tabActiva === 'estadisticas'">
-    <app-admin-charts></app-admin-charts>
-  </div>
+    <!-- tu contenedor grande tipo "card" -->
+    <div class="dashboard-card">
+      <!-- 🔹 Navegación por pestañas (si querés mantenerlas además del sidebar) -->
+      <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [class.active]="tabActiva === 'dashboard'"
+            (click)="tabActiva = 'dashboard'"
+          >
+            <i class="bi bi-speedometer2"></i>
+          </a>
+        </li>
 
-  <!-- 📌 TAB: USUARIOS -->
-  <div *ngIf="tabActiva === 'usuarios'">
-    <div class="card shadow p-3">
-      <h5 class="fw-bold mb-3">Usuarios del Sistema</h5>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [class.active]="tabActiva === 'estadisticas'"
+            (click)="tabActiva = 'estadisticas'"
+          >
+            <i class="bi bi-bar-chart"></i>
+          </a>
+        </li>
 
-      <table class="table table-hover align-middle text-center">
-        <thead class="table-primary">
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Rol</th>
-            <th>Estado</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let u of usuarios">
-            <td>{{ u.id }}</td>
-            <td>{{ u.nombre }}</td>
-            <td>{{ u.rol }}</td>
-            <td>
-              <span
-                class="badge status-pill"
-                [ngClass]="u.activo ? 'active-status' : 'blocked-status'"
-              >
-                {{ u.activo ? 'Activo' : 'Bloqueado' }}
-              </span>
-            </td>
-            <td>
-              <button
-                class="btn btn-sm"
-                [ngClass]="u.activo ? 'btn-danger' : 'btn-success'"
-                (click)="toggleEstado(u)"
-              >
-                {{ u.activo ? 'Bloquear' : 'Activar' }}
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [class.active]="tabActiva === 'usuarios'"
+            (click)="tabActiva = 'usuarios'"
+          >
+            <i class="bi bi-people"></i>
+          </a>
+        </li>
 
-  <!-- 📌 TAB: SOLICITUDES DETALLADAS -->
-  <div *ngIf="tabActiva === 'solicitudes'">
-    <h4 class="fw-bold mb-3">{{ tituloSolicitudes }}</h4>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [class.active]="tabActiva === 'solicitudes'"
+            (click)="tabActiva = 'solicitudes'"
+          >
+            <i class="bi bi-clipboard-check"></i>
+          </a>
+        </li>
 
-    <table class="table table-hover table-striped text-center shadow-sm">
-      <thead class="table-primary">
-        <tr>
-          <th>ID</th>
-          <th>Paciente</th>
-          <th>Prestador</th>
-          <th>Especialidad</th>
-          <th>Estado</th>
-          <th>Fecha Solicitud</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let s of solicitudes" (click)="abrirDetalle(s)" style="cursor: pointer">
-          <td>{{ s[0] }}</td>
-          <td>{{ s[1] }}</td>
-          <td>{{ s[2] || '-' }}</td>
-          <td>{{ s[3] }}</td>
-          <td>
-            <span
-              class="badge"
-              [ngClass]="{
-                'bg-warning text-dark': s[4] === 'PAGO_PENDIENTE',
-                'bg-success': s[4] === 'ACEPTADO',
-                'bg-danger': s[4] === 'RECHAZADO'
-              }"
-              >{{ s[4] }}</span
-            >
-          </td>
-          <td>{{ s[5] | date : 'dd/MM/yyyy HH:mm' }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [class.active]="tabActiva === 'montos'"
+            (click)="tabActiva = 'montos'"
+          >
+            <i class="bi bi-cash-coin"></i>
+          </a>
+        </li>
+      </ul>
 
-  <!-- 📌 TAB: GESTIÓN DE MONTOS -->
-  <div *ngIf="tabActiva === 'montos'">
-    <app-admin-gestion-montos></app-admin-gestion-montos>
-  </div>
-  <!-- MODAL DETALLE SOLICITUD -->
-  <div class="modal fade" id="detalleModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content shadow">
-        <div class="modal-header bg-primary text-white">
-          <h5 class="modal-title">Detalle del Servicio</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      <!--  TAB: MÉTRICAS -->
+      <div *ngIf="tabActiva === 'dashboard'">
+        <div class="filter-box d-flex gap-3 mb-3">
+          <input type="date" [(ngModel)]="fechaDesde" class="form-control" />
+          <input type="date" [(ngModel)]="fechaHasta" class="form-control" />
+          <button class="btn btn-primary" (click)="loadMetrics()">Filtrar</button>
         </div>
 
-        <div class="modal-body" *ngIf="solicitudSeleccionada">
-          <table class="table table-bordered">
-            <tr>
-              <th>ID</th>
-              <td>{{ solicitudSeleccionada[0] }}</td>
-            </tr>
-            <tr>
-              <th>Paciente</th>
-              <td>{{ solicitudSeleccionada[1] }}</td>
-            </tr>
-            <tr>
-              <th>Prestador</th>
-              <td>{{ solicitudSeleccionada[2] }}</td>
-            </tr>
-            <tr>
-              <th>Especialidad</th>
-              <td>{{ solicitudSeleccionada[3] }}</td>
-            </tr>
-            <tr>
-              <th>Estado</th>
-              <td>{{ solicitudSeleccionada[4] }}</td>
-            </tr>
-            <tr>
-              <th>Fecha Solicitud</th>
-              <td>{{ solicitudSeleccionada[5] | date : 'dd/MM/yyyy HH:mm' }}</td>
-            </tr>
-          </table>
-
-          <!-- 📌 CAMBIAR ESTADO SOLO PARA ADMIN -->
-          <div class="text-end">
-            <button class="btn btn-success me-2" (click)="cambiarEstado('ACEPTADO')">
-              Aceptar
-            </button>
-            <button class="btn btn-danger" (click)="cambiarEstado('RECHAZADO')">Rechazar</button>
+        <div class="stats-grid">
+          <div
+            *ngFor="let card of metricCards"
+            class="stat-card shadow"
+            [ngStyle]="{ background: card.gradient }"
+            (click)="onCardClick(card.action)"
+            style="cursor: pointer"
+          >
+            <div class="icon-box"><i [class]="card.icon"></i></div>
+            <div>
+              <h3>{{ card.value }}</h3>
+              <p>{{ card.label }}</p>
+            </div>
           </div>
         </div>
+      </div>
 
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <!-- 📌 TAB: GRÁFICOS -->
+      <div *ngIf="tabActiva === 'estadisticas'">
+        <app-admin-charts></app-admin-charts>
+      </div>
+
+      <!-- 📌 TAB: USUARIOS -->
+      <div *ngIf="tabActiva === 'usuarios'">
+        <div class="card shadow p-3">
+          <h5 class="fw-bold mb-3">Usuarios del Sistema</h5>
+
+          <table class="table table-hover align-middle text-center">
+            <thead class="table-primary">
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let u of usuarios">
+                <td>{{ u.id }}</td>
+                <td>{{ u.nombre }}</td>
+                <td>{{ u.rol }}</td>
+                <td>
+                  <span
+                    class="badge status-pill"
+                    [ngClass]="u.activo ? 'active-status' : 'blocked-status'"
+                  >
+                    {{ u.activo ? 'Activo' : 'Bloqueado' }}
+                  </span>
+                </td>
+                <td>
+                  <button
+                    class="btn btn-sm"
+                    [ngClass]="u.activo ? 'btn-danger' : 'btn-success'"
+                    (click)="toggleEstado(u)"
+                  >
+                    {{ u.activo ? 'Bloquear' : 'Activar' }}
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 📌 TAB: SOLICITUDES -->
+      <div *ngIf="tabActiva === 'solicitudes'">
+        <h4 class="fw-bold mb-3">{{ tituloSolicitudes }}</h4>
+
+        <table class="table table-hover table-striped text-center shadow-sm">
+          <thead class="table-primary">
+            <tr>
+              <th>ID</th>
+              <th>Paciente</th>
+              <th>Prestador</th>
+              <th>Especialidad</th>
+              <th>Estado</th>
+              <th>Fecha Solicitud</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of solicitudes" (click)="abrirDetalle(s)" style="cursor: pointer">
+              <td>{{ s[0] }}</td>
+              <td>{{ s[1] }}</td>
+              <td>{{ s[2] || '-' }}</td>
+              <td>{{ s[3] }}</td>
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="{
+                    'bg-warning text-dark': s[4] === 'PAGO_PENDIENTE',
+                    'bg-success': s[4] === 'ACEPTADO',
+                    'bg-danger': s[4] === 'RECHAZADO',
+                  }"
+                >
+                  {{ s[4] }}
+                </span>
+              </td>
+              <td>{{ s[5] | date: 'dd/MM/yyyy HH:mm' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 📌 TAB: MONTOS -->
+      <div *ngIf="tabActiva === 'montos'">
+        <app-admin-gestion-montos></app-admin-gestion-montos>
+      </div>
+
+      <!-- MODAL -->
+      <div class="modal fade" id="detalleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content shadow">
+            <div class="modal-header bg-primary text-white">
+              <h5 class="modal-title">Detalle del Servicio</h5>
+              <button
+                type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+
+            <div class="modal-body" *ngIf="solicitudSeleccionada">
+              <table class="table table-bordered">
+                <tr>
+                  <th>ID</th>
+                  <td>{{ solicitudSeleccionada[0] }}</td>
+                </tr>
+                <tr>
+                  <th>Paciente</th>
+                  <td>{{ solicitudSeleccionada[1] }}</td>
+                </tr>
+                <tr>
+                  <th>Prestador</th>
+                  <td>{{ solicitudSeleccionada[2] }}</td>
+                </tr>
+                <tr>
+                  <th>Especialidad</th>
+                  <td>{{ solicitudSeleccionada[3] }}</td>
+                </tr>
+                <tr>
+                  <th>Estado</th>
+                  <td>{{ solicitudSeleccionada[4] }}</td>
+                </tr>
+                <tr>
+                  <th>Fecha Solicitud</th>
+                  <td>{{ solicitudSeleccionada[5] | date: 'dd/MM/yyyy HH:mm' }}</td>
+                </tr>
+              </table>
+
+              <div class="text-end">
+                <button class="btn btn-success me-2" (click)="cambiarEstado('ACEPTADO')">
+                  Aceptar
+                </button>
+                <button class="btn btn-danger" (click)="cambiarEstado('RECHAZADO')">
+                  Rechazar
+                </button>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </div>
