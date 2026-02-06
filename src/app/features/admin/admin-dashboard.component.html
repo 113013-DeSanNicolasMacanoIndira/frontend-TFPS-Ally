@@ -37,7 +37,7 @@
     <!-- tu navbar -->
     <nav class="admin-nav shadow-sm">
       <div class="d-flex align-items-center justify-content-between container-fluid">
-        <h3 class="admin-title m-0">Panel de Administración</h3>
+        <h3 class="fw-bold text-primary m-0">Panel de Administración</h3>
 
         <div class="admin-profile d-flex align-items-center gap-2">
           <button class="logout-btn" (click)="logout()">
@@ -103,11 +103,35 @@
       </ul>
 
       <!--  TAB: MÉTRICAS -->
+      <!--  TAB: MÉTRICAS -->
       <div *ngIf="tabActiva === 'dashboard'">
-        <div class="filter-box d-flex gap-3 mb-3">
-          <input type="date" [(ngModel)]="fechaDesde" class="form-control" />
-          <input type="date" [(ngModel)]="fechaHasta" class="form-control" />
-          <button class="btn btn-primary" (click)="loadMetrics()">Filtrar</button>
+        <!-- NUEVO FILTRO -->
+        <div class="filter-box mb-3">
+          <div class="filter-row">
+            <div class="filter-group">
+              <label class="filter-label">Período</label>
+              <select class="form-select" [(ngModel)]="periodo" (change)="onPeriodoChange()">
+                <option value="HOY">Hoy</option>
+                <option value="SEMANA">Últimos 7 días</option>
+                <option value="MES">Últimos 30 días</option>
+                <option value="PERSONALIZADO">Personalizado</option>
+              </select>
+            </div>
+
+            <div class="filter-group" *ngIf="periodo === 'PERSONALIZADO'">
+              <label class="filter-label">Desde</label>
+              <input type="date" [(ngModel)]="fechaDesde" class="form-control" />
+            </div>
+
+            <div class="filter-group" *ngIf="periodo === 'PERSONALIZADO'">
+              <label class="filter-label">Hasta</label>
+              <input type="date" [(ngModel)]="fechaHasta" class="form-control" />
+            </div>
+
+            <button class="btn btn-primary filter-btn" (click)="loadMetrics()">
+              <i class="bi bi-funnel"></i> Filtrar
+            </button>
+          </div>
         </div>
 
         <div class="stats-grid">
@@ -120,8 +144,8 @@
           >
             <div class="icon-box"><i [class]="card.icon"></i></div>
             <div>
-              <h3>{{ card.value }}</h3>
-              <p>{{ card.label }}</p>
+              <h3 class="stat-value">{{ card.value }}</h3>
+              <p class="stat-label">{{ card.label }}</p>
             </div>
           </div>
         </div>
@@ -176,8 +200,60 @@
       </div>
 
       <!-- 📌 TAB: SOLICITUDES -->
+      <!-- 📌 TAB: SOLICITUDES -->
       <div *ngIf="tabActiva === 'solicitudes'">
-        <h4 class="fw-bold mb-3">{{ tituloSolicitudes }}</h4>
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+          <h4 class="fw-bold m-0">{{ tituloSolicitudes }}</h4>
+
+          <!-- Botón volver opcional -->
+          <button class="btn btn-outline-primary btn-sm" (click)="tabActiva = 'dashboard'">
+            <i class="bi bi-arrow-left"></i> Volver al Dashboard
+          </button>
+        </div>
+
+        <!-- ✅ FILTRO EN SOLICITUDES -->
+        <div class="filter-box mb-3">
+          <div class="filter-row">
+            <div class="filter-group">
+              <label class="filter-label">Período</label>
+              <select
+                class="form-select"
+                [(ngModel)]="periodoSolicitudes"
+                (change)="onPeriodoSolicitudesChange()"
+              >
+                <option value="HOY">Hoy</option>
+                <option value="SEMANA">Últimos 7 días</option>
+                <option value="MES">Últimos 30 días</option>
+                <option value="PERSONALIZADO">Personalizado</option>
+              </select>
+            </div>
+
+            <div class="filter-group" *ngIf="periodoSolicitudes === 'PERSONALIZADO'">
+              <label class="filter-label">Desde</label>
+              <input type="date" [(ngModel)]="fechaDesdeSolicitudes" class="form-control" />
+            </div>
+
+            <div class="filter-group" *ngIf="periodoSolicitudes === 'PERSONALIZADO'">
+              <label class="filter-label">Hasta</label>
+              <input type="date" [(ngModel)]="fechaHastaSolicitudes" class="form-control" />
+            </div>
+
+            <div class="filter-group grow">
+              <label class="filter-label">Buscar</label>
+              <input
+                type="text"
+                class="form-control"
+                [(ngModel)]="searchSolicitudes"
+                (input)="aplicarFiltroLocal()"
+                placeholder="Paciente / Prestador / Especialidad..."
+              />
+            </div>
+
+            <button class="btn btn-primary filter-btn" (click)="loadSolicitudesActuales()">
+              <i class="bi bi-funnel"></i> Aplicar
+            </button>
+          </div>
+        </div>
 
         <table class="table table-hover table-striped text-center shadow-sm">
           <thead class="table-primary">
@@ -191,7 +267,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let s of solicitudes" (click)="abrirDetalle(s)" style="cursor: pointer">
+            <tr
+              *ngFor="let s of solicitudesFiltradas"
+              (click)="abrirDetalle(s)"
+              style="cursor: pointer"
+            >
               <td>{{ s[0] }}</td>
               <td>{{ s[1] }}</td>
               <td>{{ s[2] || '-' }}</td>
@@ -213,7 +293,6 @@
           </tbody>
         </table>
       </div>
-
       <!-- 📌 TAB: MONTOS -->
       <div *ngIf="tabActiva === 'montos'">
         <app-admin-gestion-montos></app-admin-gestion-montos>
@@ -259,6 +338,13 @@
                   <td>{{ solicitudSeleccionada[5] | date: 'dd/MM/yyyy HH:mm' }}</td>
                 </tr>
               </table>
+              <!-- ✅ ACÁ VA EL MENSAJE (debajo de la tabla) -->
+              <div *ngIf="solicitudesFiltradas.length === 0" class="alert alert-warning mt-3">
+                No hay datos para mostrar con el filtro seleccionado.
+              </div>
+              <!-- ✅ FIN MENSAJE -->
+
+              <!-- <-- este es el cierre del <div *ngIf="tabActiva === 'solicitudes'"> -->
 
               <div class="text-end">
                 <button class="btn btn-success me-2" (click)="cambiarEstado('ACEPTADO')">

@@ -134,3 +134,62 @@
   align-items:center;
   min-height: 72px;
 }
+/* FIX logo (tenías 52 px) */
+.sidebar-logo img{
+  width: 100%;
+  max-width: 200px;
+  height: 52px;          /* ✅ antes estaba mal */
+  object-fit: contain;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.15));
+}
+
+/* FILTRO PRO */
+.filter-box{
+  background:#fff;
+  border:1px solid #eef2ff;
+  border-radius:14px;
+  padding:14px;
+  box-shadow:0 10px 22px rgba(0,0,0,.04);
+}
+
+.filter-row{
+  display:flex;
+  gap:14px;
+  align-items:end;
+  flex-wrap:wrap;
+}
+
+.filter-group{
+  display:flex;
+  flex-direction:column;
+  min-width:180px;
+}
+
+.filter-label{
+  font-size:12px;
+  font-weight:700;
+  color:#64748b;
+  margin-bottom:6px;
+}
+
+.filter-btn{
+  height:38px;
+}
+
+/* TIPOGRAFÍA de las métricas */
+.stat-value{
+  font-size: 34px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+}
+
+.stat-label{
+  margin: 8px 0 0;
+  font-size: 14px;
+  opacity: .95;
+}
+.filter-group.grow{
+  flex: 1;
+  min-width: 260px;
+}
