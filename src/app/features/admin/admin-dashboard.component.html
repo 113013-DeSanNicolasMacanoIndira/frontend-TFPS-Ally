@@ -18,7 +18,7 @@
         <i class="bi bi-people"></i> Gestión Usuarios
       </li>
 
-      <li [class.active]="tabActiva === 'solicitudes'" (click)="tabActiva = 'solicitudes'">
+      <li [class.active]="tabActiva === 'solicitudes'" (click)="abrirSolicitudesTodas()">
         <i class="bi bi-clipboard-check"></i> Solicitudes
       </li>
 
@@ -211,87 +211,45 @@
           </button>
         </div>
 
-        <!-- ✅ FILTRO EN SOLICITUDES -->
-        <div class="filter-box mb-3">
-          <div class="filter-row">
-            <div class="filter-group">
-              <label class="filter-label">Período</label>
-              <select
-                class="form-select"
-                [(ngModel)]="periodoSolicitudes"
-                (change)="onPeriodoSolicitudesChange()"
-              >
-                <option value="HOY">Hoy</option>
-                <option value="SEMANA">Últimos 7 días</option>
-                <option value="MES">Últimos 30 días</option>
-                <option value="PERSONALIZADO">Personalizado</option>
-              </select>
-            </div>
-
-            <div class="filter-group" *ngIf="periodoSolicitudes === 'PERSONALIZADO'">
-              <label class="filter-label">Desde</label>
-              <input type="date" [(ngModel)]="fechaDesdeSolicitudes" class="form-control" />
-            </div>
-
-            <div class="filter-group" *ngIf="periodoSolicitudes === 'PERSONALIZADO'">
-              <label class="filter-label">Hasta</label>
-              <input type="date" [(ngModel)]="fechaHastaSolicitudes" class="form-control" />
-            </div>
-
-            <div class="filter-group grow">
-              <label class="filter-label">Buscar</label>
-              <input
-                type="text"
-                class="form-control"
-                [(ngModel)]="searchSolicitudes"
-                (input)="aplicarFiltroLocal()"
-                placeholder="Paciente / Prestador / Especialidad..."
-              />
-            </div>
-
-            <button class="btn btn-primary filter-btn" (click)="loadSolicitudesActuales()">
-              <i class="bi bi-funnel"></i> Aplicar
-            </button>
-          </div>
+        <div class="table-wrap">
+          <table class="table table-hover table-striped text-center shadow-sm">
+            <thead class="table-primary">
+              <tr>
+                <th>ID</th>
+                <th>Paciente</th>
+                <th>Prestador</th>
+                <th>Especialidad</th>
+                <th>Estado</th>
+                <th>Fecha Solicitud</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let s of solicitudes" (click)="abrirDetalle(s)" style="cursor: pointer">
+                <td>{{ s[0] }}</td>
+                <td>{{ s[1] }}</td>
+                <td>{{ s[2] || '-' }}</td>
+                <td>{{ s[3] }}</td>
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-warning text-dark': s[4] === 'PAGO_PENDIENTE',
+                      'bg-success': s[4] === 'ACEPTADO',
+                      'bg-danger': s[4] === 'RECHAZADO',
+                    }"
+                  >
+                    {{ s[4] }}
+                  </span>
+                </td>
+                <td>
+                  {{
+                    getFechaSolicitud(s) ? (getFechaSolicitud(s) | date: 'dd/MM/yyyy HH:mm') : '-'
+                  }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-
-        <table class="table table-hover table-striped text-center shadow-sm">
-          <thead class="table-primary">
-            <tr>
-              <th>ID</th>
-              <th>Paciente</th>
-              <th>Prestador</th>
-              <th>Especialidad</th>
-              <th>Estado</th>
-              <th>Fecha Solicitud</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let s of solicitudesFiltradas"
-              (click)="abrirDetalle(s)"
-              style="cursor: pointer"
-            >
-              <td>{{ s[0] }}</td>
-              <td>{{ s[1] }}</td>
-              <td>{{ s[2] || '-' }}</td>
-              <td>{{ s[3] }}</td>
-              <td>
-                <span
-                  class="badge"
-                  [ngClass]="{
-                    'bg-warning text-dark': s[4] === 'PAGO_PENDIENTE',
-                    'bg-success': s[4] === 'ACEPTADO',
-                    'bg-danger': s[4] === 'RECHAZADO',
-                  }"
-                >
-                  {{ s[4] }}
-                </span>
-              </td>
-              <td>{{ s[5] | date: 'dd/MM/yyyy HH:mm' }}</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
       <!-- 📌 TAB: MONTOS -->
       <div *ngIf="tabActiva === 'montos'">
@@ -335,13 +293,17 @@
                 </tr>
                 <tr>
                   <th>Fecha Solicitud</th>
-                  <td>{{ solicitudSeleccionada[5] | date: 'dd/MM/yyyy HH:mm' }}</td>
+                  <td>
+                    {{
+                      getFechaSolicitud(solicitudSeleccionada)
+                        ? (getFechaSolicitud(solicitudSeleccionada) | date: 'dd/MM/yyyy HH:mm')
+                        : '-'
+                    }}
+                  </td>
                 </tr>
               </table>
               <!-- ✅ ACÁ VA EL MENSAJE (debajo de la tabla) -->
-              <div *ngIf="solicitudesFiltradas.length === 0" class="alert alert-warning mt-3">
-                No hay datos para mostrar con el filtro seleccionado.
-              </div>
+
               <!-- ✅ FIN MENSAJE -->
 
               <!-- <-- este es el cierre del <div *ngIf="tabActiva === 'solicitudes'"> -->

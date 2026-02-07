@@ -80,6 +80,32 @@ export class AdminDashboardComponent implements OnInit {
   private formatDate(d: Date) {
     return d.toISOString().slice(0, 10);
   }
+  // ✅ Para poder usarlo en el template sin error
+  isArr = Array.isArray;
+
+  // ✅ Convierte lo que venga (string / Date / array LocalDateTime) a Date real
+  toDate(value: any): Date | null {
+    if (!value) return null;
+
+    // ya es Date
+    if (value instanceof Date) return value;
+
+    // LocalDateTime como array: [yyyy, mm, dd, hh, mm, ss, nano]
+    if (Array.isArray(value)) {
+      const [y, mo, d, h = 0, mi = 0, s = 0] = value;
+      return new Date(y, (mo ?? 1) - 1, d ?? 1, h ?? 0, mi ?? 0, s ?? 0);
+    }
+
+    // String ISO: "2026-02-04T00:44:07..."
+    const dt = new Date(value);
+    return isNaN(dt.getTime()) ? null : dt;
+  }
+
+  // ✅ Devuelve la fecha de una fila (array u objeto)
+  getFechaSolicitud(item: any): Date | null {
+    if (!item) return null;
+    return this.isArr(item) ? this.toDate(item[5]) : this.toDate(item.fechaSolicitud);
+  }
 
   onPeriodoSolicitudesChange() {
     const hoy = new Date();
@@ -111,27 +137,27 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
- loadSolicitudesActuales() {
-  const cargar =
-    this.modoSolicitudes === 'PENDIENTES'
-      ? this.adminService.getSolicitudesPendientes()
-      : this.adminService.getServiciosAceptados();
+  loadSolicitudesActuales() {
+    const cargar =
+      this.modoSolicitudes === 'PENDIENTES'
+        ? this.adminService.getSolicitudesPendientes()
+        : this.adminService.getServiciosAceptados();
 
-  cargar.subscribe((data: any[]) => {
-    this.solicitudes = data.map((s: any) => {
-      s[5] = new Date(s[5]);
-      return s;
+    cargar.subscribe((data: any[]) => {
+      this.solicitudes = data.map((s: any) => {
+        s[5] = this.toDate(s[5]);
+        return s;
+      });
+
+      // ✅ si no hay fechas seteadas, NO filtres, mostrálas todas
+      if (!this.fechaDesdeSolicitudes && !this.fechaHastaSolicitudes) {
+        this.solicitudesFiltradas = [...this.solicitudes];
+        return;
+      }
+
+      this.aplicarFiltroLocal();
     });
-
-    // ✅ si no hay fechas seteadas, NO filtres, mostrálas todas
-    if (!this.fechaDesdeSolicitudes && !this.fechaHastaSolicitudes) {
-      this.solicitudesFiltradas = [...this.solicitudes];
-      return;
-    }
-
-    this.aplicarFiltroLocal();
-  });
-}
+  }
 
   aplicarFiltroLocal() {
     const desde = this.fechaDesdeSolicitudes ? new Date(this.fechaDesdeSolicitudes) : null;
@@ -264,26 +290,78 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   onCardClick(action: string): void {
-  if (action === 'solicitudesPendientes') {
-    this.modoSolicitudes = 'PENDIENTES';
-    this.tituloSolicitudes = 'Solicitudes Pendientes';
-    this.tabActiva = 'solicitudes';
+    if (action === 'solicitudesPendientes') {
+      this.modoSolicitudes = 'PENDIENTES';
+      this.tituloSolicitudes = 'Solicitudes Pendientes';
+      this.tabActiva = 'solicitudes';
 
-    // ✅ fuerza período y setea fechas antes de cargar
+      // ✅ fuerza período y setea fechas antes de cargar
+      this.periodoSolicitudes = 'MES';
+      this.onPeriodoSolicitudesChange();
+    }
+
+    if (action === 'serviciosAceptados') {
+      this.modoSolicitudes = 'ACEPTADOS';
+      this.tituloSolicitudes = 'Servicios Aceptados';
+      this.tabActiva = 'solicitudes';
+
+      // ✅ fuerza período y setea fechas antes de cargar
+      this.periodoSolicitudes = 'MES';
+      this.onPeriodoSolicitudesChange();
+    }
+  }
+  abrirSolicitudesTodas(): void {
+    this.tabActiva = 'solicitudes';
+    this.tituloSolicitudes = 'Todas las Solicitudes';
+    this.modoSolicitudes = 'PENDIENTES'; // da igual, ya no se usa acá
+
+    // seteo período por defecto y fechas
     this.periodoSolicitudes = 'MES';
     this.onPeriodoSolicitudesChange();
-  }
 
-  if (action === 'serviciosAceptados') {
-    this.modoSolicitudes = 'ACEPTADOS';
-    this.tituloSolicitudes = 'Servicios Aceptados';
-    this.tabActiva = 'solicitudes';
-
-    // ✅ fuerza período y setea fechas antes de cargar
-    this.periodoSolicitudes = 'MES';
-    this.onPeriodoSolicitudesChange();
+    // cargar TODO (pendientes + aceptados)
+    this.loadSolicitudesTodas();
   }
-}
+  loadSolicitudesTodas(): void {
+    this.adminService.getSolicitudesPendientes().subscribe((pendientes: any[]) => {
+      this.adminService.getServiciosAceptados().subscribe((aceptados: any[]) => {
+        console.log('pendientes[0]=', pendientes[0]);
+        console.log('aceptados[0]=', aceptados[0]);
+
+        const normalizar = (data: any[]) =>
+          data.map((s: any) => {
+            // ✅ si es array:
+            if (Array.isArray(s)) {
+              s[5] = this.toDate(s[5]); // ✅ ahora soporta array LocalDateTime
+              return s;
+            }
+
+            s.fechaSolicitud = this.toDate(s.fechaSolicitud);
+            return s;
+          });
+
+        this.solicitudes = [...normalizar(pendientes), ...normalizar(aceptados)];
+
+        this.solicitudes.sort((a: any, b: any) => {
+          const fa = Array.isArray(a)
+            ? a[5]
+              ? +new Date(a[5])
+              : 0
+            : a.fechaSolicitud
+              ? +new Date(a.fechaSolicitud)
+              : 0;
+          const fb = Array.isArray(b)
+            ? b[5]
+              ? +new Date(b[5])
+              : 0
+            : b.fechaSolicitud
+              ? +new Date(b.fechaSolicitud)
+              : 0;
+          return fb - fa;
+        });
+      });
+    });
+  }
 
   logout(): void {
     this.authService.logout();

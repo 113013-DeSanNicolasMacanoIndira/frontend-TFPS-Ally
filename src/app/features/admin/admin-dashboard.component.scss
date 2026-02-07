@@ -193,3 +193,8 @@
   flex: 1;
   min-width: 260px;
 }
+.table-wrap{
+  max-height: 520px;
+  overflow: auto;
+  border-radius: 12px;
+}
