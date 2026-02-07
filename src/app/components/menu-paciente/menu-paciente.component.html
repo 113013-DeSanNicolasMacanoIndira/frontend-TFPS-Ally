@@ -14,7 +14,16 @@
       <i class="bi bi-person"></i>
       Mis datos
     </li>
-    <li class="menu-item" *ngIf="mostrarPagos" routerLink="/pagos-paciente" routerLinkActive="active">
+    <li class="menu-item" routerLink="/reportes-paciente" routerLinkActive="active">
+      <i class="bi bi-bar-chart"></i>
+      Reportes
+    </li>
+    <li
+      class="menu-item"
+      *ngIf="mostrarPagos"
+      routerLink="/pagos-paciente"
+      routerLinkActive="active"
+    >
       <i class="bi bi-cash-coin"></i>
       Pagos de servicios
     </li>
