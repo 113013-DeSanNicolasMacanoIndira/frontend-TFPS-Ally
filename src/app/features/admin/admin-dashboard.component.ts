@@ -35,6 +35,14 @@ export class AdminDashboardComponent implements OnInit {
 
   searchSolicitudes: string = '';
   solicitudesFiltradas: any[] = [];
+  // ✅ filtros solicitudes
+  fDesde: string = '';
+  fHasta: string = '';
+  fEspecialidad: string = '';
+  fEstado: string = '';
+
+  // ✅ para armar el combo
+  especialidadesDisponibles: string[] = [];
 
   constructor(
     private adminService: AdminService,
@@ -106,6 +114,30 @@ export class AdminDashboardComponent implements OnInit {
     if (!item) return null;
     return this.isArr(item) ? this.toDate(item[5]) : this.toDate(item.fechaSolicitud);
   }
+  getEstado(item: any): string {
+    return this.isArr(item) ? (item[4] ?? '') : (item.estado ?? '');
+  }
+
+  getEspecialidad(item: any): string {
+    return this.isArr(item) ? (item[3] ?? '') : (item.especialidad ?? '');
+  }
+
+  limpiarFiltros() {
+    this.fDesde = '';
+    this.fHasta = '';
+    this.fEspecialidad = '';
+    this.fEstado = '';
+    this.aplicarFiltroLocal();
+  }
+
+  private buildEspecialidadesDisponibles() {
+    const set = new Set<string>();
+    for (const s of this.solicitudes) {
+      const esp = (this.getEspecialidad(s) || '').trim();
+      if (esp) set.add(esp);
+    }
+    this.especialidadesDisponibles = Array.from(set).sort();
+  }
 
   onPeriodoSolicitudesChange() {
     const hoy = new Date();
@@ -148,6 +180,9 @@ export class AdminDashboardComponent implements OnInit {
         s[5] = this.toDate(s[5]);
         return s;
       });
+      this.buildEspecialidadesDisponibles();
+      this.solicitudesFiltradas = [...this.solicitudes];
+      this.aplicarFiltroLocal();
 
       // ✅ si no hay fechas seteadas, NO filtres, mostrálas todas
       if (!this.fechaDesdeSolicitudes && !this.fechaHastaSolicitudes) {
@@ -160,21 +195,28 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   aplicarFiltroLocal() {
-    const desde = this.fechaDesdeSolicitudes ? new Date(this.fechaDesdeSolicitudes) : null;
-    const hasta = this.fechaHastaSolicitudes ? new Date(this.fechaHastaSolicitudes) : null;
-
+    const desde = this.fDesde ? new Date(this.fDesde) : null;
+    const hasta = this.fHasta ? new Date(this.fHasta) : null;
     if (hasta) hasta.setHours(23, 59, 59, 999);
+
+    const esp = (this.fEspecialidad || '').trim();
+    const est = (this.fEstado || '').trim();
 
     const q = (this.searchSolicitudes || '').toLowerCase().trim();
 
     this.solicitudesFiltradas = this.solicitudes.filter((s: any) => {
-      const fecha = s[5] instanceof Date ? s[5] : new Date(s[5]);
-      const okFecha = (!desde || fecha >= desde) && (!hasta || fecha <= hasta);
+      const fecha = this.getFechaSolicitud(s);
+      const okFecha =
+        (!desde || (fecha && fecha >= desde)) && (!hasta || (fecha && fecha <= hasta));
 
-      const texto = `${s[1] ?? ''} ${s[2] ?? ''} ${s[3] ?? ''} ${s[4] ?? ''}`.toLowerCase();
+      const okEspecialidad = !esp || this.getEspecialidad(s) === esp;
+      const okEstado = !est || this.getEstado(s) === est;
+
+      const texto =
+        `${this.isArr(s) ? (s[1] ?? '') : (s.paciente ?? '')} ${this.isArr(s) ? (s[2] ?? '') : (s.prestador ?? '')} ${this.getEspecialidad(s)} ${this.getEstado(s)}`.toLowerCase();
       const okTexto = !q || texto.includes(q);
 
-      return okFecha && okTexto;
+      return okFecha && okEspecialidad && okEstado && okTexto;
     });
   }
 
@@ -359,6 +401,9 @@ export class AdminDashboardComponent implements OnInit {
               : 0;
           return fb - fa;
         });
+        this.buildEspecialidadesDisponibles();
+        this.solicitudesFiltradas = [...this.solicitudes];
+        this.aplicarFiltroLocal();
       });
     });
   }

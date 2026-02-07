@@ -210,6 +210,61 @@
             <i class="bi bi-arrow-left"></i> Volver al Dashboard
           </button>
         </div>
+        <!-- ✅ FILTROS SOLICITUDES -->
+        <div class="filter-box mb-3">
+          <div class="filter-row" style="gap: 12px; flex-wrap: wrap">
+            <div class="filter-group">
+              <label class="filter-label">Desde</label>
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="fDesde"
+                (change)="aplicarFiltroLocal()"
+              />
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Hasta</label>
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="fHasta"
+                (change)="aplicarFiltroLocal()"
+              />
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Especialidad</label>
+              <select
+                class="form-select"
+                [(ngModel)]="fEspecialidad"
+                (change)="aplicarFiltroLocal()"
+              >
+                <option value="">Todas</option>
+                <option *ngFor="let e of especialidadesDisponibles" [value]="e">{{ e }}</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Estado</label>
+              <select class="form-select" [(ngModel)]="fEstado" (change)="aplicarFiltroLocal()">
+                <option value="">Todos</option>
+                <option value="PAGO_PENDIENTE">PAGO_PENDIENTE</option>
+                <option value="ACEPTADO">ACEPTADO</option>
+                <option value="RECHAZADO">RECHAZADO</option>
+              </select>
+            </div>
+
+            <button class="btn btn-outline-secondary align-self-end" (click)="limpiarFiltros()">
+              Limpiar
+            </button>
+          </div>
+        </div>
+
+        <!-- ✅ Mensaje cuando no hay resultados -->
+        <div *ngIf="solicitudesFiltradas.length === 0" class="alert alert-warning mt-2">
+          No hay datos para mostrar con el filtro seleccionado.
+        </div>
 
         <div class="table-wrap">
           <table class="table table-hover table-striped text-center shadow-sm">
@@ -224,7 +279,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let s of solicitudes" (click)="abrirDetalle(s)" style="cursor: pointer">
+              <tr *ngFor="let s of solicitudesFiltradas" (click)="abrirDetalle(s)" style="cursor: pointer">
                 <td>{{ s[0] }}</td>
                 <td>{{ s[1] }}</td>
                 <td>{{ s[2] || '-' }}</td>
