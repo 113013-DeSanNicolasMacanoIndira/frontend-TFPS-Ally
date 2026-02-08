@@ -1,21 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+
+import Swal from 'sweetalert2';
+
 import { ServiceRequestService } from '../../../services/service-request.service';
 import { AuthService } from '../../../services/auth.service';
 import { ProviderService } from '../../../services/provider.service';
 import { SpecialtyService } from '../../../services/specialty.service';
+import { ProviderReportsService } from '../../../services/provider-reports.service';
+
 import { Provider } from '../../../models/provider.model';
-import Swal from 'sweetalert2';
-import { CbuFormatPipe } from '../../../cbu-format-pipe'; // Pipe para formatear CBU
+import { ProviderReports } from '../../../models/provider-reports.model';
+
+import { CbuFormatPipe } from '../../../cbu-format-pipe';
+
+// ✅ TU VERSION: usa NgChartsModule (no ChartsModule)
+import { BaseChartDirective } from 'ng2-charts';
+import type { ChartData, ChartConfiguration } from 'chart.js';
+
+
 @Component({
   selector: 'app-portal-prestador',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CbuFormatPipe // Agregar el pipe
+    FormsModule,
+    BaseChartDirective,    // ✅
+    CbuFormatPipe
   ],
   templateUrl: './portal-prestador.component.html',
   styleUrls: ['./portal-prestador.component.scss']
@@ -60,6 +75,7 @@ export class PortalPrestadorComponent implements OnInit {
     private authService: AuthService,
     private providerService: ProviderService,
     private specialtyService: SpecialtyService,
+    private providerReportsService: ProviderReportsService, 
     private router: Router
   ) {
 
@@ -541,6 +557,98 @@ export class PortalPrestadorComponent implements OnInit {
         }
       });
   }
+  // REPORTES
+loadingReportes = false;
+filtroPeriodo: '6M' | '12M' | 'ALL' = '6M';
+reportes: ProviderReports | null = null;
+
+// datasets para charts
+chartEspecialidadesData: ChartData<'doughnut'> = { labels: [], datasets: [{ data: [] }] };
+chartEstadosData: ChartData<'pie'> = { labels: [], datasets: [{ data: [] }] };
+chartIngresosData: ChartData<'line'> = { labels: [], datasets: [{ data: [] }] };
+
+// opciones (sin setear colores explícitos, Chart.js usa defaults)
+chartDonutOptions: ChartConfiguration<'doughnut'>['options'] = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } }
+};
+
+chartPieOptions: ChartConfiguration<'pie'>['options'] = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } }
+};
+
+chartLineOptions: ChartConfiguration<'line'>['options'] = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { ticks: { maxRotation: 0 } },
+    y: { beginAtZero: true }
+  }
+};
+
+// Llamar cuando se entra a sección reportes
+cargarReportes() {
+  const user = this.authService.getUser();
+  if (!user?.id) return;
+
+  this.loadingReportes = true;
+
+  // si tu backend necesita prestadorId, lo sacamos desde this.prestador?.id
+  // (si no está cargado aún, podés encadenar a providerService.getByUsuarioId)
+  const prestadorId = this.prestador?.id;
+
+  if (!prestadorId) {
+    // fallback: buscar prestador por usuarioId
+    this.providerService.getByUsuarioId(user.id).subscribe({
+      next: (p) => {
+        this.prestador = p;
+        this.getReportes(p.id!);
+      },
+      error: () => this.loadingReportes = false
+    });
+    return;
+  }
+
+  this.getReportes(prestadorId);
+}
+
+private getReportes(prestadorId: number) {
+  this.providerReportsService.getReports(prestadorId, this.filtroPeriodo).subscribe({
+    next: (data) => {
+      this.reportes = data;
+      this.armarCharts(data);
+      this.loadingReportes = false;
+    },
+    error: (e) => {
+      console.error('Error cargando reportes:', e);
+      this.loadingReportes = false;
+    }
+  });
+}
+
+private armarCharts(r: ProviderReports) {
+  // Doughnut: especialidades
+  this.chartEspecialidadesData = {
+    labels: r.serviciosPorEspecialidad.map(x => x.especialidad),
+    datasets: [{ data: r.serviciosPorEspecialidad.map(x => x.cantidad) }]
+  };
+
+  // Pie: estados
+  this.chartEstadosData = {
+    labels: ['Aceptadas', 'Pendientes', 'Rechazadas'],
+    datasets: [{ data: [r.aceptadas, r.pendientes, r.rechazadas] }]
+  };
+
+  // Line: ingresos por mes
+  this.chartIngresosData = {
+    labels: r.ingresosPorMes.map(x => x.mes),
+    datasets: [{ data: r.ingresosPorMes.map(x => x.total) }]
+  };
+}
 
   // Habilitar edición
   habilitarEdicion() {
@@ -566,6 +674,7 @@ export class PortalPrestadorComponent implements OnInit {
    abrirFaq() {
     this.mostrarFaq = true;
   }
+
 
   cerrarFaq() {
     this.mostrarFaq = false;
