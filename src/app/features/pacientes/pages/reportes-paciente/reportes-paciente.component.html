@@ -1,0 +1,70 @@
+<div class="layout">
+  <!-- Menú lateral -->
+  <app-menu-paciente></app-menu-paciente>
+
+  <!-- Contenido principal -->
+  <main class="content">
+    <!-- Tarjeta envolvente (igual que solicitudes) -->
+    <div class="form-card">
+      <div class="form-card-title">
+        Reportes Personales
+        <p class="subtitle">Aquí podés visualizar tus reportes personales sobre servicios.</p>
+      </div>
+
+      <!-- Cards resumen -->
+      <div class="cards" *ngIf="resumen">
+        <div class="card total">
+          <h3>{{ resumen.totalServicios }}</h3>
+          <p>Solicitudes Totales</p>
+        </div>
+
+        <div class="card ok">
+          <h3>{{ resumen.aceptados }}</h3>
+          <p>Aceptadas</p>
+        </div>
+
+        <div class="card warn">
+          <h3>{{ resumen.pendientes }}</h3>
+          <p>Pendientes</p>
+        </div>
+
+        <div class="card bad">
+          <h3>{{ resumen.rechazados }}</h3>
+          <p>Rechazadas</p>
+        </div>
+
+        <div class="card money">
+          <h3>${{ resumen.totalPagado }}</h3>
+          <p>Total Pagado</p>
+        </div>
+      </div>
+      <!-- Gráficos -->
+      <section class="charts-grid">
+        <article class="card chart-card">
+          <h3>Servicios por especialidad</h3>
+
+          <div class="chart-wrap pie">
+            <canvas class="chart-canvas" baseChart [data]="especialidadesChartData" type="doughnut">
+            </canvas>
+          </div>
+        </article>
+
+        <article class="card chart-card">
+          <h3>Servicios por estado</h3>
+
+          <div class="chart-wrap pie">
+            <canvas class="chart-canvas" baseChart [data]="estadosChartData" type="pie"> </canvas>
+          </div>
+        </article>
+
+        <article class="card chart-card">
+          <h3>Pagos por mes</h3>
+
+          <div class="chart-wrap line">
+            <canvas class="chart-canvas" baseChart [data]="pagosChartData" type="line"> </canvas>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+</div>

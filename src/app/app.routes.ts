@@ -39,7 +39,8 @@ export const routes: Routes = [
   // TÉRMINOS Y CONDICIONES
   {
     path: 'terms',
-    loadComponent: () => import('./features/logeo/pages/terms/terms.component').then((c) => c.TermsComponent),
+    loadComponent: () =>
+      import('./features/logeo/pages/terms/terms.component').then((c) => c.TermsComponent),
   },
 
   // SOLICITUDES PACIENTE
@@ -47,7 +48,7 @@ export const routes: Routes = [
     path: 'solicitudes-paciente',
     loadComponent: () =>
       import('./features/pacientes/pages/solicitudes-paciente/solicitudes-paciente.component').then(
-        (c) => c.SolicitudesPacienteComponent
+        (c) => c.SolicitudesPacienteComponent,
       ),
   },
 
@@ -55,24 +56,34 @@ export const routes: Routes = [
   {
     path: 'pagos-paciente',
     loadComponent: () =>
-      import('./features/pacientes/pages/pagos-paciente/pagos-paciente.component')
-        .then(c => c.PagosPacienteComponent)
+      import('./features/pacientes/pages/pagos-paciente/pagos-paciente.component').then(
+        (c) => c.PagosPacienteComponent,
+      ),
   },
 
   // PAGO SERVICIO (alias para compatibilidad)
   {
     path: 'pago-servicio',
     loadComponent: () =>
-      import('./features/pacientes/pages/pagos-paciente/pagos-paciente.component')
-        .then(c => c.PagosPacienteComponent)
+      import('./features/pacientes/pages/pagos-paciente/pagos-paciente.component').then(
+        (c) => c.PagosPacienteComponent,
+      ),
   },
 
   // MODIFICAR PACIENTE
   {
     path: 'modificar-paciente',
     loadComponent: () =>
-      import('./features/pacientes/pages/modificar-paciente/modificar-paciente.component')
-        .then(c => c.ModificarPacienteComponent)
+      import('./features/pacientes/pages/modificar-paciente/modificar-paciente.component').then(
+        (c) => c.ModificarPacienteComponent,
+      ),
+  },
+  {
+    path: 'reportes-paciente',
+    loadComponent: () =>
+      import('./features/pacientes/pages/reportes-paciente/reportes-paciente.component').then(
+        (m) => m.ReportesPacienteComponent,
+      ),
   },
 
   // ================================
@@ -84,26 +95,30 @@ export const routes: Routes = [
   {
     path: 'prestador/disponibilidad',
     loadComponent: () =>
-      import('./features/prestadores/pages/disponibilidad/disponibilidad.component')
-        .then(c => c.DisponibilidadComponent)
+      import('./features/prestadores/pages/disponibilidad/disponibilidad.component').then(
+        (c) => c.DisponibilidadComponent,
+      ),
   },
   {
     path: 'prestador/turnos',
     loadComponent: () =>
-      import('./features/prestadores/pages/turnos-prestador/turnos-prestador.component')
-        .then(c => c.TurnosPrestadorComponent)
+      import('./features/prestadores/pages/turnos-prestador/turnos-prestador.component').then(
+        (c) => c.TurnosPrestadorComponent,
+      ),
   },
   {
     path: 'prestador/pagos',
     loadComponent: () =>
-      import('./features/prestadores/pages/pagos-prestador/pagos-prestador.component')
-        .then(c => c.PagosPrestadorComponent)
+      import('./features/prestadores/pages/pagos-prestador/pagos-prestador.component').then(
+        (c) => c.PagosPrestadorComponent,
+      ),
   },
   {
     path: 'prestador/configuracion',
     loadComponent: () =>
-      import('./features/prestadores/pages/configuracion-prestador/configuracion-prestador.component')
-        .then(c => c.ConfiguracionPrestadorComponent)
+      import('./features/prestadores/pages/configuracion-prestador/configuracion-prestador.component').then(
+        (c) => c.ConfiguracionPrestadorComponent,
+      ),
   },
 
   // ================================
@@ -130,5 +145,5 @@ export const routes: Routes = [
   // ================================
   //        RUTA DE FALLBACK
   // ================================
-  { path: '**', redirectTo: 'login' }
+  { path: '**', redirectTo: 'login' },
 ];
