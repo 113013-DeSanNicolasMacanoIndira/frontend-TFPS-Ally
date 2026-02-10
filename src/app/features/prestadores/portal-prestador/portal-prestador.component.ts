@@ -67,7 +67,62 @@ export class PortalPrestadorComponent implements OnInit {
   // Fecha máxima para fecha de nacimiento (no puede ser futura)
   maxDate: string;
 
+  // ========== PROPIEDADES PARA REPORTES ==========
+  filtroPeriodo: '6M' | '12M' | 'ALL' = '6M';
+  loadingReportes = false;
+  reportes: ProviderReports | null = null;
 
+  // Propiedades para gráficos
+  chartEspecialidadesData: ChartData<'doughnut'> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+
+  chartEstadosData: ChartData<'pie'> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+
+  chartIngresosData: ChartData<'line'> = {
+    labels: [],
+    datasets: [{ data: [] }]
+  };
+
+  // Opciones de gráficos
+  chartDonutOptions: ChartConfiguration<'doughnut'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } }
+  };
+
+  chartPieOptions: ChartConfiguration<'pie'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } }
+  };
+
+  chartLineOptions: ChartConfiguration<'line'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { maxRotation: 0 } },
+      y: { beginAtZero: true }
+    }
+  };
+
+  // ========== PROPIEDADES PARA LA TABLA ADMIN ==========
+  filtroFechaDesde: string = '';
+  filtroFechaHasta: string = '';
+  filtroEstado: string = '';
+  filtroBusqueda: string = '';
+  cargandoTablaAdmin = false;
+  solicitudesTablaAdmin: any[] = [];
+  solicitudesTablaAdminFiltradas: any[] = [];
+  solicitudesPaginadas: any[] = [];
+  paginaActual = 1;
+  itemsPorPagina = 10;
+  totalPaginas = 1;
 
   constructor(
     private fb: FormBuilder,
@@ -75,7 +130,7 @@ export class PortalPrestadorComponent implements OnInit {
     private authService: AuthService,
     private providerService: ProviderService,
     private specialtyService: SpecialtyService,
-    private providerReportsService: ProviderReportsService, 
+    private providerReportsService: ProviderReportsService,
     private router: Router
   ) {
 
@@ -114,6 +169,7 @@ export class PortalPrestadorComponent implements OnInit {
     this.cargarEspecialidades();
     this.verificarPrestadorRegistrado(user.id);
   }
+
   // Validador personalizado para fecha máxima (no futura)
   private maxDateValidator(control: any) {
     if (!control.value) {
@@ -129,6 +185,7 @@ export class PortalPrestadorComponent implements OnInit {
 
     return selectedDate > today ? { maxDate: true } : null;
   }
+
   // Cargar especialidades desde el endpoint
   cargarEspecialidades() {
     this.loadingEspecialidades = true;
@@ -190,6 +247,11 @@ export class PortalPrestadorComponent implements OnInit {
         // Cargar solicitudes si ya está registrado
         this.cargarSolicitudesRecibidas();
         this.cargarSolicitudesConfirmadas();
+
+        // Cargar reportes si el prestador existe
+        if (prestador.id) {
+          this.cargarTablaAdmin();
+        }
       },
       error: (error) => {
         // Si no existe el prestador, mostrar formulario de registro
@@ -203,7 +265,6 @@ export class PortalPrestadorComponent implements OnInit {
   private patchFormValues(prestador: Provider) {
     // Encontrar el ID de la especialidad basado en el código
     const especialidad = this.especialidades.find(esp => esp.codigo === prestador.codigoEspecialidad);
-
 
     // Formatear fecha para input type="date"
     let fechaNacimientoFormatted = '';
@@ -238,6 +299,8 @@ export class PortalPrestadorComponent implements OnInit {
       this.cargarSolicitudesRecibidas();
     } else if (seccion === 'confirmadas') {
       this.cargarSolicitudesConfirmadas();
+    } else if (seccion === 'reportes') {
+      this.cargarReportes();
     }
   }
 
@@ -557,98 +620,193 @@ export class PortalPrestadorComponent implements OnInit {
         }
       });
   }
-  // REPORTES
-loadingReportes = false;
-filtroPeriodo: '6M' | '12M' | 'ALL' = '6M';
-reportes: ProviderReports | null = null;
 
-// datasets para charts
-chartEspecialidadesData: ChartData<'doughnut'> = { labels: [], datasets: [{ data: [] }] };
-chartEstadosData: ChartData<'pie'> = { labels: [], datasets: [{ data: [] }] };
-chartIngresosData: ChartData<'line'> = { labels: [], datasets: [{ data: [] }] };
+  // ========== SECCIÓN REPORTES ==========
 
-// opciones (sin setear colores explícitos, Chart.js usa defaults)
-chartDonutOptions: ChartConfiguration<'doughnut'>['options'] = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: { legend: { display: false } }
-};
+  // Método para cargar reportes
+  cargarReportes(): void {
+    const user = this.authService.getUser();
+    if (!user?.id) return;
 
-chartPieOptions: ChartConfiguration<'pie'>['options'] = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: { legend: { display: false } }
-};
+    this.loadingReportes = true;
 
-chartLineOptions: ChartConfiguration<'line'>['options'] = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: { legend: { display: false } },
-  scales: {
-    x: { ticks: { maxRotation: 0 } },
-    y: { beginAtZero: true }
-  }
-};
+    // Cargar reportes y también la tabla
+    this.cargarTablaAdmin(); // Esto cargará la tabla en paralelo
 
-// Llamar cuando se entra a sección reportes
-cargarReportes() {
-  const user = this.authService.getUser();
-  if (!user?.id) return;
-
-  this.loadingReportes = true;
-
-  // si tu backend necesita prestadorId, lo sacamos desde this.prestador?.id
-  // (si no está cargado aún, podés encadenar a providerService.getByUsuarioId)
-  const prestadorId = this.prestador?.id;
-
-  if (!prestadorId) {
-    // fallback: buscar prestador por usuarioId
-    this.providerService.getByUsuarioId(user.id).subscribe({
-      next: (p) => {
-        this.prestador = p;
-        this.getReportes(p.id!);
-      },
-      error: () => this.loadingReportes = false
-    });
-    return;
-  }
-
-  this.getReportes(prestadorId);
-}
-
-private getReportes(prestadorId: number) {
-  this.providerReportsService.getReports(prestadorId, this.filtroPeriodo).subscribe({
-    next: (data) => {
-      this.reportes = data;
-      this.armarCharts(data);
-      this.loadingReportes = false;
-    },
-    error: (e) => {
-      console.error('Error cargando reportes:', e);
-      this.loadingReportes = false;
+    if (this.prestador?.id) {
+      this.getReportes(this.prestador.id);
+    } else {
+      // Si no tenemos el prestador, buscarlo primero
+      this.providerService.getByUsuarioId(user.id).subscribe({
+        next: (p) => {
+          this.prestador = p;
+          if (p.id) {
+            this.getReportes(p.id);
+          } else {
+            this.loadingReportes = false;
+          }
+        },
+        error: () => this.loadingReportes = false
+      });
     }
-  });
-}
+  }
 
-private armarCharts(r: ProviderReports) {
-  // Doughnut: especialidades
-  this.chartEspecialidadesData = {
-    labels: r.serviciosPorEspecialidad.map(x => x.especialidad),
-    datasets: [{ data: r.serviciosPorEspecialidad.map(x => x.cantidad) }]
-  };
+  private getReportes(prestadorId: number) {
+    this.providerReportsService.getReports(prestadorId, this.filtroPeriodo).subscribe({
+      next: (data) => {
+        this.reportes = data;
+        this.armarCharts(data);
+        this.loadingReportes = false;
+      },
+      error: (e) => {
+        console.error('Error cargando reportes:', e);
+        this.loadingReportes = false;
+      }
+    });
+  }
 
-  // Pie: estados
-  this.chartEstadosData = {
-    labels: ['Aceptadas', 'Pendientes', 'Rechazadas'],
-    datasets: [{ data: [r.aceptadas, r.pendientes, r.rechazadas] }]
-  };
+  private armarCharts(r: ProviderReports) {
+    // Doughnut: especialidades
+    this.chartEspecialidadesData = {
+      labels: r.serviciosPorEspecialidad?.map(x => x.especialidad) || [],
+      datasets: [{ data: r.serviciosPorEspecialidad?.map(x => x.cantidad) || [] }]
+    };
 
-  // Line: ingresos por mes
-  this.chartIngresosData = {
-    labels: r.ingresosPorMes.map(x => x.mes),
-    datasets: [{ data: r.ingresosPorMes.map(x => x.total) }]
-  };
-}
+    // Pie: estados
+    this.chartEstadosData = {
+      labels: ['Aceptadas', 'Pendientes', 'Rechazadas'],
+      datasets: [{
+        data: [
+          r.aceptadas || 0,
+          r.pendientes || 0,
+          r.rechazadas || 0
+        ]
+      }]
+    };
+
+    // Line: ingresos por mes
+    this.chartIngresosData = {
+      labels: r.ingresosPorMes?.map(x => x.mes) || [],
+      datasets: [{
+        data: r.ingresosPorMes?.map(x => x.total) || []
+      }]
+    };
+  }
+
+  // ========== SECCIÓN TABLA ADMIN ==========
+
+  cargarTablaAdmin(): void {
+    if (!this.prestador?.id) return;
+
+    this.cargandoTablaAdmin = true;
+    this.serviceRequestService.getSolicitudesPrestador(this.prestador.id)
+      .subscribe({
+        next: (data) => {
+          this.solicitudesTablaAdmin = data;
+          this.solicitudesTablaAdminFiltradas = [...data];
+          this.actualizarPaginacion();
+          this.cargandoTablaAdmin = false;
+        },
+        error: (error) => {
+          console.error('Error cargando tabla admin:', error);
+          this.cargandoTablaAdmin = false;
+        }
+      });
+  }
+
+  // Métodos para filtros de tabla
+  aplicarFiltrosTabla(): void {
+    // Implementa la lógica de filtrado aquí
+    let filtradas = [...this.solicitudesTablaAdmin];
+
+    // Filtrar por fechas
+    if (this.filtroFechaDesde) {
+      filtradas = filtradas.filter(s =>
+        new Date(s.fechaSolicitud) >= new Date(this.filtroFechaDesde)
+      );
+    }
+
+    if (this.filtroFechaHasta) {
+      filtradas = filtradas.filter(s =>
+        new Date(s.fechaSolicitud) <= new Date(this.filtroFechaHasta)
+      );
+    }
+
+    // Filtrar por estado
+    if (this.filtroEstado) {
+      filtradas = filtradas.filter(s => s.estado === this.filtroEstado);
+    }
+
+    // Filtrar por búsqueda
+    if (this.filtroBusqueda) {
+      const busqueda = this.filtroBusqueda.toLowerCase();
+      filtradas = filtradas.filter(s =>
+        (s.pacienteNombre?.toLowerCase().includes(busqueda)) ||
+        (s.servicioNombre?.toLowerCase().includes(busqueda)) ||
+        (s.descripcion?.toLowerCase().includes(busqueda))
+      );
+    }
+
+    this.solicitudesTablaAdminFiltradas = filtradas;
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
+  }
+
+  limpiarFiltrosTabla(): void {
+    this.filtroFechaDesde = '';
+    this.filtroFechaHasta = '';
+    this.filtroEstado = '';
+    this.filtroBusqueda = '';
+    this.aplicarFiltrosTabla();
+  }
+
+  // Métodos de paginación
+  paginaAnterior(): void {
+    if (this.paginaActual > 1) {
+      this.paginaActual--;
+      this.actualizarPaginacion();
+    }
+  }
+
+  paginaSiguiente(): void {
+    if (this.paginaActual < this.totalPaginas) {
+      this.paginaActual++;
+      this.actualizarPaginacion();
+    }
+  }
+
+  actualizarPaginacion(): void {
+    this.totalPaginas = Math.ceil(this.solicitudesTablaAdminFiltradas.length / this.itemsPorPagina);
+    const startIndex = (this.paginaActual - 1) * this.itemsPorPagina;
+    const endIndex = startIndex + this.itemsPorPagina;
+    this.solicitudesPaginadas = this.solicitudesTablaAdminFiltradas.slice(startIndex, endIndex);
+  }
+
+  // Métodos para acciones de tabla
+  verDetalleSolicitud(solicitud: any): void {
+    Swal.fire({
+      title: 'Detalles de la Solicitud',
+      html: `
+        <div class="text-start">
+          <p><strong>Paciente:</strong> ${solicitud.pacienteNombre || 'N/A'}</p>
+          <p><strong>Servicio:</strong> ${solicitud.servicioNombre || 'N/A'}</p>
+          <p><strong>Estado:</strong> ${solicitud.estado || 'N/A'}</p>
+          <p><strong>Fecha:</strong> ${solicitud.fechaSolicitud || 'N/A'}</p>
+          <p><strong>Descripción:</strong> ${solicitud.descripcion || 'Sin descripción'}</p>
+        </div>
+      `,
+      icon: 'info',
+      confirmButtonText: 'Cerrar'
+    });
+  }
+
+  aceptarSolicitudTabla(id: number): void {
+    this.aceptarSolicitud(id);
+  }
+
+  rechazarSolicitudTabla(id: number): void {
+    this.rechazarSolicitud(id);
+  }
 
   // Habilitar edición
   habilitarEdicion() {
@@ -671,10 +829,10 @@ private armarCharts(r: ProviderReports) {
   logout() {
     this.authService.logout();
   }
-   abrirFaq() {
+
+  abrirFaq() {
     this.mostrarFaq = true;
   }
-
 
   cerrarFaq() {
     this.mostrarFaq = false;

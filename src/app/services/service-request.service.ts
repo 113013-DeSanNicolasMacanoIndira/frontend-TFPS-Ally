@@ -41,6 +41,15 @@ export interface ServiceDTO {
   descripcion: string;
   estado: string;
   fechaSolicitud: string;
+
+  // Agrega estas propiedades para mostrar en la tabla
+  prestadorNombre?: string;
+  prestadorApellido?: string;
+  pacienteNombre?: string;
+  pacienteApellido?: string;
+  monto?: number;
+  fechaAtencion?: string;
+
 }
 
 export interface CrearServicePayload {
@@ -74,6 +83,7 @@ export class ServiceRequestService {
   getTransportistasActivos(): Observable<TransporterDTO[]> {
     return this.http.get<TransporterDTO[]>(`${this.transportistasApi}/activos`);
   }
+
   getSolicitudesTransportista(): Observable<ServiceDTO[]> {
     return this.http.get<ServiceDTO[]>(`${this.prestacionesApi}/transportista`);
   }
@@ -106,5 +116,22 @@ export class ServiceRequestService {
 
   rechazar(id: number): Observable<ServiceDTO> {
     return this.http.put<ServiceDTO>(`${this.prestacionesApi}/${id}/rechazar`, {});
+  }
+
+  // Método para marcar como completado
+  marcarCompletado(id: number): Observable<any> {
+    return this.http.patch(`${this.prestacionesApi}/${id}/completar`, {});
+  }
+
+  // Si necesitas otros métodos, puedes agregarlos aquí:
+
+  // Ejemplo: Método para obtener una solicitud específica
+  getSolicitudById(id: number): Observable<ServiceDTO> {
+    return this.http.get<ServiceDTO>(`${this.prestacionesApi}/${id}`);
+  }
+
+  // Ejemplo: Método para actualizar una solicitud
+  actualizarSolicitud(id: number, data: Partial<CrearServicePayload>): Observable<ServiceDTO> {
+    return this.http.put<ServiceDTO>(`${this.prestacionesApi}/${id}`, data);
   }
 }

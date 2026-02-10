@@ -4,67 +4,307 @@
 
   <!-- Contenido principal -->
   <main class="content">
-    <!-- Tarjeta envolvente (igual que solicitudes) -->
+    <!-- Tarjeta envolvente -->
     <div class="form-card">
       <div class="form-card-title">
         Reportes Personales
         <p class="subtitle">Aquí podés visualizar tus reportes personales sobre servicios.</p>
       </div>
 
-      <!-- Cards resumen -->
-      <div class="cards" *ngIf="resumen">
-        <div class="card total">
-          <h3>{{ resumen.totalServicios }}</h3>
-          <p>Solicitudes Totales</p>
+      <!-- Navegación por tabs -->
+      <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="tabActiva === 'resumen'" (click)="cambiarTab('resumen')">
+            <i class="bi bi-speedometer2 me-1"></i> Resumen
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="tabActiva === 'solicitudes'" (click)="cargarSolicitudes()">
+            <i class="bi bi-clipboard-check me-1"></i> Mis Solicitudes
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="tabActiva === 'graficos'" (click)="cargarReportes(); cambiarTab('graficos')">
+            <i class="bi bi-bar-chart me-1"></i> Gráficos
+          </a>
+        </li>
+      </ul>
+
+      <!-- TAB: RESUMEN -->
+      <div *ngIf="tabActiva === 'resumen'">
+        <!-- Cards resumen -->
+        <div class="cards" *ngIf="resumen">
+          <div class="card total">
+            <h3>{{ resumen.totalServicios }}</h3>
+            <p>Solicitudes Totales</p>
+          </div>
+
+          <div class="card ok">
+            <h3>{{ resumen.aceptados }}</h3>
+            <p>Aceptadas</p>
+          </div>
+
+          <div class="card warn">
+            <h3>{{ resumen.pendientes }}</h3>
+            <p>Pendientes</p>
+          </div>
+
+          <div class="card bad">
+            <h3>{{ resumen.rechazados }}</h3>
+            <p>Rechazadas</p>
+          </div>
+
+          <div class="card money">
+            <h3>${{ resumen.totalPagado | number:'1.0-0' }}</h3>
+            <p>Total Pagado</p>
+          </div>
         </div>
 
-        <div class="card ok">
-          <h3>{{ resumen.aceptados }}</h3>
-          <p>Aceptadas</p>
+        <!-- Mensaje si no hay datos -->
+        <div *ngIf="!resumen && tabActiva === 'resumen'" class="alert alert-info">
+          <i class="bi bi-info-circle me-2"></i>
+          Cargando datos de resumen...
         </div>
 
-        <div class="card warn">
-          <h3>{{ resumen.pendientes }}</h3>
-          <p>Pendientes</p>
-        </div>
-
-        <div class="card bad">
-          <h3>{{ resumen.rechazados }}</h3>
-          <p>Rechazadas</p>
-        </div>
-
-        <div class="card money">
-          <h3>${{ resumen.totalPagado }}</h3>
-          <p>Total Pagado</p>
+        <!-- Botón para ver solicitudes -->
+        <div class="mt-4">
+          <button class="btn btn-primary" (click)="cargarSolicitudes()">
+            <i class="bi bi-list-check me-2"></i> Ver todas mis solicitudes
+          </button>
         </div>
       </div>
-      <!-- Gráficos -->
-      <section class="charts-grid">
-        <article class="card chart-card">
-          <h3>Servicios por especialidad</h3>
 
-          <div class="chart-wrap pie">
-            <canvas class="chart-canvas" baseChart [data]="especialidadesChartData" type="doughnut">
-            </canvas>
+      <!-- TAB: MIS SOLICITUDES (espejo del admin pero filtrado por paciente) -->
+      <div *ngIf="tabActiva === 'solicitudes'">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+          <h4 class="fw-bold m-0">Mis Solicitudes</h4>
+
+          <button class="btn btn-outline-primary btn-sm" (click)="cambiarTab('resumen')">
+            <i class="bi bi-arrow-left"></i> Volver al Resumen
+          </button>
+        </div>
+
+        <!-- FILTROS (igual que admin pero simplificado) -->
+        <div class="filter-box mb-3">
+          <div class="filter-row" style="gap: 12px; flex-wrap: wrap">
+            <div class="filter-group">
+              <label class="filter-label">Desde</label>
+              <input type="date" class="form-control" [(ngModel)]="fDesde" (change)="aplicarFiltroLocal()" />
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Hasta</label>
+              <input type="date" class="form-control" [(ngModel)]="fHasta" (change)="aplicarFiltroLocal()" />
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Especialidad</label>
+              <select class="form-select" [(ngModel)]="fEspecialidad" (change)="aplicarFiltroLocal()">
+                <option value="">Todas</option>
+                <option *ngFor="let e of especialidadesDisponibles" [value]="e">{{ e }}</option>
+              </select>
+            </div>
+
+            <div class="filter-group">
+              <label class="filter-label">Estado</label>
+              <select class="form-select" [(ngModel)]="fEstado" (change)="aplicarFiltroLocal()">
+                <option value="">Todos</option>
+                <option value="SOLICITADO">Solicitado</option>
+                <option value="PENDIENTE">Pendiente</option>
+                <option value="ACEPTADO">Aceptado</option>
+                <option value="CONFIRMADO">Confirmado</option>
+                <option value="RECHAZADO">Rechazado</option>
+                <option value="CANCELADO">Cancelado</option>
+                <option value="COMPLETADO">Completado</option>
+              </select>
+            </div>
+
+            <div class="filter-group grow">
+              <label class="filter-label">Buscar</label>
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Buscar por prestador, descripción..."
+                       [(ngModel)]="fBusqueda" (keyup.enter)="aplicarFiltroLocal()" />
+                <button class="btn btn-outline-primary" (click)="aplicarFiltroLocal()">
+                  <i class="bi bi-search"></i>
+                </button>
+              </div>
+            </div>
+
+            <button class="btn btn-outline-secondary align-self-end" (click)="limpiarFiltros()">
+              Limpiar
+            </button>
           </div>
-        </article>
+        </div>
 
-        <article class="card chart-card">
-          <h3>Servicios por estado</h3>
+        <!-- Mensaje cuando no hay resultados -->
+        <div *ngIf="solicitudesFiltradas.length === 0 && !cargandoTabla" class="alert alert-warning mt-2">
+          No hay solicitudes para mostrar con el filtro seleccionado.
+        </div>
 
-          <div class="chart-wrap pie">
-            <canvas class="chart-canvas" baseChart [data]="estadosChartData" type="pie"> </canvas>
+        <!-- Loading -->
+        <div *ngIf="cargandoTabla" class="text-center my-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
           </div>
-        </article>
+          <p class="mt-2">Cargando tus solicitudes...</p>
+        </div>
 
-        <article class="card chart-card">
-          <h3>Pagos por mes</h3>
+        <!-- TABLA DE SOLICITUDES -->
+        <div class="table-wrap" *ngIf="!cargandoTabla && solicitudesFiltradas.length > 0">
+          <table class="table table-hover table-striped text-center shadow-sm">
+            <thead class="table-primary">
+            <tr>
+              <th>ID</th>
+              <th>Prestador</th>
+              <th>Especialidad</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Fecha Solicitud</th>
+              <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let s of solicitudesPaginadas" [ngClass]="{'table-warning': s.estado === 'PENDIENTE'}">
+              <td>{{ s.id }}</td>
+              <td>
+                <span *ngIf="s.prestadorNombre">{{ s.prestadorNombre }} {{ s.prestadorApellido }}</span>
+                <span *ngIf="!s.prestadorNombre" class="text-muted">No asignado</span>
+              </td>
+              <td>{{ s.especialidad }}</td>
+              <td>{{ getDescripcionTruncada(s.descripcion) }}</td>
+              <td>
+                  <span class="badge" [ngClass]="{
+                    'bg-secondary': s.estado === 'SOLICITADO',
+                    'bg-warning text-dark': s.estado === 'PENDIENTE',
+                    'bg-primary': s.estado === 'CONFIRMADO',
+                    'bg-success': s.estado === 'ACEPTADO' || s.estado === 'COMPLETADO',
+                    'bg-danger': s.estado === 'RECHAZADO',
+                    'bg-info': s.estado === 'CANCELADO'
+                  }">
+                    {{ getEstadoLabel(s.estado) }}
+                  </span>
+              </td>
+              <td>{{ s.fechaSolicitud | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <button class="btn btn-sm btn-outline-info me-1" (click)="verDetalle(s)">
+                  <i class="bi bi-eye"></i>
+                </button>
+                <button *ngIf="s.estado === 'PENDIENTE' || s.estado === 'CONFIRMADO'"
+                        class="btn btn-sm btn-outline-danger" (click)="cancelarSolicitud(s.id)">
+                  <i class="bi bi-x-circle"></i>
+                </button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
 
-          <div class="chart-wrap line">
-            <canvas class="chart-canvas" baseChart [data]="pagosChartData" type="line"> </canvas>
+          <!-- PAGINACIÓN -->
+          <div *ngIf="solicitudesFiltradas.length > itemsPorPagina" class="d-flex justify-content-between align-items-center mt-3">
+            <div class="text-muted">
+              Mostrando {{ solicitudesPaginadas.length }} de {{ solicitudesFiltradas.length }} solicitudes
+            </div>
+            <div>
+              <nav>
+                <ul class="pagination pagination-sm">
+                  <li class="page-item" [class.disabled]="paginaActual === 1">
+                    <a class="page-link" (click)="paginaAnterior()" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li class="page-item disabled">
+                    <span class="page-link">
+                      Página {{ paginaActual }} de {{ totalPaginas }}
+                    </span>
+                  </li>
+                  <li class="page-item" [class.disabled]="paginaActual === totalPaginas">
+                    <a class="page-link" (click)="paginaSiguiente()" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
           </div>
-        </article>
-      </section>
+        </div>
+      </div>
+
+      <!-- TAB: GRÁFICOS -->
+      <div *ngIf="tabActiva === 'graficos'">
+        <!-- Mensaje si no hay datos -->
+        <div *ngIf="!especialidadesChartData.datasets[0].data.length &&
+                    !estadosChartData.datasets[0].data.length &&
+                    !pagosChartData.datasets[0].data.length"
+             class="alert alert-info text-center">
+          <i class="bi bi-info-circle me-2"></i>
+          No hay datos disponibles para mostrar los gráficos.
+        </div>
+
+        <div class="charts-grid">
+          <!-- Gráfico de Dona: Servicios por especialidad -->
+          <article class="card chart-card">
+            <div class="chart-header">
+              <h3>Servicios por especialidad</h3>
+              <span class="chart-subtitle">Distribución de solicitudes</span>
+            </div>
+            <div class="chart-wrap pie">
+              <canvas class="chart-canvas"
+                      baseChart
+                      [data]="especialidadesChartData"
+                      [type]="'doughnut'"
+                      [options]="donutOptions">
+              </canvas>
+            </div>
+            <div class="chart-footer" *ngIf="especialidadesChartData.labels && especialidadesChartData.labels.length > 0">
+              <small>Total: {{ getTotalEspecialidades() }} servicios</small>
+            </div>
+          </article>
+
+          <!-- Gráfico de Torta: Servicios por estado -->
+          <article class="card chart-card">
+            <div class="chart-header">
+              <h3>Servicios por estado</h3>
+              <span class="chart-subtitle">Estado de tus solicitudes</span>
+            </div>
+            <div class="chart-wrap pie">
+              <canvas class="chart-canvas"
+                      baseChart
+                      [data]="estadosChartData"
+                      [type]="'pie'"
+                      [options]="pieOptions">
+              </canvas>
+            </div>
+            <div class="chart-footer" *ngIf="estadosChartData.labels && estadosChartData.labels.length > 0">
+              <small>Desglose por estado</small>
+            </div>
+          </article>
+
+          <!-- Gráfico de Línea: Pagos por mes -->
+          <article class="card chart-card">
+            <div class="chart-header">
+              <h3>Pagos por mes</h3>
+              <span class="chart-subtitle">Evolución de gastos</span>
+            </div>
+            <div class="chart-wrap line">
+              <canvas class="chart-canvas"
+                      baseChart
+                      [data]="pagosChartData"
+                      [type]="'line'"
+                      [options]="lineOptions">
+              </canvas>
+            </div>
+            <div class="chart-footer" *ngIf="pagosChartData.datasets[0].data && pagosChartData.datasets[0].data.length > 0">
+              <small>Total: ${{ getTotalPagos() | number:'1.0-0' }}</small>
+            </div>
+          </article>
+        </div>
+
+        <!-- Botón para recargar gráficos -->
+        <div class="text-center mt-4">
+          <button class="btn btn-outline-primary" (click)="cargarReportes()">
+            <i class="bi bi-arrow-clockwise me-1"></i> Actualizar gráficos
+          </button>
+        </div>
+      </div>
     </div>
   </main>
 </div>

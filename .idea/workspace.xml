@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="b0fb33d8-9a87-4c12-ba5d-ab53ef5a3423" name="Changes" comment="" />
+    <list default="true" id="b0fb33d8-9a87-4c12-ba5d-ab53ef5a3423" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/_metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/chart__js.js" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/chart__js.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/chart__js.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/chart__js.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/chunk-4DINU4QF.js" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/chunk-4DINU4QF.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/chunk-4DINU4QF.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/chunk-4DINU4QF.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/ng2-charts.js" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/ng2-charts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/ng2-charts.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps/ng2-charts.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps_ssr/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/.angular/cache/20.3.3/pacienAlly/vite/deps_ssr/_metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/features/pacientes/pages/reportes-paciente/reportes-paciente.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/features/pacientes/pages/reportes-paciente/reportes-paciente.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/features/pacientes/pages/reportes-paciente/reportes-paciente.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/features/pacientes/pages/reportes-paciente/reportes-paciente.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/features/pacientes/pages/reportes-paciente/reportes-paciente.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/features/pacientes/pages/reportes-paciente/reportes-paciente.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/features/prestadores/portal-prestador/portal-prestador.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/features/prestadores/portal-prestador/portal-prestador.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/features/prestadores/portal-prestador/portal-prestador.component.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/features/prestadores/portal-prestador/portal-prestador.component.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/features/prestadores/portal-prestador/portal-prestador.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/features/prestadores/portal-prestador/portal-prestador.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/services/service-request.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/services/service-request.service.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_D:/Diego/UTN - PROGRAMACIÓN/PROGRAMACION/PS - Trabajo Final Supervisado/02.Repositorios/frontend-TFPS-Ally" value="35GUvPFZ2spIItlAPkQfo3Nq4Dj" />
+    </persistenceIdMap>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -18,14 +44,34 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "feature__reportes__FE__090226__DG",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/Diego/UTN - PROGRAMACIÓN/PROGRAMACION/PS - Trabajo Final Supervisado/02.Repositorios/frontend-TFPS-Ally/src/app/features/prestadores/portal-prestador",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.Angular CLI Server.executor": "Run",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "D:\\Diego\\UTN - PROGRAMACIÓN\\PROGRAMACION\\PS - Trabajo Final Supervisado\\02.Repositorios\\frontend-TFPS-Ally\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Diego\UTN - PROGRAMACIÓN\PROGRAMACION\PS - Trabajo Final Supervisado\02.Repositorios\frontend-TFPS-Ally\src\app\features\prestadores\portal-prestador" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Diego\UTN - PROGRAMACIÓN\PROGRAMACION\PS - Trabajo Final Supervisado\02.Repositorios\frontend-TFPS-Ally\src\app\shared\pipes" />
+      <recent name="D:\Diego\UTN - PROGRAMACIÓN\PROGRAMACION\PS - Trabajo Final Supervisado\02.Repositorios\frontend-TFPS-Ally\src\app\features\pacientes\pages\reportes-paciente\pipe" />
+    </key>
+  </component>
   <component name="RunManager" selected="npm.Angular CLI Server">
     <configuration name="Angular Application" type="JavascriptDebugType" uri="http://localhost:4200">
       <method v="2" />
@@ -44,8 +90,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.19416.15" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.19416.15" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-WS-252.27397.92" />
       </set>
     </attachedChunks>
   </component>
@@ -59,10 +104,19 @@
       <updated>1762736132071</updated>
       <workItem from="1762736133332" duration="53000" />
       <workItem from="1764712807943" duration="20000" />
+      <workItem from="1770686279388" duration="16262000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

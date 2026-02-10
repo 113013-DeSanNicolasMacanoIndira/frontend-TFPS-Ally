@@ -943,6 +943,214 @@
               </div>
             </div>
           </div>
+
+          <!-- ===================== TABLA COMPLETA DE SOLICITUDES ===================== -->
+          <div class="row mt-5">
+            <div class="col-12">
+              <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                  <h5 class="mb-0">
+                    <i class="bi bi-table me-2"></i>
+                    Historial Completo de Solicitudes
+                    <small class="text-muted ms-2">(Con filtros avanzados)</small>
+                  </h5>
+                </div>
+
+                <div class="card-body">
+                  <!-- FILTROS AVANZADOS -->
+                  <div class="filter-box mb-4">
+                    <div class="filter-row" style="gap: 12px; flex-wrap: wrap">
+                      <div class="filter-group">
+                        <label class="filter-label">Desde</label>
+                        <input
+                          type="date"
+                          class="form-control form-control-sm"
+                          [(ngModel)]="filtroFechaDesde"
+                          (change)="aplicarFiltrosTabla()"
+                        />
+                      </div>
+
+                      <div class="filter-group">
+                        <label class="filter-label">Hasta</label>
+                        <input
+                          type="date"
+                          class="form-control form-control-sm"
+                          [(ngModel)]="filtroFechaHasta"
+                          (change)="aplicarFiltrosTabla()"
+                        />
+                      </div>
+
+                      <div class="filter-group">
+                        <label class="filter-label">Estado</label>
+                        <select class="form-select form-select-sm" [(ngModel)]="filtroEstado" (change)="aplicarFiltrosTabla()">
+                          <option value="">Todos</option>
+                          <option value="PENDIENTE">Pendiente</option>
+                          <option value="ACEPTADO">Aceptado</option>
+                          <option value="RECHAZADO">Rechazado</option>
+                          <option value="COMPLETADO">Completado</option>
+                          <option value="CANCELADO">Cancelado</option>
+                        </select>
+                      </div>
+
+                      <div class="filter-group">
+                        <label class="filter-label">Buscar</label>
+                        <div class="input-group input-group-sm">
+                          <input
+                            type="text"
+                            class="form-control"
+                            [(ngModel)]="filtroBusqueda"
+                            placeholder="Paciente, ID, descripción..."
+                            (keyup.enter)="aplicarFiltrosTabla()"
+                          />
+                          <button class="btn btn-outline-primary" (click)="aplicarFiltrosTabla()">
+                            <i class="bi bi-search"></i>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="filter-group align-self-end">
+                        <button class="btn btn-outline-secondary btn-sm" (click)="limpiarFiltrosTabla()">
+                          <i class="bi bi-x-circle"></i> Limpiar
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- LOADING -->
+                  <div *ngIf="cargandoTablaAdmin && solicitudesTablaAdmin.length === 0" class="text-center py-3">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                      <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <small class="text-muted d-block mt-2">Cargando solicitudes...</small>
+                  </div>
+
+                  <!-- TABLA -->
+                  <div class="table-responsive" *ngIf="!cargandoTablaAdmin || solicitudesTablaAdmin.length > 0">
+                    <table class="table table-hover table-sm tabla-avanzada">
+                      <thead class="table-light">
+                      <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Paciente</th>
+                        <th>Especialidad</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th class="text-center">Acciones</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let s of solicitudesPaginadas">
+                        <td><strong>#{{ s.id }}</strong></td>
+                        <td>
+                          <small class="text-muted">
+                            {{ s.fechaSolicitud | date: 'dd/MM/yy' }}
+                          </small>
+                        </td>
+                        <td>{{ s.pacienteNombre || 'Paciente #' + s.pacienteId }}</td>
+                        <td>
+                  <span class="badge bg-info text-dark">
+                    {{ s.especialidad }}
+                  </span>
+                        </td>
+                        <td class="descripcion-col">
+                          <small class="text-truncate d-block" style="max-width: 200px;">
+                            {{ s.descripcion?.substring(0, 60) || 'Sin descripción' }}
+                            {{ s.descripcion?.length > 60 ? '...' : '' }}
+                          </small>
+                        </td>
+                        <td>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-warning': s.estado === 'PENDIENTE',
+                      'bg-success': s.estado === 'ACEPTADO',
+                      'bg-danger': s.estado === 'RECHAZADO',
+                      'bg-info': s.estado === 'COMPLETADO',
+                      'bg-secondary': s.estado === 'CANCELADO'
+                    }"
+                  >
+                    {{ s.estado }}
+                  </span>
+                        </td>
+                        <td class="text-center">
+                          <div class="btn-group btn-group-sm" role="group">
+                            <button
+                              class="btn btn-outline-primary btn-sm"
+                              (click)="verDetalleSolicitud(s)"
+                              title="Ver detalle"
+                            >
+                              <i class="bi bi-eye"></i>
+                            </button>
+                            <button
+                              *ngIf="s.estado === 'PENDIENTE'"
+                              class="btn btn-outline-success btn-sm"
+                              (click)="aceptarSolicitudTabla(s.id)"
+                              title="Aceptar"
+                            >
+                              <i class="bi bi-check-lg"></i>
+                            </button>
+                            <button
+                              *ngIf="s.estado === 'PENDIENTE'"
+                              class="btn btn-outline-danger btn-sm"
+                              (click)="rechazarSolicitudTabla(s.id)"
+                              title="Rechazar"
+                            >
+                              <i class="bi bi-x-lg"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr *ngIf="solicitudesPaginadas.length === 0 && !cargandoTablaAdmin">
+                        <td colspan="7" class="text-center py-4">
+                          <div class="text-muted">
+                            <i class="bi bi-inbox display-6 d-block mb-2"></i>
+                            No se encontraron solicitudes
+                            <div *ngIf="filtroFechaDesde || filtroFechaHasta || filtroEstado || filtroBusqueda"
+                                 class="mt-2">
+                              <small>Intenta con otros filtros</small>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- PAGINACIÓN Y CONTADOR -->
+                  <div *ngIf="solicitudesTablaAdminFiltradas.length > 0"
+                       class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                    <div>
+                      <small class="text-muted">
+                        Mostrando {{ solicitudesPaginadas.length }} de
+                        {{ solicitudesTablaAdminFiltradas.length }} registros
+                      </small>
+                    </div>
+
+                    <div class="btn-group btn-group-sm">
+                      <button
+                        class="btn btn-outline-primary"
+                        [disabled]="paginaActual === 1"
+                        (click)="paginaAnterior()"
+                      >
+                        <i class="bi bi-chevron-left"></i>
+                      </button>
+                      <span class="btn btn-light disabled">
+              Página {{ paginaActual }} de {{ totalPaginas }}
+            </span>
+                      <button
+                        class="btn btn-outline-primary"
+                        [disabled]="paginaActual === totalPaginas"
+                        (click)="paginaSiguiente()"
+                      >
+                        <i class="bi bi-chevron-right"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </ng-container>
       </div>
     </div>
