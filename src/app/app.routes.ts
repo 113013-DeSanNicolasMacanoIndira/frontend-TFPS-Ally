@@ -9,6 +9,7 @@ import { PortalPacienteComponent } from './features/pacientes/pages/portal-pacie
 import { PortalPacientesDetalleComponent } from './features/pacientes/pages/portal-pacientes-detalle/portal-pacientes-detalle.component';
 import { RegistrarPacienteComponent } from './features/pacientes/pages/registrar-paciente/registrar-paciente.component';
 
+
 // PRESTADOR + TRANSPORTISTA
 import { PortalPrestadorComponent } from './features/prestadores/portal-prestador/portal-prestador.component';
 import { PortalTransportistaComponent } from './features/transportistas/portal-transportista/portal-transportista.component';
@@ -35,7 +36,7 @@ export const routes: Routes = [
   // ================================
   { path: 'portal-paciente', component: PortalPacienteComponent },
   { path: 'portal-pacientes', component: PortalPacientesDetalleComponent },
-
+  { path: 'portal-pacientes', component: PortalPacientesDetalleComponent },
   // TÉRMINOS Y CONDICIONES
   {
     path: 'terms',
@@ -85,6 +86,20 @@ export const routes: Routes = [
         (m) => m.ReportesPacienteComponent,
       ),
   },
+  
+  
+ {
+  path: 'discapacidad-mental',
+  loadComponent: () =>
+    import('./features/pacientes/pages/discapacidad-mental/discapacidad-mental.component')
+      .then(m => m.DiscapacidadMentalComponent),
+  },
+  {
+  path: 'discapacidad-fisica',
+  loadComponent: () =>
+    import('./pacientes/pages/discapacidad-fisica/discapacidad-fisica.component')
+      .then(m => m.DiscapacidadFisicaComponent),
+},
 
   // ================================
   //        RUTAS DE PRESTADOR
