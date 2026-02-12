@@ -20,7 +20,10 @@ export class LoginComponent {
   error = '';
   aceptaTerminos: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   onLogin() {
     if (!this.email || !this.password) {
@@ -32,7 +35,7 @@ export class LoginComponent {
       Swal.fire('Aviso', 'Debés aceptar los Términos y Condiciones.', 'warning');
       return;
     }
-     //  LOGIN DE EMERGENCIA PARA ADMIN 
+    //  LOGIN DE EMERGENCIA PARA ADMIN
     // Si el backend falla, esto permite entrar al panel admin
     if (this.email === 'admin@ally.com' && this.password === '1234A') {
       localStorage.setItem('role', 'ADMIN');
@@ -43,7 +46,7 @@ export class LoginComponent {
           username: 'Administrador',
           email: this.email,
           role: 'ADMIN',
-        })
+        }),
       );
 
       Swal.fire('Bienvenido', 'Acceso administrador', 'success');
@@ -79,7 +82,25 @@ export class LoginComponent {
   }
 
   onForgotPassword() {
-    Swal.fire(' Recuperar contraseña', 'Esta función estará disponible próximamente.', 'info');
+    Swal.fire({
+      title: 'Recuperar contraseña',
+      input: 'email',
+      inputLabel: 'Ingresá tu correo',
+      inputPlaceholder: 'ej: usuario@gmail.com',
+      showCancelButton: true,
+      confirmButtonText: 'Enviar',
+      cancelButtonText: 'Cancelar',
+      inputValidator: (value) => (!value ? 'El correo es obligatorio' : null),
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      const email = (result.value ?? '').trim();
+
+      this.authService.forgotPassword(email).subscribe({
+        next: () => Swal.fire('Listo', 'Si el correo existe, se envió el email.', 'success'),
+        error: () => Swal.fire('Error', 'No se pudo enviar el email.', 'error'),
+      });
+    });
   }
   openModalTyC() {
     const modal: any = document.getElementById('modalTyC');
@@ -92,7 +113,7 @@ export class LoginComponent {
       () => {
         this.aceptaTerminos = true;
       },
-      { once: true }
+      { once: true },
     );
   }
 }

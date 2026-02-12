@@ -51,6 +51,19 @@ export class AuthService {
       })
     );
   }
+    // -----------------------------
+  // FORGOT PASSWORD
+  // -----------------------------
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${this.API_URL}/auth/forgot-password`, { email });
+  }
+
+  // -----------------------------
+  // RESET PASSWORD
+  // -----------------------------
+  resetPassword(token: string, newPassword: string): Observable<any> {
+    return this.http.post(`${this.API_URL}/auth/reset-password`, { token, newPassword });
+  }
 
   // -----------------------------
   // REGISTRO

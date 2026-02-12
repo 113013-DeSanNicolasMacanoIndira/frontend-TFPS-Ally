@@ -1,0 +1,78 @@
+/* CONTENEDOR GENERAL */
+.container {
+  padding: 40px;
+  background: transparent;
+  min-height: 100vh;
+}
+
+
+/* FORMULARIO / CARD */
+.card {
+  background: linear-gradient(180deg, #bed1ec 0%, #4fceee 100%);
+  border-radius: 22px;   /* 🔥 curvas grandes */
+  padding: 32px;
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.08),
+    0 2px 6px rgba(15, 23, 42, 0.04);
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+
+  max-width: 1100px;     /* 🔥 hace que no quede gigante */
+  margin: auto;          /* 🔥 lo centra */
+}
+
+
+/* BOTON */
+.btn-volver {
+  background: #0d6efd;         /* ✅ azul (Bootstrap primary) */
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 20px;
+  box-shadow: 0px 6px 14px rgba(13,110,253,0.25);
+  transition: 0.2s;
+}
+
+.btn-volver:hover {
+  filter: brightness(0.95);
+  transform: translateY(-2px);
+}
+
+
+.imagen {
+  width: 100%;
+  height: 420px;        /* más elegante que max-height */
+  object-fit: cover;
+
+  border-radius: 16px;  /* curva interna */
+  margin-bottom: 26px;
+}
+
+.texto p {
+  font-size: 17px;
+  line-height: 1.7;
+}
+.card:hover {
+  transform: translateY(-4px);
+  transition: 0.25s;
+}
+h2{
+  margin-bottom: 18px;
+}
+ul li {
+  margin-bottom: 14px;
+}
+.content{
+  background: linear-gradient(
+    135deg,
+    #eef2ff,
+    #e0ecff
+  );
+}
+main{
+  background: transparent !important;
+}

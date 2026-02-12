@@ -30,6 +30,12 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registrar', component: RegistrarPacienteComponent },
   { path: 'register', component: RegisterComponent },
+  {
+  path: 'reset-password',
+  loadComponent: () =>
+    import('./features/logeo/pages/reset-password/reset-password.component')
+      .then(c => c.ResetPasswordComponent),
+},
 
   // ================================
   //        RUTAS DE PACIENTE
@@ -97,7 +103,7 @@ export const routes: Routes = [
   {
   path: 'discapacidad-fisica',
   loadComponent: () =>
-    import('./pacientes/pages/discapacidad-fisica/discapacidad-fisica.component')
+    import('./features/pacientes/pages/discapacidad-fisica/discapacidad-fisica.component')
       .then(m => m.DiscapacidadFisicaComponent),
 },
 
