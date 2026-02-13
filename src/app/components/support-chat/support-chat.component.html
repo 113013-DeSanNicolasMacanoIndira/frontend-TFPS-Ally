@@ -1,0 +1,22 @@
+<div class="chat-launcher" (click)="toggle()">
+  <span>{{ open ? '✖' : '💬' }}</span>
+</div>
+
+<div class="chat-window" *ngIf="open">
+  <div class="chat-header">
+    <div class="title">Soporte Ally</div>
+    <button class="close" (click)="toggle()">✖</button>
+  </div>
+
+  <div class="chat-body">
+    <div *ngFor="let m of messages" class="msg" [class.bot]="m.from==='bot'" [class.user]="m.from==='user'">
+      {{ m.text }}
+    </div>
+  </div>
+
+  <div class="chat-actions">
+    <button *ngFor="let a of quickActions" (click)="pick(a.id)">
+      {{ a.label }}
+    </button>
+  </div>
+</div>
