@@ -6,6 +6,8 @@
   box-shadow: 0 10px 25px rgba(0,0,0,.2);
   z-index: 9999;
   font-size: 22px;
+  right: 18px;
+  top: 18px;   
 }
 
 .chat-window{

@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-
+import { CommonModule } from '@angular/common';
 type Msg = { from: 'bot' | 'user', text: string };
 
 @Component({
   selector: 'app-support-chat',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './support-chat.component.html',
   styleUrls: ['./support-chat.component.css'],
 })
