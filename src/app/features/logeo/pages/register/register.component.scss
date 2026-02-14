@@ -1,21 +1,23 @@
-.login-container {
+/* ====== CONTENEDOR PANTALLA (marco externo) ====== */
+.login-container{
   position: relative;
   min-height: 100vh;
+  padding: 18px;
+  background: #e6edf6;            /* marco externo */
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding: 18px;
-  background: #e6edf6;
 }
 
 .bg-registro {
   position: absolute;
   inset: 0;
+  display:none !important;
 
   background: linear-gradient(
     180deg,
-    #dadfe6 0%,
+    #ecedee 0%,
     #79bad8 100%
   );
 
@@ -24,14 +26,14 @@
 
 .form-side {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   min-height: 100vh;
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;   /* arranca arriba */
   justify-content: center;
 
-  transform: translateX(120px); /* ← ESTO ES LA CLAVE */
+  transform: translateY(-520px); /* 🔥 SUBE el formulario */
 }
 
 .register-card {
@@ -43,21 +45,9 @@
   backdrop-filter: blur(4px);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18),
               0 8px 24px rgba(0, 0, 0, 0.12);
+  margin-top: 0 !important;            
 }
-.login-container::before{
-  content: "";
-  position: absolute;
-  inset: 12px;
 
-  border-radius: 36px;   /* 🔥 curva grande */
-  background: linear-gradient(
-    180deg,
-    #e4e7eb,
-    #6bb6da
-  );
-
-  z-index: 0;
-}
 /* Adorno curvo en la esquina superior izquierda */
 .form-card::before {
   content: '';
@@ -69,7 +59,61 @@
   background: #005ed6;             // tono azul intenso
   border-radius:  0 110px 110px;   /* (arriba izq, arriba der, abajo der, abajo izq) */
 }
+.registro-illu{
+  position: absolute;
+  left: 22%;
+  bottom: -335px;               /* un poco más abajo */
+  width: clamp(520px, 56vw, 900px);  /* un toque más grande */
+  height: auto;
+  transform: translate(-50%, 70px); /* 👈 aumenta el Y (antes 40px) */
+  z-index: 1;
+  pointer-events: none;
+}
+.registro-illu-right{
+  right: -20px;
+}
+/* panel celeste redondeado (como Datos Paciente) */
+.bg-shell{
+  position: absolute;
+  inset: 12px;
+  border-radius: 36px;
+  background: linear-gradient(180deg, #c8d6e6 0%, #6fd3ff 100%);
+  z-index: 0;
+}
+/* ====== CARD DEL REGISTRO (igual look que Datos Paciente) ====== */
+/* El look tipo “Datos Paciente”, pero más corto para tu form */
+.registro-container{
+  max-width: 460px;            /* más angosto */
+  width: min(460px, 92vw);
+  padding: 22px 24px;          /* menos padding => menos alto */
+  border-radius: 28px;
+}
+/* adorno azul curvo */
+.registro-container::before{
+  content: "";
+  position: absolute;
+  top: -38px;
+  left: -38px;
+  width: 140px;
+  height: 140px;
+  background: #005ed6;
+  border-radius: 0 0 140px 0;
+  opacity: 0.95;
+  z-index: 0;
+}
+/* reduce espacio entre campos bootstrap */
+.registro-container .mb-3{
+  margin-bottom: 10px !important;
+}
 
-
-
+/* reduce un toque el alto de inputs */
+.registro-container .form-control{
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+/* asegura que el contenido quede arriba del adorno */
+.registro-container > *{
+  position: relative;
+  z-index: 1;
+}
 

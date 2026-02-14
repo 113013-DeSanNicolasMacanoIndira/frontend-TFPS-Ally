@@ -120,13 +120,16 @@
 
 /* CONTENT */
 /* Ajusta el fondo del área de contenido al nuevo degradado azul */
-.content {
-  position: relative;            /* clave para posicionar el tornasol */
-  overflow: hidden;              /* para que no se salga del borde */
-  border-radius: 22px;           /* mismo radio que venís usando */
+.content{
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  border-radius: 32px;
   padding: 25px;
+  margin-left: 12px;
 
-  background: linear-gradient(180deg, #bed1ec 0%, #5a8bf5 100%);
+  /* 👇 TU FONDO ORIGINAL */
+  background: linear-gradient(180deg, #bed1ec 0%, #4fceee 100%);
 }
 /* HERO: correr contenido para que no se “choque” con el tornasol */
 .hero-inner{
@@ -483,14 +486,40 @@ body{
   box-shadow:
     4px 0 20px rgba(0,0,0,.04);
 }
-.content{
-  flex: 1;
 
-  border-radius: 32px;
+.hero{
+  position: relative;   /* para posicionar la imagen dentro del hero */
+}
+.hero{
+  position: relative;
+  z-index: 2; /* crea contexto para que la imagen suba */
+}
+/* la imagen decorativa */
+.hero-illu{
+  position: absolute;
+  right: 40px;
+  top: 20px;
+  transform: translateY(60px); /* baja sin romper el layout */
 
-  background: linear-gradient(180deg, oklab(84.627% -0.00805 -0.03146) 0%, #69d0ff 100%);
+  width: 280px;   /* 👈 ESTE tamaño te va a quedar MUY parecido a la captura */
+  height: auto;
 
-  padding: 25px;
+  z-index: 3;
 
-  margin-left: 12px;
+  pointer-events: none;
+  user-select: none;
+}
+@media (max-width: 900px){
+  .hero-illu{
+    width: 200px;
+    opacity: 0.14;
+    right: 18px;
+    top: 18px;
+  }
+}
+
+@media (max-width: 600px){
+  .hero-illu{
+    display: none;
+  }
 }

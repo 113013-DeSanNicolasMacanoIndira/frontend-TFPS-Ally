@@ -172,3 +172,28 @@
 .btn-borrar:hover{
   background: #dff0ff;
 }
+/* ===== Ajuste "Datos del Paciente" a pantalla ===== */
+.login-container{
+  /* opcional, pero ayuda a que no haya scroll de página */
+  height: 100vh;
+}
+
+/* Card más grande tipo "pantalla" */
+.registro-container{
+  width: min(920px, 92vw);      /* más ancha */
+  max-width: none;              /* pisa el max-width:560px */
+  max-height: calc(100vh - 48px); /* entra dentro del marco */
+  overflow: auto;               /* el scroll queda dentro de la card */
+  padding: 2rem 2.4rem;         /* un poco menos de alto */
+}
+
+/* Si querés que en pantallas grandes use dos columnas (opcional) */
+@media (min-width: 900px){
+  .formulario{
+    grid-template-columns: 1fr 1fr; /* 2 columnas */
+    column-gap: 18px;
+  }
+  .botones{
+    grid-column: 1 / -1; /* botones a lo ancho */
+  }
+}

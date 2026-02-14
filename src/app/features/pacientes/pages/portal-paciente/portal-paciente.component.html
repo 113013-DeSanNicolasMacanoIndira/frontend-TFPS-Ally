@@ -57,15 +57,13 @@
 
       <div class="submenu" *ngIf="menuInfo">
         <!-- si aún no tenés rutas, podés apuntar a una sola /informacion y filtrar por queryParam -->
-        <a
-          class="submenu-item"
-          [routerLink]="['/informacion']"
-          [queryParams]="{ tipo: 'cognitiva' }"
-          >Discapacidad Cognitiva</a
+        <a class="submenu-item" routerLink="/discapacidad-mental" routerLinkActive="active">
+          Discapacidad Mental
+        </a>
         >
-        <a class="submenu-item" [routerLink]="['/informacion']" [queryParams]="{ tipo: 'fisica' }"
-          >Discapacidad Física</a
-        >
+        <a class="submenu-item" routerLink="/discapacidad-fisica" routerLinkActive="active">
+          Discapacidad Física
+        </a>
         <a
           class="submenu-item"
           [routerLink]="['/informacion']"
@@ -118,6 +116,9 @@
           acompañamiento.
         </p>
       </div>
+
+      <!-- 👇 SOLO ESTO -->
+      <img class="hero-illu" src="/icons/lampara-removebg-preview.png" alt="" aria-hidden="true" />
     </section>
 
     <section class="dash">
