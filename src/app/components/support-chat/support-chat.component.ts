@@ -13,7 +13,7 @@ export class SupportChatComponent {
   open = false;
 
   adminWhatsApp = '5493510000000'; // <-- poné el número real (sin +)
-  adminEmail = 'soporte@ally.com'; // <-- poné el real
+  adminEmail = 'allyespacio20@ally.com'; // <-- poné el real
 
   messages: Msg[] = [
     { from: 'bot', text: 'Hola 👋 Soy AllyBot. ¿En qué te puedo ayudar?' },
