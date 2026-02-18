@@ -1,0 +1,33 @@
+<div class="wrapper">
+  <div class="card">
+    <div class="topbar">
+      <h3>Zonas asignadas</h3>
+
+      <div class="controls">
+        <input
+          class="input"
+          type="text"
+          placeholder="Filtrar por barrio..."
+          [(ngModel)]="barrioFiltro"
+          (input)="aplicarFiltro()"
+        />
+
+        <select class="select" [(ngModel)]="barrioSelect" (change)="aplicarFiltro()">
+          <option value="">Todos</option>
+          <option *ngFor="let b of barriosDisponibles" [value]="b">{{ b }}</option>
+        </select>
+
+        <select class="select" [(ngModel)]="zonaColor" (change)="repintarMarkers()">
+          <option value="red">Rojo</option>
+          <option value="yellow">Amarillo</option>
+          <option value="blue">Azul</option>
+          <option value="green">Verde</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="map-container">
+      <div id="map"></div>
+    </div>
+  </div>
+</div>

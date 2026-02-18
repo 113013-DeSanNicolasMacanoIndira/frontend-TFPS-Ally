@@ -31,11 +31,11 @@ export const routes: Routes = [
   { path: 'registrar', component: RegistrarPacienteComponent },
   { path: 'register', component: RegisterComponent },
   {
-  path: 'reset-password',
-  loadComponent: () =>
-    import('./features/logeo/pages/reset-password/reset-password.component')
-      .then(c => c.ResetPasswordComponent),
-},
+    path: 'reset-password',
+    loadComponent: () =>
+      import('./features/logeo/pages/reset-password/reset-password.component')
+        .then(c => c.ResetPasswordComponent),
+  },
 
   // ================================
   //        RUTAS DE PACIENTE
@@ -92,20 +92,20 @@ export const routes: Routes = [
         (m) => m.ReportesPacienteComponent,
       ),
   },
-  
-  
- {
-  path: 'discapacidad-mental',
-  loadComponent: () =>
-    import('./features/pacientes/pages/discapacidad-mental/discapacidad-mental.component')
-      .then(m => m.DiscapacidadMentalComponent),
+
+
+  {
+    path: 'discapacidad-mental',
+    loadComponent: () =>
+      import('./features/pacientes/pages/discapacidad-mental/discapacidad-mental.component')
+        .then(m => m.DiscapacidadMentalComponent),
   },
   {
-  path: 'discapacidad-fisica',
-  loadComponent: () =>
-    import('./features/pacientes/pages/discapacidad-fisica/discapacidad-fisica.component')
-      .then(m => m.DiscapacidadFisicaComponent),
-},
+    path: 'discapacidad-fisica',
+    loadComponent: () =>
+      import('./features/pacientes/pages/discapacidad-fisica/discapacidad-fisica.component')
+        .then(m => m.DiscapacidadFisicaComponent),
+  },
 
   // ================================
   //        RUTAS DE PRESTADOR
@@ -146,7 +146,12 @@ export const routes: Routes = [
   //        RUTAS DE TRANSPORTISTA
   // ================================
   { path: 'portal-transportista', component: PortalTransportistaComponent },
-
+  {
+    path: 'transportista/zonas',
+    loadComponent: () =>
+      import('./features/transportistas/pages/zonas-asignadas/zonas-asignadas.component')
+        .then(m => m.ZonasAsignadasComponent),
+  },
   // ================================
   //        PRESTACIONES
   // ================================

@@ -1,5 +1,4 @@
 <div class="layout">
-
   <!-- ============ SIDEBAR ============ -->
   <aside class="sidebar">
     <h3 class="sidebar-title">Transportista</h3>
@@ -10,7 +9,7 @@
         Solicitudes recibidas
       </li>
 
-      <li class="menu-item">
+      <li class="menu-item" (click)="router.navigate(['/transportista/zonas'])">
         <i class="bi bi-map"></i>
         Zonas asignadas
       </li>
@@ -32,19 +31,19 @@
     <header class="header">
       <div>
         <h2>Portal del Transportista</h2>
-        <p>Hola, <strong>{{ username }}</strong>. Aquí están tus solicitudes de traslado.</p>
+        <p>
+          Hola, <strong>{{ username }}</strong
+          >. Aquí están tus solicitudes de traslado.
+        </p>
       </div>
     </header>
 
     <section class="grid">
-
       <!-- ============ LISTA ============ -->
       <article class="card card-list">
         <h3>Solicitudes asignadas</h3>
 
-        <div *ngIf="cargando" class="alert alert-info">
-          Cargando solicitudes...
-        </div>
+        <div *ngIf="cargando" class="alert alert-info">Cargando solicitudes...</div>
 
         <div *ngIf="!cargando && solicitudes.length === 0" class="alert alert-empty">
           No hay solicitudes asignadas por el momento.
@@ -54,8 +53,6 @@
           <table class="table">
             <thead>
               <tr>
-                
-                
                 <th>Paciente</th>
                 <th>Estado</th>
                 <th>Acciones</th>
@@ -63,10 +60,7 @@
             </thead>
 
             <tbody>
-
               <tr *ngFor="let s of solicitudes">
-                
-                
                 <td>{{ s.pacienteId }}</td>
 
                 <td>
@@ -75,7 +69,7 @@
                     [ngClass]="{
                       'badge-pendiente': s.estado === 'PENDIENTE',
                       'badge-aceptado': s.estado === 'ACEPTADO',
-                      'badge-rechazado': s.estado === 'RECHAZADO'
+                      'badge-rechazado': s.estado === 'RECHAZADO',
                     }"
                   >
                     {{ s.estado }}
@@ -93,11 +87,9 @@
                 </td>
               </tr>
             </tbody>
-
           </table>
         </div>
       </article>
     </section>
-
   </main>
 </div>

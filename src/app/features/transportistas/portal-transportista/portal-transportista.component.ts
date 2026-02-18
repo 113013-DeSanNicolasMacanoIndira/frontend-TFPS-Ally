@@ -20,7 +20,7 @@ export class PortalTransportistaComponent implements OnInit {
   cargando = true;
   username: string = '';
 
-  constructor(private srService: ServiceRequestService, private authService: AuthService) {}
+  constructor(private srService: ServiceRequestService, private authService: AuthService, public router: Router) {}
 
   ngOnInit(): void {
     const user = this.authService.getUser();
