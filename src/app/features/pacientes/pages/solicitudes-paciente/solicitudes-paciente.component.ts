@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { MenuPacienteComponent } from '../../../../components/menu-paciente/menu-paciente.component';
 import { ServiceRequestService } from '../../../../services/service-request.service';
 import { AuthService } from '../../../../services/auth.service';
+import { TransporterApiService } from '../../../../services/transporter-api.service';
 
 interface ProfesionalOpcion {
   id: number;
@@ -33,6 +34,8 @@ export class SolicitudesPacienteComponent implements OnInit {
   solicitudes: any[] = [];
 
   filtroProfesional: string = '';
+  transportistas: any[] = [];
+  filtroTransportista: string = '';
   cargandoSolicitudes = false;
   tieneSolicitudAceptada: boolean = false;
   tieneSolicitudesAceptadas: boolean = false;
@@ -42,7 +45,8 @@ export class SolicitudesPacienteComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private serviceRequest: ServiceRequestService,
-    private authService: AuthService
+    private authService: AuthService,
+    private transporterApi: TransporterApiService,
   ) {}
 
   ngOnInit(): void {
@@ -61,11 +65,18 @@ export class SolicitudesPacienteComponent implements OnInit {
     this.solicitudForm = this.fb.group({
       tipo: ['PRESTADOR', Validators.required],
       idProfesional: [''],
+      idTransportista: [''],
       comentario: [''],
     });
 
-    this.solicitudForm.get('tipo')!.valueChanges.subscribe(() => {
-      this.cargarProfesionales();
+    this.solicitudForm.get('tipo')!.valueChanges.subscribe((tipo) => {
+      if (tipo === 'PRESTADOR') {
+        this.solicitudForm.patchValue({ idTransportista: '' });
+        this.cargarProfesionales();
+      } else {
+        this.solicitudForm.patchValue({ idProfesional: '' });
+        this.cargarTransportistas(); // ✅ NUEVO
+      }
     });
 
     this.cargarProfesionales();
@@ -111,11 +122,29 @@ export class SolicitudesPacienteComponent implements OnInit {
       this.solicitudForm.patchValue({ idProfesional: '' });
     }
   }
+  cargarTransportistas(): void {
+    this.transporterApi.getActivos().subscribe({
+      next: (data) => {
+        this.transportistas = data ?? [];
+      },
+      error: () => {
+        this.transportistas = [];
+        Swal.fire('Error', 'No se pudieron cargar los transportistas.', 'error');
+      },
+    });
+  }
+
+  get transportistasFiltrados(): any[] {
+    const term = (this.filtroTransportista || '').toLowerCase();
+    return this.transportistas.filter((t) =>
+      `${t.nombre} ${t.apellido} ${t.zonaCobertura ?? ''}`.toLowerCase().includes(term),
+    );
+  }
 
   get profesionalesFiltrados(): ProfesionalOpcion[] {
     const term = this.filtroProfesional.toLowerCase();
     return this.profesionales.filter((p) =>
-      (p.nombre + ' ' + p.especialidad).toLowerCase().includes(term)
+      (p.nombre + ' ' + p.especialidad).toLowerCase().includes(term),
     );
   }
 
@@ -143,7 +172,7 @@ export class SolicitudesPacienteComponent implements OnInit {
 
   // 🔥 AGREGAR ESTE MÉTODO NUEVO
   contarSolicitudesAceptadas(): number {
-    return this.solicitudes.filter(s => s.estado === 'ACEPTADO').length;
+    return this.solicitudes.filter((s) => s.estado === 'ACEPTADO').length;
   }
 
   enviarSolicitud(): void {
@@ -153,37 +182,60 @@ export class SolicitudesPacienteComponent implements OnInit {
     }
 
     const tipo = this.solicitudForm.value.tipo as 'PRESTADOR' | 'TRANSPORTISTA';
-    const idProfesional = this.solicitudForm.value.idProfesional || null;
     const comentario = this.solicitudForm.value.comentario || '';
 
-    // Si es PRESTADOR, obligatorio elegir uno
-    if (tipo === 'PRESTADOR' && !idProfesional) {
-      Swal.fire('Atención', 'Seleccioná un prestador.', 'warning');
-      return;
-    }
-
-    let especialidad: string;
-
+    // ===== PRESTADOR =====
     if (tipo === 'PRESTADOR') {
-      const seleccionado = this.profesionales.find((p) => p.id === +idProfesional);
+      const idProfesional = this.solicitudForm.value.idProfesional;
 
+      if (!idProfesional) {
+        Swal.fire('Atención', 'Seleccioná un prestador.', 'warning');
+        return;
+      }
+
+      const seleccionado = this.profesionales.find((p) => p.id === +idProfesional);
       if (!seleccionado?.especialidad) {
         Swal.fire('Error', 'El prestador no tiene especialidad configurada.', 'error');
         return;
       }
 
-      // Usar SIEMPRE el código devuelto por backend
-      especialidad = seleccionado.especialidad;
-    } else {
-      // Transportista usa una especialidad fija definida por negocio
-      especialidad = 'TRANSPORTE_SANITARIO';
+      const payload = {
+        pacienteId: this.userId, // ✅ en tu back se usa como usuarioId
+        prestadorId: +idProfesional,
+        transportistaId: null,
+        especialidad: seleccionado.especialidad,
+        descripcion: comentario,
+        
+        montoApagar: null,
+      };
+
+      this.serviceRequest.crearSolicitud(payload).subscribe({
+        next: () => {
+          Swal.fire('Solicitud enviada', 'Tu solicitud fue registrada.', 'success');
+          this.solicitudForm.patchValue({ comentario: '' });
+          this.cargarSolicitudes();
+        },
+        error: () => Swal.fire('Error', 'No se pudo enviar la solicitud.', 'error'),
+      });
+
+      return;
+    }
+
+    // ===== TRANSPORTISTA =====
+    const idTransportista = this.solicitudForm.value.idTransportista;
+
+    if (!idTransportista) {
+      Swal.fire('Atención', 'Seleccioná un transportista.', 'warning');
+      return;
     }
 
     const payload = {
-      pacienteId: this.userId,
-      prestadorId: tipo === 'PRESTADOR' ? idProfesional : null,
-      especialidad, // <-- ahora es SIEMPRE un código válido
+      pacienteId: this.userId, // ✅ en tu back se usa como usuarioId
+      prestadorId: null,
+      transportistaId: +idTransportista, // ✅ CLAVE
+      especialidad: 'TRANSPORTE_SANITARIO', // ✅ coincide con listarSolicitudesTransportista()
       descripcion: comentario,
+      montoApagar: null,
     };
 
     this.serviceRequest.crearSolicitud(payload).subscribe({
@@ -192,9 +244,7 @@ export class SolicitudesPacienteComponent implements OnInit {
         this.solicitudForm.patchValue({ comentario: '' });
         this.cargarSolicitudes();
       },
-      error: () => {
-        Swal.fire('Error', 'No se pudo enviar la solicitud.', 'error');
-      },
+      error: () => Swal.fire('Error', 'No se pudo enviar la solicitud.', 'error'),
     });
   }
 

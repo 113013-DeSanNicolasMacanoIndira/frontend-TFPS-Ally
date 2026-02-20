@@ -32,4 +32,12 @@ export class TransporterApiService {
   getZonasCobertura(): Observable<string[]> {
     return this.http.get<string[]>(`${this.API}/zonas-cobertura`);
   }
+  getActivos(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API}/activos`);
+  }
+
+  // (opcional) si querés todos:
+  getAll(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.API}`);
+  }
 }

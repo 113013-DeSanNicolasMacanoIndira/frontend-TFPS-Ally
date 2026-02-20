@@ -4,16 +4,15 @@
 
   <!-- Contenido principal -->
   <main class="content">
-    <!-- Tarjeta envolvente -->
     <div class="form-card">
-      <!-- Título con barra azul curvada -->
-      <div class="form-card-title">Mis Solicitudes
+
+      <!-- Título -->
+      <div class="form-card-title">
+        Mis Solicitudes
         <p class="subtitle">
-        Hola, <strong>{{ username }}</strong
-        >. Aquí podés gestionar tus solicitudes.
-      </p>
+          Hola, <strong>{{ username }}</strong>. Aquí podés gestionar tus solicitudes.
+        </p>
       </div>
-      
 
       <!-- Banner de pagos -->
       <div *ngIf="tieneSolicitudesAceptadas" class="pagos-banner mb-3">
@@ -28,27 +27,36 @@
         </div>
       </div>
 
-      <!-- Sección con el formulario y la lista -->
       <section class="grid">
-        <!-- Formulario -->
+
+        <!-- ========================= -->
+        <!-- FORMULARIO -->
+        <!-- ========================= -->
         <article class="card card-form">
           <h3>Enviar solicitud</h3>
+
           <form [formGroup]="solicitudForm" (ngSubmit)="enviarSolicitud()">
-            <!-- Tipo de solicitud -->
+
+            <!-- Tipo -->
             <div class="form-group">
               <label>Tipo de solicitud</label>
               <div class="radio-group">
                 <label>
-                  <input type="radio" value="PRESTADOR" formControlName="tipo" /> Prestador
+                  <input type="radio" value="PRESTADOR" formControlName="tipo" />
+                  Prestador
                 </label>
                 <label>
-                  <input type="radio" value="TRANSPORTISTA" formControlName="tipo" /> Transportista
+                  <input type="radio" value="TRANSPORTISTA" formControlName="tipo" />
+                  Transportista
                 </label>
               </div>
             </div>
 
-            <!-- Buscador y select (sólo si PRESTADOR) -->
+            <!-- ========================= -->
+            <!-- PRESTADOR -->
+            <!-- ========================= -->
             <ng-container *ngIf="solicitudForm.get('tipo')?.value === 'PRESTADOR'">
+
               <div class="form-group">
                 <label>Buscar profesional</label>
                 <input
@@ -59,6 +67,7 @@
                   [ngModelOptions]="{ standalone: true }"
                 />
               </div>
+
               <div class="form-group">
                 <label>Profesional / Especialidad</label>
                 <select formControlName="idProfesional" class="form-select">
@@ -68,6 +77,35 @@
                   </option>
                 </select>
               </div>
+
+            </ng-container>
+
+            <!-- ========================= -->
+            <!-- TRANSPORTISTA -->
+            <!-- ========================= -->
+            <ng-container *ngIf="solicitudForm.get('tipo')?.value === 'TRANSPORTISTA'">
+
+              <div class="form-group">
+                <label>Buscar transportista</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Filtrar por nombre o zona"
+                  [(ngModel)]="filtroTransportista"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+              </div>
+
+              <div class="form-group">
+                <label>Transportista</label>
+                <select formControlName="idTransportista" class="form-select">
+                  <option value="" disabled selected>Seleccione uno</option>
+                  <option *ngFor="let t of transportistasFiltrados" [value]="t.id">
+                    {{ t.nombre }} {{ t.apellido }} - {{ t.zonaCobertura }}
+                  </option>
+                </select>
+              </div>
+
             </ng-container>
 
             <!-- Comentario -->
@@ -81,13 +119,19 @@
               ></textarea>
             </div>
 
-            <!-- Botón de envío -->
-            <button type="submit" class="btn-primary w-100">Enviar solicitud</button>
+            <!-- Botón -->
+            <button type="submit" class="btn-primary w-100">
+              Enviar solicitud
+            </button>
+
           </form>
         </article>
 
-        <!-- Lista de solicitudes -->
+        <!-- ========================= -->
+        <!-- LISTA DE SOLICITUDES -->
+        <!-- ========================= -->
         <article class="card card-list">
+
           <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="mb-0">Solicitudes enviadas</h3>
             <button
@@ -100,7 +144,8 @@
           </div>
 
           <div *ngIf="cargandoSolicitudes" class="alert alert-info">
-            <i class="bi bi-arrow-repeat spinner me-2"></i> Cargando solicitudes...
+            <i class="bi bi-arrow-repeat spinner me-2"></i>
+            Cargando solicitudes...
           </div>
 
           <div *ngIf="!cargandoSolicitudes && solicitudes.length === 0" class="alert alert-empty">
@@ -121,6 +166,7 @@
               <tbody>
                 <tr *ngFor="let s of solicitudes">
                   <td>{{ s.especialidad }}</td>
+
                   <td>
                     <span
                       class="badge"
@@ -128,20 +174,15 @@
                         'badge-pendiente': s.estado === 'PENDIENTE',
                         'badge-aceptado': s.estado === 'ACEPTADO',
                         'badge-rechazado': s.estado === 'RECHAZADO',
-                        'badge-cancelado': s.estado === 'CANCELADO',
+                        'badge-cancelado': s.estado === 'CANCELADO'
                       }"
                     >
                       {{ s.estado }}
                     </span>
-                    <span
-                      *ngIf="s.estado === 'ACEPTADO'"
-                      class="ms-1 text-warning"
-                      title="Pago pendiente"
-                    >
-                      <i class="bi bi-credit-card"></i>
-                    </span>
                   </td>
+
                   <td>{{ s.fechaSolicitud | date: 'short' }}</td>
+
                   <td>
                     <button
                       class="btn-outline btn-sm"
@@ -150,6 +191,7 @@
                     >
                       Cancelar
                     </button>
+
                     <button
                       *ngIf="s.estado === 'ACEPTADO'"
                       class="btn btn-success btn-sm ms-1"
@@ -164,27 +206,9 @@
             </table>
           </div>
 
-          <!-- Sección final de pagos -->
-          <div *ngIf="tieneSolicitudesAceptadas" class="pagos-section mt-4 p-3 bg-light rounded">
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <h5 class="mb-1">
-                  <i class="bi bi-credit-card text-success me-2"></i>
-                  Solicitudes listas para pago
-                </h5>
-                <p class="mb-0 text-muted">
-                  Tienes {{ contarSolicitudesAceptadas() }} solicitud(es) aceptadas pendientes de
-                  pago
-                </p>
-              </div>
-              <button class="btn btn-success" routerLink="/pagos-paciente">
-                <i class="bi bi-cash-coin me-1"></i> Gestionar Pagos
-              </button>
-            </div>
-          </div>
         </article>
+
       </section>
     </div>
-    <!-- fin de la tarjeta -->
   </main>
 </div>
