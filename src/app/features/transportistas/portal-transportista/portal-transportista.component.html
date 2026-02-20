@@ -1,17 +1,30 @@
 <div class="layout">
-  <!-- ============ SIDEBAR ============ -->
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <h3 class="sidebar-title">Transportista</h3>
 
     <ul class="menu">
-      <li class="menu-item active">
+      <li
+        class="menu-item"
+        [class.active]="seccionActiva === 'solicitudes'"
+        (click)="cambiarSeccion('solicitudes')"
+      >
         <i class="bi bi-send"></i>
         Solicitudes recibidas
       </li>
 
-      <li class="menu-item" (click)="router.navigate(['/transportista/zonas'])">
+      <li class="menu-item" [class.active]="seccionActiva === 'zonas'" (click)="irZonas()">
         <i class="bi bi-map"></i>
         Zonas asignadas
+      </li>
+
+      <li
+        class="menu-item"
+        [class.active]="seccionActiva === 'registro'"
+        (click)="cambiarSeccion('registro')"
+      >
+        <i class="bi bi-person-plus"></i>
+        Registro
       </li>
 
       <li class="menu-item">
@@ -26,7 +39,7 @@
     </ul>
   </aside>
 
-  <!-- ============ CONTENIDO ============ -->
+  <!-- CONTENIDO -->
   <main class="content">
     <header class="header">
       <div>
@@ -38,57 +51,107 @@
       </div>
     </header>
 
-    <section class="grid">
-      <!-- ============ LISTA ============ -->
+    <section class="grid" *ngIf="seccionActiva === 'solicitudes'">
       <article class="card card-list">
         <h3>Solicitudes asignadas</h3>
 
-        <div *ngIf="cargando" class="alert alert-info">Cargando solicitudes...</div>
+        <div *ngIf="loadingPerfil" class="alert alert-info">Cargando perfil...</div>
 
-        <div *ngIf="!cargando && solicitudes.length === 0" class="alert alert-empty">
-          No hay solicitudes asignadas por el momento.
+        <div *ngIf="!loadingPerfil && esNuevoTransportista" class="alert alert-empty">
+          Para ver solicitudes primero tenés que registrarte como transportista (menú:
+          <b>Registro</b>).
         </div>
 
-        <div *ngIf="solicitudes.length > 0" class="table-wrapper">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Paciente</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
+        <ng-container *ngIf="!loadingPerfil && !esNuevoTransportista">
+          <div *ngIf="cargando" class="alert alert-info">Cargando solicitudes...</div>
 
-            <tbody>
-              <tr *ngFor="let s of solicitudes">
-                <td>{{ s.pacienteId }}</td>
+          <div *ngIf="!cargando && solicitudes.length === 0" class="alert alert-empty">
+            No hay solicitudes asignadas por el momento.
+          </div>
 
-                <td>
-                  <span
-                    class="badge"
-                    [ngClass]="{
-                      'badge-pendiente': s.estado === 'PENDIENTE',
-                      'badge-aceptado': s.estado === 'ACEPTADO',
-                      'badge-rechazado': s.estado === 'RECHAZADO',
-                    }"
-                  >
-                    {{ s.estado }}
-                  </span>
-                </td>
+          <div *ngIf="solicitudes.length > 0" class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Paciente</th>
+                  <th>Dirección</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
 
-                <td class="actions">
-                  <button class="btn-outline btn-sm success" (click)="aceptar(s.id!)">
-                    Aceptar
-                  </button>
+              <tbody>
+                <tr *ngFor="let s of solicitudes">
+                  <td>{{ s.pacienteId }}</td>
+                  <td>{{ s.direccionPaciente }}</td>
 
-                  <button class="btn-outline btn-sm danger" (click)="rechazar(s.id!)">
-                    Rechazar
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  <td>
+                    <span
+                      class="badge"
+                      [ngClass]="{
+                        'badge-pendiente': s.estado === 'PENDIENTE',
+                        'badge-aceptado': s.estado === 'ACEPTADO',
+                        'badge-rechazado': s.estado === 'RECHAZADO',
+                      }"
+                    >
+                      {{ s.estado }}
+                    </span>
+                  </td>
+
+                  <td class="actions">
+                    <button class="btn-outline btn-sm success" (click)="aceptar(s.id!)">
+                      Aceptar
+                    </button>
+                    <button class="btn-outline btn-sm danger" (click)="rechazar(s.id!)">
+                      Rechazar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </ng-container>
+      </article>
+    </section>
+    <section class="grid" *ngIf="seccionActiva === 'registro'">
+      <article class="card card-list">
+        <h3>Registro de Transportista</h3>
+
+        <div *ngIf="loadingPerfil" class="alert alert-info">Cargando perfil...</div>
+
+        <div *ngIf="!loadingPerfil && !esNuevoTransportista" class="alert alert-info">
+          Ya estás registrado como transportista.
         </div>
+
+        <form
+          *ngIf="!loadingPerfil && esNuevoTransportista"
+          [formGroup]="transportistaForm"
+          (ngSubmit)="registrarTransportista()"
+        >
+          <div class="row">
+            <input class="input" placeholder="Nombre" formControlName="nombre" />
+            <input class="input" placeholder="Apellido" formControlName="apellido" />
+          </div>
+
+          <div class="row">
+            <input class="input" placeholder="Email" formControlName="correoElectronico" />
+            <input class="input" placeholder="Teléfono" formControlName="telefono" />
+          </div>
+
+          <input class="input" placeholder="Dirección" formControlName="direccion" />
+
+          <div class="row">
+            <input class="input" type="date" formControlName="fechaNacimiento" />
+            <input class="input" placeholder="Telegram (opcional)" formControlName="telegram" />
+          </div>
+
+          <select class="select" formControlName="zonaCobertura">
+            <option value="">Seleccioná zona cobertura</option>
+            <option *ngFor="let z of zonas" [value]="z">{{ z }}</option>
+          </select>
+
+          <button class="btn-outline success" type="submit">Registrar</button>
+        </form>
       </article>
     </section>
   </main>

@@ -43,5 +43,28 @@
   border-radius: 12px;
   overflow: hidden;
   display: block;
-  background: #eee; /* para ver si tiene tamaño aunque no cargue tiles */
+  background: #eee;
+   /* para ver si tiene tamaño aunque no cargue tiles */
+   z-index: 1;
 }
+.topbar {
+  position: relative;
+  z-index: 1000; /* por encima del mapa */
+}
+
+.controls {
+  position: relative;
+  z-index: 1001;
+}
+
+.input, .select {
+  position: relative;
+  z-index: 1002;
+  pointer-events: auto;
+}
+.topbar { position: relative; z-index: 1000; }
+.controls { position: relative; z-index: 1001; }
+.input, .select { position: relative; z-index: 1002; pointer-events: auto; }
+
+.map-container { position: relative; z-index: 1; }
+#map { z-index: 1; }

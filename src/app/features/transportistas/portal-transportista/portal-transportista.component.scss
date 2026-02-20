@@ -128,3 +128,9 @@
   color: #dc3545;
 }
 @import "leaflet/dist/leaflet.css";
+.table td:nth-child(2) {
+  max-width: 380px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

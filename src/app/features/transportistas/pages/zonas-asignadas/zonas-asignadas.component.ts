@@ -5,6 +5,7 @@ import * as L from 'leaflet';
 import { ServiceRequestService } from '../../../../services/service-request.service';
 import { PatientLocationApiService } from '../../../../services/patient-location-api.service';
 import { catchError, of } from 'rxjs';
+import { PatientApiService } from '../../../../services/patient-api.service';
 type PuntoPaciente = {
   pacienteId: number;
   lat: number;
@@ -38,6 +39,7 @@ export class ZonasAsignadasComponent implements AfterViewInit {
   constructor(
     private srService: ServiceRequestService,
     private locApi: PatientLocationApiService,
+    private patientApi: PatientApiService,
   ) {}
 
   ngAfterViewInit(): void {
@@ -83,7 +85,38 @@ export class ZonasAsignadasComponent implements AfterViewInit {
           .subscribe((u: any) => {
             if (!u?.lat || !u?.lng) return;
 
-            const addressText = u.addressText ?? '';
+            const addressText = (u?.addressText ?? '').trim();
+
+            // 👇 si NO viene addressText, buscamos la dirección del paciente
+            if (!addressText) {
+              this.patientApi
+                .getPaciente(pacienteId)
+                .pipe(
+                  catchError((err) => {
+                    console.error('Error paciente', pacienteId, err);
+                    return of(null);
+                  }),
+                )
+                .subscribe((pac: any) => {
+                  const direccion = (pac?.direccion ?? '').trim();
+                  const barrio = this.extraerBarrio(direccion);
+
+                  this.puntos.push({
+                    pacienteId,
+                    lat: u.lat,
+                    lng: u.lng,
+                    addressText: direccion, // 👈 domicilio del paciente
+                    barrio,
+                  });
+
+                  this.actualizarBarrios();
+                  this.aplicarFiltro();
+                });
+
+              return; // 👈 evita duplicar el push
+            }
+
+            // 👇 si SÍ viene addressText, usamos ese
             const barrio = this.extraerBarrio(addressText);
 
             this.puntos.push({
